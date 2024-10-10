@@ -1,5 +1,5 @@
 ### ERD 구조
-![img_1.png](ERD.png)
+![ERD.png](ERD.png)
 
 
 
