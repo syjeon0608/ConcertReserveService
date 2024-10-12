@@ -16,10 +16,9 @@
 ```
 {
   "tokenId": 1,
-  "uuid": "user-uuid",
   "concertId": 1,
   "tokenStatus": "INACTIVE",
-  "createdAt": "2024-10-10T12:00:03",
+  "queueNo": 1
 }
 ```
 
@@ -32,7 +31,6 @@
 ```
 {
   "tokenId": 1,
-  "uuid": "user-uuid",
   "status": "WAITING",
   "remainingQueueCount": 5
 }
@@ -41,7 +39,6 @@
 ```
 {
   "tokenId": 1,
-  "uuid": "user-uuid",
   "status": "COMPLETED",
   "remainingQueueCount": 0
 }
@@ -51,21 +48,13 @@
 - URL: /api/v1/tokens/{tokenId}
 - 메서드: PATCH
 - 설명: 대기가 완료되면 비활성 토큰을 활성토큰으로 전환한다.
-- Request Body:
-```
-{
-  "tokenStatus": "ACTIVE"
-}
-```
 - Status Code: 200 OK
 - ResponseBody:
 ```
 {
   "tokenId": 1,
-  "uuid": "user-uuid",
-  "tokenStatus": "ACTIVE",
-  "createdAt": "2024-10-10T12:00:05",
-  "activatedAt": "2024-10-10T12:00:10"
+  "tokenStatus": "ACTIVE"
+  "expiredAt": "2024-10-10T12:00:10"
 }
 ```
 
@@ -89,6 +78,10 @@ HTTP/1.1 404 Not Found
 - URL: /api/v1/concerts/{concertId}/schedules
 - 메서드: GET
 - 설명: 콘서트의 예약 가능한 날짜를 조회한다.
+
+- **이 API를 사용하기 전에, 토큰 검증 API를 통해 토큰의 유효성을 확인해야 함.**
+- 검증 API: **`/api/v1/tokens/{tokenId}`**
+- Request Headers: `Authorization: Bearer <tokenId>`
 - Status Code: 200 OK
 - ResponseBody:
 ```
@@ -96,15 +89,18 @@ HTTP/1.1 404 Not Found
   "concertId": 1,
   "concertTitle": "콘서트 제목",
   "concertDescription": "콘서트 설명",
-  "openDate": "2024-10-01T10:00:00",
+  "startDate": "2024-10-09",
+  "endDate": "2024-10-10",
   "schedules": [
     {
       "date": "2024-10-15",
-      "availableSeats": 30
+      "availableSeats": 30,
+      "totalSeats": 50
     },
     {
       "date": "2024-10-16",
-      "availableSeats": 40
+      "availableSeats": 40,
+      "totalSeats": 50
     }
   ]
 }
@@ -114,13 +110,17 @@ HTTP/1.1 404 Not Found
 - URL: /api/v1/concerts/{concertId}/schedules/{scheduleId}/seats
 - 메서드: GET
 - 설명: 선택한 콘서트 일정의 예약 가능한 좌석을 조회한다.
+- 검증 API: **`/api/v1/tokens/{tokenId}`**
+- Request Headers: `Authorization: Bearer <tokenId>`
 - Status Code: 200 OK
 - ResponseBody:
 ```
 {
   "concertId": 1,
   "scheduleId": 1,
-  "availableSeats": [1, 2, 3, 4, 5]
+  "availableSeats": [1, 2, 3, 4, 5],
+  "price":80000,
+  "status":"AVAILABLE"
 }
 ```
 
@@ -128,10 +128,11 @@ HTTP/1.1 404 Not Found
 - URL: /api/v1/concerts/{concertId}/schedules/{scheduleId}/reservations
 - 메서드: POST
 - 설명: 사용자가 좌석 예약을 요청한다.
+- 검증 API: **`/api/v1/tokens/{tokenId}`**
+- Request Headers: `Authorization: Bearer <tokenId>`
 - Request Body:
 ```
 {
-  "tokenId": 1,
   "seatNumber": 13
 }
 ```
@@ -139,13 +140,13 @@ HTTP/1.1 404 Not Found
 - ResponseBody:
 ```
 { 
-  "tokenId":1,
   "concertId": 1,
   "scheduleId": 2,
   "seatNumber": 13,
   "seatStatus": "TEMPORARY"
   "reservationStatus":"TEMPORARY"
   "reservedAt": "2024-10-15 12:00:05"
+  "expiredAt": "2024-10-15 12:00:05"
 }
 ```
 
@@ -157,8 +158,7 @@ HTTP/1.1 404 Not Found
 - ResponseBody:
 ```
 {
-  "userId": 1,
-  "balance": 50000,
+  "amount": 50000,
   "updatedAt": "2024-10-10T12:00:03"
 }
 ```
@@ -170,7 +170,6 @@ HTTP/1.1 404 Not Found
 - Request Body:
 ```
 {
-  "userId": 1,
   "amount": 100000
 }
 ```
@@ -178,7 +177,6 @@ HTTP/1.1 404 Not Found
 - ResponseBody:
 ```
 { 
-  "userId":1,
   "chargedAmount": 100000,
   "chargedAt": "2024-10-10T12:00:03",
   "updatedAmount": 150000
@@ -189,18 +187,12 @@ HTTP/1.1 404 Not Found
 - URL: /api/v1/reservations/{reservationId}/payments
 - 메서드: POST
 - 설명:  예매한 콘서트 좌석을 결제한다.
-- Request Body:
-```
-{
-  "tokenId":1,
-  "amount": 100000
-}
-```
+- 검증 API: **`/api/v1/tokens/{tokenId}`**
+- Request Headers: `Authorization: Bearer <tokenId>`
 - Status Code: 201 Created
 - ResponseBody:
 ```
 { 
-  "tokenId":1,
   "reservationId":1,
   "concertId": 1,
   "scheduleId": 2,
@@ -208,7 +200,8 @@ HTTP/1.1 404 Not Found
   "seatStatus": "CONFIRMED",
   "reservationStatus":"CONFIRMED",
   "reservedAt": "2024-10-15 12:00:05",
-  "updatedAt":  "2024-10-15 12:00:10",
+  "updatedAt":  "2024-10-15 12:03:05",
+  "expiredAt":  "2024-10-15 12:05:05",
   "amount":110000
 }
 ```
