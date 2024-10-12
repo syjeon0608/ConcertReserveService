@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.interfaces.api;
 
-import com.hhpl.concertreserve.interfaces.dto.queue.*;
+import com.hhpl.concertreserve.interfaces.dto.token.*;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,8 +16,8 @@ public class TokenController {
 
     @Operation(summary = "대기열 토큰 생성 요청 API", description = "대기열 진입 후 토큰을 생성한다.")
     @PostMapping("/")
-    public ResponseEntity<QueueTokenResponse> generateToken(@RequestBody QueueTokenCreationRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(new QueueTokenResponse(
+    public ResponseEntity<TokenResponse> generateToken(@RequestBody TokenCreationRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(new TokenResponse(
                 1L,
                 request.uuid(),
                 request.concertId(),

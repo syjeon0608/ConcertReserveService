@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.interfaces.dto.queue;
+package com.hhpl.concertreserve.interfaces.dto.token;
 
 import java.time.LocalDateTime;
 
