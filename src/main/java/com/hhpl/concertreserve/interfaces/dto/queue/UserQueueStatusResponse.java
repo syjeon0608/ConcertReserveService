@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.interfaces.dto.queue;
 
-public record QueueStatusResponse(
+public record UserQueueStatusResponse(
         Long tokenId,
         String userUuid,
         String status,

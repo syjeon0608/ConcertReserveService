@@ -16,8 +16,8 @@ public class PaymentController {
 
     @Operation(summary = "잔액조회 API", description = "사용자가 잔액을 조회한다.")
     @GetMapping("/users/{userId}/wallets")
-    public ResponseEntity<WalletResponse> getBalance(@PathVariable Long userId) {
-        return ResponseEntity.ok(new WalletResponse(
+    public ResponseEntity<WalletAmountResponse> getBalance(@PathVariable Long userId) {
+        return ResponseEntity.ok(new WalletAmountResponse(
                 userId,
                 50000L,
                 LocalDateTime.now()

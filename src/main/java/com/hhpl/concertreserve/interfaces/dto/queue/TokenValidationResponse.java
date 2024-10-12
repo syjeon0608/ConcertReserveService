@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.interfaces.dto.queue;
 
-public record TokenValidateResponse(
+public record TokenValidationResponse(
         boolean isValid,
         Long tokenId,
         String uuid

@@ -2,11 +2,11 @@ package com.hhpl.concertreserve.interfaces.dto.queue;
 
 import java.time.LocalDateTime;
 
-public record ActivationResponse(
+public record QueueTokenResponse(
         Long tokenId,
-        String userUuid,
+        String uuid,
+        Long concertId,
         String tokenStatus,
-        LocalDateTime createdAt,
-        LocalDateTime activatedAt
+        LocalDateTime createdAt
 ) {
 }
