@@ -26,7 +26,7 @@ public class TokenController {
         ));
     }
 
-    @Operation(summary = " 대기열 상태 확인 API", description = "유저는 자신의 대기열 상태를 확인한다.")
+    @Operation(summary = " 대기열 토큰 조회 API", description = "유저는 자신의 대기열 상태를 확인한다.")
     @GetMapping("/{tokenId}")
     public ResponseEntity<UserQueueStatusResponse> getQueueStatus(@PathVariable Long tokenId) {
         return ResponseEntity.ok(new UserQueueStatusResponse(
@@ -51,12 +51,8 @@ public class TokenController {
 
     @Operation(summary = "토큰 검증 API", description = "활성된 토큰인지 검사한다.")
     @RequestMapping(value = "/{tokenId}", method = RequestMethod.HEAD)
-    public ResponseEntity<TokenValidationResponse> validateToken(@PathVariable Long tokenId) {
-        return ResponseEntity.ok(new TokenValidationResponse(
-                true,
-                1L,
-                "user-uuid"
-        ));
+    public ResponseEntity<Void> validateToken(@PathVariable Long tokenId) {
+        return ResponseEntity.ok().build();
     }
 
 }
