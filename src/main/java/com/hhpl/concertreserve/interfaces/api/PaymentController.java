@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/payment")
+@RequestMapping("/api/v1/")
 public class PaymentController {
 
     @Operation(summary = "잔액조회 API", description = "사용자가 잔액을 조회한다.")
-    @GetMapping("/balance/{userId}")
-    public ResponseEntity<BalanceResponse> getBalance(@PathVariable Long userId) {
-        return ResponseEntity.ok(new BalanceResponse(
+    @GetMapping("/users/{userId}/wallets")
+    public ResponseEntity<WalletResponse> getBalance(@PathVariable Long userId) {
+        return ResponseEntity.ok(new WalletResponse(
                 userId,
                 50000L,
                 LocalDateTime.now()
@@ -25,10 +25,10 @@ public class PaymentController {
     }
 
     @Operation(summary = "잔액충전 API", description = "사용자가 금액을 충전한다.")
-    @PostMapping("/balance/charge")
-    public ResponseEntity<BalanceChargeResponse> chargeBalance(@RequestBody BalanceChargeRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BalanceChargeResponse(
-                request.userId(),
+    @PostMapping("/users/{userId}/wallets")
+    public ResponseEntity<WalletChargeResponse> chargeBalance(@PathVariable Long userId , @RequestBody WalletChargeRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(new WalletChargeResponse(
+                userId,
                 request.amount(),
                 LocalDateTime.now(),
                 150000L
@@ -36,7 +36,7 @@ public class PaymentController {
     }
 
     @Operation(summary = "결제 API", description = "예매한 콘서트 좌석을 결제한다")
-    @PostMapping("/reservation/{reservationId}/payment")
+    @PostMapping("/reservations/{reservationId}/payments")
     public ResponseEntity<ReservationPaymentResponse> payForReservation(@PathVariable Long reservationId,
                                                                         @RequestBody ReservationPaymentRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ReservationPaymentResponse(

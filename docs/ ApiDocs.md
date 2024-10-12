@@ -1,7 +1,7 @@
 # API 명세
 
 ## 🔑 대기열 토큰 생성 요청 API
-- URL: /api/v1/queue/tokens
+- URL: /api/v1/tokens
 - 메서드: POST
 - 설명: 대기열 진입 후 토큰을 생성한다.
 - Request Body:
@@ -24,7 +24,7 @@
 ```
 
 ## 🔑  대기열 상태 확인 API
-- URL: /api/v1/queue/tokens/{tokenId}/status
+- URL: /api/v1/tokens/{tokenId}
 - 메서드: GET
 - 설명: 유저는 자신의 대기열 상태를 확인한다.
 - Status Code: 200 OK
@@ -48,7 +48,7 @@
 ```
 
 ## 🔑 토큰 활성화 API
-- URL: /api/v1/queue/tokens/{tokenId}/activate
+- URL: /api/v1/tokens/{tokenId}
 - 메서드: PATCH
 - 설명: 대기가 완료되면 비활성 토큰을 활성토큰으로 전환한다.
 - Request Body:
@@ -66,28 +66,21 @@
   "tokenStatus": "ACTIVE",
   "createdAt": "2024-10-10T12:00:05",
   "activatedAt": "2024-10-10T12:00:10"
+}
 ```
 
 ## 🔑 토큰 검증 API
-- URL: /api/v1/queue/tokens/{tokenId}
-- 메서드: GET
+- URL: /api/v1/tokens/{tokenId}
+- 메서드: HEAD
 - 설명: 활성된 토큰인지 검사한다.
 - Status Code: 200 OK
 - ResponseBody(유효한 토큰):
 ```
-{
-  "isValid": true,
-  "tokenId": 1,
-  "uuid":"user-uuid"
-}
+HTTP/1.1 200 OK
 ```
 - ResponseBody(유효하지 않은 토큰):
 ```
-{
-  "isValid": false,
-  "tokenId": 1,
-  "uuid":"user-uuid"
-}
+HTTP/1.1 404 Not Found
 ```
 
 
@@ -132,7 +125,7 @@
 ```
 
 ## 🎤 좌석 예약 요청 API
-- URL: /api/v1/concerts/{concertId}/schedules/{scheduleId}/reservation
+- URL: /api/v1/concerts/{concertId}/schedules/{scheduleId}/reservations
 - 메서드: POST
 - 설명: 사용자가 좌석 예약을 요청한다.
 - Request Body:
@@ -157,7 +150,7 @@
 ```
 
 ## 💳 잔액조회 API
-- URL: /api/v1/payment/balance/{userId}
+- URL: /api/v1/users/{userId}/wallets
 - 메서드: GET
 - 설명: 사용자가 잔액을 조회한다.
 - Status Code: 200 OK
@@ -171,7 +164,7 @@
 ```
 
 ## 💳 잔액충전 API
-- URL:  /api/v1/payment/balance/charge
+- URL:  /api/v1/users/{userId}/wallets
 - 메서드: POST
 - 설명: 사용자가 금액을 충전한다.
 - Request Body:
@@ -193,7 +186,7 @@
 ```
 
 ## 💳 결제 API
-- URL: /api/v1/payment/reservation/{reservationId}/payment
+- URL: /api/v1/reservations/{reservationId}/payments
 - 메서드: POST
 - 설명:  예매한 콘서트 좌석을 결제한다.
 - Request Body:

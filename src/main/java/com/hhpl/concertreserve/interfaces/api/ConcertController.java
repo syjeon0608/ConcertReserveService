@@ -41,7 +41,7 @@ public class ConcertController {
     }
 
     @Operation(summary = "좌석 예약 요청 API", description = "사용자가 좌석 예약을 요청한다.")
-    @PostMapping("/{concertId}/schedules/{scheduleId}/reservation")
+    @PostMapping("/{concertId}/schedules/{scheduleId}/reservations")
     public ResponseEntity<ReservationResponse> reserveSeats(@PathVariable Long concertId,
                                                             @PathVariable Long scheduleId,
                                                             @RequestBody ReservationRequest request) {
