@@ -1,9 +1,9 @@
-package com.hhpl.concertreserve.interfaces.api;
+package com.hhpl.concertreserve.interfaces.api.controller;
 
+import com.hhpl.concertreserve.interfaces.api.common.ApiResponse;
 import com.hhpl.concertreserve.interfaces.dto.token.*;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +16,8 @@ public class TokenController {
 
     @Operation(summary = "대기열 토큰 생성 요청 API", description = "대기열 진입 후 토큰을 생성한다.")
     @PostMapping("/")
-    public ResponseEntity<TokenResponse> generateToken(@RequestBody TokenCreationRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(new TokenResponse(
+    public ApiResponse<TokenResponse> generateToken(@RequestBody TokenCreationRequest request) {
+        return ApiResponse.OK(new TokenResponse(
                 1L,
                 request.uuid(),
                 request.concertId(),
@@ -28,8 +28,8 @@ public class TokenController {
 
     @Operation(summary = " 대기열 토큰 조회 API", description = "유저는 자신의 대기열 상태를 확인한다.")
     @GetMapping("/{tokenId}")
-    public ResponseEntity<UserQueueStatusResponse> getQueueStatus(@PathVariable Long tokenId) {
-        return ResponseEntity.ok(new UserQueueStatusResponse(
+    public ApiResponse<UserQueueStatusResponse> getQueueStatus(@PathVariable Long tokenId) {
+        return ApiResponse.OK(new UserQueueStatusResponse(
                 1L,
                 "user-uuid",
                 "WAITING",
@@ -39,8 +39,8 @@ public class TokenController {
 
     @Operation(summary = "토큰 활성화 API", description = "대기가 완료되면 비활성 토큰을 활성토큰으로 전환한다.")
     @PatchMapping("/{tokenId}")
-    public ResponseEntity<TokenActivationResponse> activateUsers(@PathVariable Long tokenId) {
-        return ResponseEntity.ok(new TokenActivationResponse(
+    public ApiResponse<TokenActivationResponse> activateUsers(@PathVariable Long tokenId) {
+        return ApiResponse.OK(new TokenActivationResponse(
                 1L,
                 "user-uuid",
                 "ACTIVE",
