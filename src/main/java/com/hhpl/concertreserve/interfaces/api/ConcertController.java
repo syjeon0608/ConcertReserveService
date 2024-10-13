@@ -19,7 +19,8 @@ public class ConcertController {
 
     @Operation(summary = "콘서트 일정 조회 API", description = "콘서트의 예약 가능한 날짜를 조회한다.")
     @GetMapping("/{concertId}/schedules")
-    public ResponseEntity<SchedulesResponse> getSchedules(@PathVariable Long concertId) {
+    public ResponseEntity<SchedulesResponse> getSchedules(@PathVariable Long concertId,
+                                                          @RequestHeader("X-TOKEN-ID") Long tokenId ) {
         return ResponseEntity.ok(new SchedulesResponse(
                 concertId,
                 "콘서트 제목",
@@ -32,7 +33,9 @@ public class ConcertController {
 
     @Operation(summary = "예약가능 좌석 조회 API", description = "선택한 콘서트 일정의 예약 가능한 좌석을 조회한다.")
     @GetMapping("/{concertId}/schedules/{scheduleId}/seats")
-    public ResponseEntity<AvailableSeatsResponse> getSeats(@PathVariable Long concertId, @PathVariable Long scheduleId) {
+    public ResponseEntity<AvailableSeatsResponse> getSeats(@PathVariable Long concertId,
+                                                           @PathVariable Long scheduleId,
+                                                           @RequestHeader("X-TOKEN-ID") Long tokenId ) {
         return ResponseEntity.ok(new AvailableSeatsResponse(
                 concertId,
                 scheduleId,
@@ -44,9 +47,10 @@ public class ConcertController {
     @PostMapping("/{concertId}/schedules/{scheduleId}/reservations")
     public ResponseEntity<ReservationResponse> reserveSeats(@PathVariable Long concertId,
                                                             @PathVariable Long scheduleId,
+                                                            @RequestHeader("X-TOKEN-ID") Long tokenId ,
                                                             @RequestBody ReservationRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ReservationResponse(
-                request.tokenId(),
+                tokenId,
                 concertId,
                 scheduleId,
                 request.seatNumber(),

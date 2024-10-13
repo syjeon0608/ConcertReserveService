@@ -38,9 +38,10 @@ public class PaymentController {
     @Operation(summary = "결제 API", description = "예매한 콘서트 좌석을 결제한다")
     @PostMapping("/reservations/{reservationId}/payments")
     public ResponseEntity<ReservationPaymentResponse> payForReservation(@PathVariable Long reservationId,
-                                                                        @RequestBody ReservationPaymentRequest request) {
+                                                                        @RequestBody ReservationPaymentRequest request,
+                                                                        @RequestHeader("X-TOKEN-ID") Long tokenId ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ReservationPaymentResponse(
-                request.tokenId(),
+                tokenId,
                 reservationId,
                 1L,
                 2L,
