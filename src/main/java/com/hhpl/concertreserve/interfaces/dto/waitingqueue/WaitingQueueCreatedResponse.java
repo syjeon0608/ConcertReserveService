@@ -1,8 +1,8 @@
-package com.hhpl.concertreserve.interfaces.dto.token;
+package com.hhpl.concertreserve.interfaces.dto.waitingqueue;
 
 import java.time.LocalDateTime;
 
-public record WaitingTokenCreatedResponse(
+public record WaitingQueueCreatedResponse(
         Long tokenId,
         String uuid,
         Long concertId,

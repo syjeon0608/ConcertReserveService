@@ -19,7 +19,7 @@ public class ConcertController {
     @GetMapping("/{concertId}/schedules")
 
     public ApiResponse<SchedulesResponse> getSchedules(@PathVariable Long concertId,
-                                                       @RequestHeader("X-TOKEN-ID") Long tokenId) {
+                                                       @RequestHeader("X-QUEUE-ID") Long queueId) {
         SchedulesResponse schedulesResponse = new SchedulesResponse(
                 concertId,
                 "콘서트 제목",
@@ -37,7 +37,7 @@ public class ConcertController {
     @GetMapping("/{concertId}/schedules/{scheduleId}/seats")
     public ApiResponse<AvailableSeatsResponse> getSeats(@PathVariable Long concertId,
                                                         @PathVariable Long scheduleId,
-                                                        @RequestHeader("X-TOKEN-ID") Long tokenId) {
+                                                        @RequestHeader("X-QUEUE-ID") Long queueId) {
         return ApiResponse.OK(new AvailableSeatsResponse(
                 concertId,
                 scheduleId,
@@ -49,7 +49,7 @@ public class ConcertController {
     @PostMapping("/{concertId}/schedules/{scheduleId}/reservations")
     public ApiResponse<ReservationResponse> reserveSeats(@PathVariable Long concertId,
                                                          @PathVariable Long scheduleId,
-                                                         @RequestHeader("X-TOKEN-ID") Long tokenId,
+                                                         @RequestHeader("X-QUEUE-ID") Long queueId,
                                                          @RequestBody ReservationRequest request) {
         return ApiResponse.OK(new ReservationResponse(
                 request.tokenId(),

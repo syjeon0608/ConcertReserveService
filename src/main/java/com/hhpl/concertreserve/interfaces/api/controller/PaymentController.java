@@ -40,10 +40,10 @@ public class PaymentController {
 
     public ApiResponse<ReservationPaymentResponse> payForReservation(@PathVariable Long reservationId,
                                                                      @RequestBody ReservationPaymentRequest request,
-                                                                     @RequestHeader("X-TOKEN-ID") Long tokenId) {
+                                                                     @RequestHeader("X-QUEUE-ID") Long queueId) {
         return ApiResponse.OK(new ReservationPaymentResponse(
 
-                tokenId,
+                queueId,
                 reservationId,
                 1L,
                 2L,

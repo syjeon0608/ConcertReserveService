@@ -1,6 +1,6 @@
-package com.hhpl.concertreserve.interfaces.dto.token;
+package com.hhpl.concertreserve.interfaces.dto.waitingqueue;
 
-public record WaitingTokenStatusResponse(
+public record WaitingQueueStatusResponse(
         Long tokenId,
         String userUuid,
         String status,
