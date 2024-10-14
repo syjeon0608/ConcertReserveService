@@ -2,7 +2,7 @@ package com.hhpl.concertreserve.interfaces.dto.token;
 
 import java.time.LocalDateTime;
 
-public record TokenResponse(
+public record WaitingTokenCreatedResponse(
         Long tokenId,
         String uuid,
         Long concertId,
