@@ -6,6 +6,7 @@ public record TokenResponse(
         Long tokenId,
         String uuid,
         Long concertId,
+        Long queueNo,
         String tokenStatus,
         LocalDateTime createdAt
 ) {
