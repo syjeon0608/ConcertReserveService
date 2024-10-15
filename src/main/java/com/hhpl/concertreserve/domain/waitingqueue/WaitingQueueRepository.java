@@ -9,7 +9,7 @@ public interface WaitingQueueRepository {
 
     Optional<Long> getMaxActivatedQueueNoByConcertId(Long concertId);
 
-    WaitingQueue getMyWaitingQueue(String uuid, Long concertId);
+    Optional<WaitingQueue> getMyWaitingQueue(String uuid, Long concertId);
 
     List<Long> findAllConcertIdsWithInactiveQueues();
 
