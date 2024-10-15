@@ -29,6 +29,8 @@ public class WaitingQueue {
     @Column(nullable = false)
     private Long queueNo;
 
+    private Long remainingQueueNo;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
@@ -44,9 +46,24 @@ public class WaitingQueue {
         this.createdAt = LocalDateTime.now();
     }
 
+
     public static WaitingQueue createWithQueueNo(String uuid, Long concertId, Long maxQueueNo) {
         Long queueNo = maxQueueNo + 1;
         return new WaitingQueue(uuid, concertId, queueNo);
+    }
+
+    public Long calculateCurrentQueueNo(Long lastActivatedQueueNo) {
+        return this.queueNo - lastActivatedQueueNo;
+    }
+
+
+    public WaitingQueueInfo getWaitingQueueInfo(Long lastActivatedQueueNo) {
+        this.remainingQueueNo = calculateCurrentQueueNo(lastActivatedQueueNo);
+        return new WaitingQueueInfo(
+                this.concertId,
+                this.queueStatus.name(),
+                this.remainingQueueNo
+        );
     }
 
 }

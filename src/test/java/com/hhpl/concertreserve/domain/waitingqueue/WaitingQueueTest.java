@@ -21,7 +21,7 @@ class WaitingQueueTest {
         assertEquals(INACTIVE, waitingQueue.getQueueStatus());
         assertEquals(uuid, waitingQueue.getUuid());
         assertEquals(concertId, waitingQueue.getConcertId());
-        assertEquals(maxQueueNo+1, waitingQueue.getQueueNo());
+        assertEquals(maxQueueNo + 1, waitingQueue.getQueueNo());
         assertNotNull(waitingQueue.getCreatedAt());
         assertNull(waitingQueue.getActivatedAt());
         assertNull(waitingQueue.getExpiredAt());
@@ -46,12 +46,28 @@ class WaitingQueueTest {
         String uuid3 = "user-125";
         Long concertId2 = 2L;
 
-        WaitingQueue waitingQueue3 =  WaitingQueue.createWithQueueNo(uuid3, concertId2, maxQueueNo);
+        WaitingQueue waitingQueue3 = WaitingQueue.createWithQueueNo(uuid3, concertId2, maxQueueNo);
         assertEquals(maxQueueNo + 1, waitingQueue3.getQueueNo());
 
-        assertEquals(11,waitingQueue1.getQueueNo());
-        assertEquals(12,waitingQueue2.getQueueNo());
-        assertEquals(11,waitingQueue3.getQueueNo());    //waitingQueue1 과 다른 대기열
+        assertEquals(11, waitingQueue1.getQueueNo());
+        assertEquals(12, waitingQueue2.getQueueNo());
+        assertEquals(11, waitingQueue3.getQueueNo());    //waitingQueue1 과 다른 대기열
     }
+
+    @Test
+    @DisplayName("내 대기 번호에서 마지막 활성화된 대기열 번호를 뺀 대기열 정보를 반환한다.")
+    void shouldReturnWaitingQueueInfoWithRemainingQueueNo() {
+        String uuid = "user-123";
+        Long concertId = 1L;
+        Long maxQueueNo = 10L;
+        Long lastActiveQueue = 3L;
+        WaitingQueue myWaitingQueue = WaitingQueue.createWithQueueNo(uuid, concertId, maxQueueNo);
+
+        WaitingQueueInfo queueInfo = myWaitingQueue.getWaitingQueueInfo(lastActiveQueue);
+
+        assertEquals(INACTIVE, myWaitingQueue.getQueueStatus());
+        assertEquals(8L, queueInfo.renamingQueueNo());
+    }
+    
 
 }
