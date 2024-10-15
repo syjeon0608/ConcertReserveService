@@ -1,10 +1,12 @@
 package com.hhpl.concertreserve.infra.waitingqueue;
 
 import com.hhpl.concertreserve.domain.waitingqueue.WaitingQueue;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface WaitingQueueJpaRepository extends JpaRepository<WaitingQueue, Long> {
@@ -15,4 +17,13 @@ public interface WaitingQueueJpaRepository extends JpaRepository<WaitingQueue, L
     Optional<Long> findMaxActivatedQueueNoByConcertId(@Param("concertId") Long concertId);
 
     Optional<WaitingQueue> findByUuidAndConcertId(String uuid, Long concertId);
+
+    @Query("SELECT DISTINCT w.concertId FROM WaitingQueue w WHERE w.queueStatus = 'INACTIVE'")
+    List<Long> findAllConcertIdsWithInactiveQueues();
+
+    @Query("SELECT w FROM WaitingQueue w WHERE w.queueStatus = 'INACTIVE' AND w.concertId = :concertId ORDER BY w.queueNo ASC")
+    List<WaitingQueue> findInactiveQueuesForActivationByConcertId(@Param("concertId") Long concertId, Pageable pageable);
+
+    @Query("SELECT w FROM WaitingQueue w WHERE w.queueStatus = 'ACTIVE' AND w.expiredAt < CURRENT_TIMESTAMP")
+    List<WaitingQueue> findActiveQueuesForExpiration();
 }
