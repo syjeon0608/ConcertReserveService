@@ -1,11 +1,14 @@
 package com.hhpl.concertreserve.domain.waitingqueue;
 
+import com.hhpl.concertreserve.domain.error.BusinessException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_IS_EXPIRED;
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_IS_INACTIVE;
 import static com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueStatus.INACTIVE;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -103,5 +106,35 @@ class WaitingQueueTest {
         assertEquals(WaitingQueueStatus.EXPIRED, waitingQueue.getQueueStatus());
     }
 
+    @Test
+    @DisplayName("토큰검증 - 아직 활성화 안된 대기열")
+    void validate_shouldThrowExceptionWhenQueueIsInactive() {
+        WaitingQueue waitingQueue =  WaitingQueue.createWithQueueNo("uuid", 1L, 10L);
+
+        BusinessException exception = assertThrows(BusinessException.class, waitingQueue::validate);
+        assertEquals(QUEUE_IS_INACTIVE, exception.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("토큰검증 - 만료된 대기열")
+    void validate_shouldThrowExceptionWhenQueueIsExpired() {
+        WaitingQueue waitingQueue =  WaitingQueue.createWithQueueNo("uuid", 1L, 10L);
+        waitingQueue.activate();
+        ReflectionTestUtils.setField(waitingQueue, "expiredAt", LocalDateTime.now().minusMinutes(1));
+
+        waitingQueue.updateStatusIfExpired();
+
+        BusinessException exception = assertThrows(BusinessException.class, waitingQueue::validate);
+        assertEquals(QUEUE_IS_EXPIRED, exception.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("토큰검증 통과 - 만료되지않은 활성토큰")
+    void validate_shouldPassWhenQueueIsActiveAndNotExpired() {
+        WaitingQueue waitingQueue =  WaitingQueue.createWithQueueNo("uuid", 1L, 10L);
+        waitingQueue.activate();
+
+        assertDoesNotThrow(waitingQueue::validate);
+    }
 
 }
