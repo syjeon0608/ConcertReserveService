@@ -1,7 +1,10 @@
 package com.hhpl.concertreserve.domain.waitingqueue;
 
+import com.hhpl.concertreserve.domain.error.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -28,9 +31,23 @@ public class WaitingQueueService {
     }
 
     public WaitingQueueInfo getMyWaitingQueueInfo(String uuid, Long concertId) {
-        WaitingQueue myWaitingQueue = waitingQueueRepository.getMyWaitingQueue(uuid,concertId);
+        WaitingQueue myWaitingQueue = waitingQueueRepository.getMyWaitingQueue(uuid,concertId)
+                .orElseThrow(() -> new BusinessException(QUEUE_NOT_FOUND));
 
         Long lastActivatedQueueNo = getLastActivatedQueueNo(concertId);
         return myWaitingQueue.getWaitingQueueInfo(lastActivatedQueueNo);
+    }
+
+    public void validateQueueStatus(String uuid, Long concertId) {
+        WaitingQueue waitingQueue = waitingQueueRepository.getMyWaitingQueue(uuid,concertId)
+                .orElseThrow(() -> new BusinessException(QUEUE_NOT_FOUND));
+
+        if (waitingQueue.getQueueStatus() != WaitingQueueStatus.ACTIVE) {
+            throw new BusinessException(QUEUE_IS_INACTIVE);
+        }
+
+        if (waitingQueue.isExpired()) {
+            throw new BusinessException(QUEUE_IS_EXPIRED);
+        }
     }
 }
