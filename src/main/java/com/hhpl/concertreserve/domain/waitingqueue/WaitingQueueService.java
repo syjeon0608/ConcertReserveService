@@ -23,4 +23,14 @@ public class WaitingQueueService {
     }
 
 
+    public Long getLastActivatedQueueNo(Long concertId) {
+        return waitingQueueRepository. getMaxActivatedQueueNoByConcertId(concertId).orElse(0L);
+    }
+
+    public WaitingQueueInfo getMyWaitingQueueInfo(String uuid, Long concertId) {
+        WaitingQueue myWaitingQueue = waitingQueueRepository.getMyWaitingQueue(uuid,concertId);
+
+        Long lastActivatedQueueNo = getLastActivatedQueueNo(concertId);
+        return myWaitingQueue.getWaitingQueueInfo(lastActivatedQueueNo);
+    }
 }
