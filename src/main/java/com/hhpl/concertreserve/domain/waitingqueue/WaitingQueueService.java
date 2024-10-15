@@ -4,6 +4,8 @@ import com.hhpl.concertreserve.domain.error.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.*;
 
 @Service
@@ -49,5 +51,14 @@ public class WaitingQueueService {
         if (waitingQueue.isExpired()) {
             throw new BusinessException(QUEUE_IS_EXPIRED);
         }
+    }
+
+    public void expireTokens() {
+        List<WaitingQueue> expiredQueues = waitingQueueRepository.findActiveQueuesForExpiration();
+
+        expiredQueues.forEach(queue -> {
+            queue.updateStatusIfExpired();
+            waitingQueueRepository.save(queue);
+        });
     }
 }

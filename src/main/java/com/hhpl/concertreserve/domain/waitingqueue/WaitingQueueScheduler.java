@@ -29,15 +29,5 @@ public class WaitingQueueScheduler {
             waitingQueueRepository.save(queue);
         });
     }
-
-    @Scheduled(fixedRate = 60000)
-    public void checkAndExpireTokens() {
-
-        List<WaitingQueue> activeQueuesForExpiration = waitingQueueRepository.findActiveQueuesForExpiration();
-
-        activeQueuesForExpiration.forEach(queue -> {
-            queue.updateStatusIfExpired();
-            waitingQueueRepository.save(queue);
-        });
-    }
+    
 }
