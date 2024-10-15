@@ -4,8 +4,12 @@ import com.hhpl.concertreserve.domain.error.BusinessException;
 import com.hhpl.concertreserve.domain.waitingqueue.WaitingQueue;
 import com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_NOT_FOUND;
@@ -35,4 +39,21 @@ public class WaitingQueueImpl implements WaitingQueueRepository {
         return waitingQueueJpaRepository.findByUuidAndConcertId(uuid, concertId)
                 .orElseThrow(() -> new BusinessException(QUEUE_NOT_FOUND));
     }
+
+    @Override
+    public List<Long> findAllConcertIdsWithInactiveQueues() {
+        return waitingQueueJpaRepository.findAllConcertIdsWithInactiveQueues();
+    }
+
+    @Override
+    public List<WaitingQueue> findInactiveQueuesForActivation(Long concertId, int activationLimit) {
+        Pageable pageable = PageRequest.of(0, activationLimit);
+        return waitingQueueJpaRepository.findInactiveQueuesForActivationByConcertId(concertId, pageable);
+    }
+
+    @Override
+    public List<WaitingQueue> findActiveQueuesForExpiration() {
+        return waitingQueueJpaRepository.findActiveQueuesForExpiration();
+    }
+
 }

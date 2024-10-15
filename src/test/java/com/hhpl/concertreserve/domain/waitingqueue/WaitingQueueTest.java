@@ -2,6 +2,9 @@ package com.hhpl.concertreserve.domain.waitingqueue;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.time.LocalDateTime;
 
 import static com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueStatus.INACTIVE;
 import static org.junit.jupiter.api.Assertions.*;
@@ -68,6 +71,37 @@ class WaitingQueueTest {
         assertEquals(INACTIVE, myWaitingQueue.getQueueStatus());
         assertEquals(8L, queueInfo.renamingQueueNo());
     }
-    
+
+    @Test
+    @DisplayName("대기열을 활성화하면 상태가 ACTIVE로 변경되고 활성화 시간과 만료 시간이 설정된다.")
+    void shouldActivateWaitingQueue() {
+        String uuid = "user-123";
+        Long concertId = 1L;
+        Long maxQueueNo = 10L;
+        WaitingQueue waitingQueue =  WaitingQueue.createWithQueueNo(uuid, concertId, maxQueueNo);
+
+        waitingQueue.activate();
+
+        assertEquals(WaitingQueueStatus.ACTIVE, waitingQueue.getQueueStatus());
+        assertNotNull(waitingQueue.getActivatedAt());
+        assertEquals(waitingQueue.getActivatedAt().plusMinutes(5), waitingQueue.getExpiredAt());
+    }
+
+    @Test
+    @DisplayName("대기열이 만료되면 상태가 EXPIRED로 변경된다.")
+    void shouldExpiredWaitingQueue() {
+        String uuid = "user-123";
+        Long concertId = 1L;
+        Long maxQueueNo = 10L;
+        WaitingQueue waitingQueue =  WaitingQueue.createWithQueueNo(uuid, concertId, maxQueueNo);
+        waitingQueue.activate();
+
+        ReflectionTestUtils.setField(waitingQueue, "expiredAt", LocalDateTime.now().minusMinutes(1));
+
+        waitingQueue.updateStatusIfExpired();
+
+        assertEquals(WaitingQueueStatus.EXPIRED, waitingQueue.getQueueStatus());
+    }
+
 
 }

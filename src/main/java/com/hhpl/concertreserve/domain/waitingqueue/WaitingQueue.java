@@ -29,8 +29,6 @@ public class WaitingQueue {
     @Column(nullable = false)
     private Long queueNo;
 
-    private Long remainingQueueNo;
-
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
@@ -58,12 +56,29 @@ public class WaitingQueue {
 
 
     public WaitingQueueInfo getWaitingQueueInfo(Long lastActivatedQueueNo) {
-        this.remainingQueueNo = calculateCurrentQueueNo(lastActivatedQueueNo);
+        Long remainingQueueNo = calculateCurrentQueueNo(lastActivatedQueueNo);
         return new WaitingQueueInfo(
                 this.concertId,
                 this.queueStatus.name(),
-                this.remainingQueueNo
+                remainingQueueNo
         );
+    }
+
+    public void activate() {
+        this.queueStatus = WaitingQueueStatus.ACTIVE;
+        this.activatedAt = LocalDateTime.now();
+        this.expiredAt = this.activatedAt.plusMinutes(5);
+    }
+
+
+    public boolean isExpired() {
+        return expiredAt != null && LocalDateTime.now().isAfter(expiredAt);
+    }
+
+    public void updateStatusIfExpired() {
+        if (isExpired()) {
+            this.queueStatus = WaitingQueueStatus.EXPIRED;
+        }
     }
 
 }
