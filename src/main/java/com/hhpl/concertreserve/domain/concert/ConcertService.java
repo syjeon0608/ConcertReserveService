@@ -26,4 +26,15 @@ public class ConcertService {
         return concertRepository.getAvailableSeats(scheduleId, SeatStatus.AVAILABLE);
     }
 
+    public Seat updateSeatStatus(Long seatId) {
+        Seat selectedSeat = concertRepository.getAvailableSelectedSeat(seatId);
+        selectedSeat.makeTempReservationSeat();
+        return concertRepository.updateSeatStatus(selectedSeat);
+    }
+
+    public Reservation createReservation(String uuid, Long seatId) {
+        Reservation reservation = new Reservation(uuid, seatId);
+        return concertRepository.saveReservation(reservation);
+    }
+
 }

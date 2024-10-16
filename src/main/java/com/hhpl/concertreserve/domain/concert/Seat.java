@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+import static com.hhpl.concertreserve.domain.concert.SeatStatus.UNAVAILABLE;
+
 @Entity
 @Getter
 @AllArgsConstructor
@@ -16,9 +18,6 @@ public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private int seatNo;
 
     @ManyToOne
     @JoinColumn(name = "schedule_id", nullable = false)
@@ -32,8 +31,11 @@ public class Seat {
     private SeatStatus status;
 
     @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
-    @Column(nullable = false)
     private LocalDateTime expiredAt;
+
+    public void makeTempReservationSeat() {
+        this.status = UNAVAILABLE;
+        this.expiredAt = LocalDateTime.now().plusMinutes(5);
+    }
+
 }

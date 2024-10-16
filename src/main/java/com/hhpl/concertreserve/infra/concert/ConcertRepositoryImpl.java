@@ -14,6 +14,7 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     private final ConcertJpaRepository concertJpaRepository;
     private final ScheduleJpaRepository scheduleJpaRepository;
     private final SeatJpaRepository seatJpaRepository;
+    private final ReservationJpaRepository reservationJpaRepository;
 
     @Override
     public List<Concert> getAvailableConcerts(LocalDateTime now) {
@@ -29,4 +30,20 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     public List<Seat> getAvailableSeats(Long scheduleId, SeatStatus seatStatus) {
         return seatJpaRepository.findByScheduleIdAndStatus(scheduleId,seatStatus);
     }
+
+    @Override
+    public Seat getAvailableSelectedSeat(Long seatId) {
+        return seatJpaRepository.getAvailableSelectedSeat(seatId);
+    }
+
+    @Override
+    public Seat updateSeatStatus(Seat seat) {
+        return seatJpaRepository.save(seat);
+    }
+
+    @Override
+    public Reservation saveReservation(Reservation reservation) {
+        return reservationJpaRepository.save(reservation);
+    }
+
 }

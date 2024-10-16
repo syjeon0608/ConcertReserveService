@@ -9,4 +9,12 @@ public interface ConcertRepository {
     List<Schedule> getSchedulesWithAvailableSeats(Long concertId, int availableSeats);
 
     List<Seat> getAvailableSeats(Long scheduleId, SeatStatus seatStatus);
+
+    Seat getAvailableSelectedSeat(Long seatId);
+
+    Seat updateSeatStatus(Seat seat);
+
+    Reservation saveReservation(Reservation reservation);
+
+
 }
