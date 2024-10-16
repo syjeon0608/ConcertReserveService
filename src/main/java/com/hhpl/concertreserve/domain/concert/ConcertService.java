@@ -32,8 +32,8 @@ public class ConcertService {
         return concertRepository.updateSeatStatus(selectedSeat);
     }
 
-    public Reservation createReservation(String uuid, Long seatId) {
-        Reservation reservation = new Reservation(uuid, seatId);
+    public Reservation createReservation(String uuid, Seat seat) {
+        Reservation reservation = new Reservation(uuid, seat);
         return concertRepository.saveReservation(reservation);
     }
 
