@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.domain.payment;
 
 public interface WalletRepository {
-    Wallet getWallet(Long userId);
+    Wallet getWallet(String uuid);
     Wallet updateWallet(Wallet wallet);
 }

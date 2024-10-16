@@ -15,8 +15,8 @@ public class WalletRepositoryImpl implements WalletRepository {
     private final WalletJpaRepository walletJpaRepository;
 
     @Override
-    public Wallet getWallet(Long userId) {
-        return walletJpaRepository.findById(userId)
+    public Wallet getWallet(String uuid) {
+        return walletJpaRepository.findByUuid(uuid)
                 .orElseThrow(()-> new BusinessException(WALLET_NOT_FOUND_ERROR));
     }
 
