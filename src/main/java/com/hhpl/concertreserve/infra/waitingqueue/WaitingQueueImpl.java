@@ -55,4 +55,10 @@ public class WaitingQueueImpl implements WaitingQueueRepository {
         return waitingQueueJpaRepository.findActiveQueuesForExpiration();
     }
 
+    @Override
+    public WaitingQueue getMyActiveQueue(String uuid) {
+        return waitingQueueJpaRepository.findActiveWaitingQueueByUuid(uuid)
+                .orElseThrow(() -> new BusinessException(QUEUE_NOT_FOUND));
+    }
+
 }
