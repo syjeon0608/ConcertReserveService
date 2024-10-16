@@ -20,8 +20,9 @@ public class Reservation {
     @Column(nullable = false)
     private String uuid;
 
-    @Column(nullable = false)
-    private Long seatId;
+    @OneToOne
+    @JoinColumn(name = "seat_id", nullable = false)
+    private Seat seat;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -32,13 +33,14 @@ public class Reservation {
 
     private LocalDateTime updatedAt;
 
+    private int totalAmount;
 
-    public Reservation(String uuid, Long seatId) {
+    public Reservation(String uuid, Seat seat) {
         this.uuid = uuid;
-        this.seatId = seatId;
+        this.seat = seat;
         this.reservationStatus = TEMPORARY;
         this.createdAt = LocalDateTime.now();
+        this.totalAmount = seat.getPrice();
     }
-
 
 }
