@@ -5,6 +5,8 @@ import com.hhpl.concertreserve.domain.error.BusinessExceptionCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.INVALID_CHARGE_AMOUNT;
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.POINT_NOT_ENOUGH;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WalletTest {
@@ -31,7 +33,7 @@ class WalletTest {
             wallet.charge(amountToCharge);
         });
 
-        assertEquals(BusinessExceptionCode.INVALID_CHARGE_AMOUNT, exception.getErrorCode());
+        assertEquals(INVALID_CHARGE_AMOUNT, exception.getErrorCode());
     }
 
     @Test
@@ -44,6 +46,32 @@ class WalletTest {
             wallet.charge(amountToCharge);
         });
 
-        assertEquals(BusinessExceptionCode.INVALID_CHARGE_AMOUNT, exception.getErrorCode());
+        assertEquals(INVALID_CHARGE_AMOUNT, exception.getErrorCode());
     }
+
+
+    @Test
+    @DisplayName("잔액이 부족하면 예외를 발생시킨다.")
+    void shouldThrowExceptionWhenBalanceIsInsufficient() {
+        Wallet wallet = new Wallet(1L, 50000);
+        int amountToUse = 60000;
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> {
+            wallet.checkCanUse(amountToUse);
+        });
+
+        assertEquals(POINT_NOT_ENOUGH, exception.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("결제 후 잔액에서 결제 금액만큼 차감한다.")
+    void shouldDeductAmountFromBalanceAfterPayment() {
+        Wallet wallet = new Wallet(1L, 70000);
+        int amountToUse = 20000;
+
+        wallet.useToPayment(amountToUse);
+
+        assertEquals(50000,wallet.getAmount());
+    }
+
 }

@@ -15,7 +15,8 @@ public enum BusinessExceptionCode implements ErrorCode {
     CONCERT_ID_VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "콘서트 ID가 검증에 실패하였습니다."),
     QUEUE_NOT_FOUND(HttpStatus.NOT_FOUND, "대기열에 등록되지 않았습니다."),
     QUEUE_IS_INACTIVE(HttpStatus.BAD_REQUEST,"대기열이 활성화되지 않았습니다."),
-    QUEUE_IS_EXPIRED(HttpStatus.BAD_REQUEST,"대기열이 만료되었습니다.");
+    QUEUE_IS_EXPIRED(HttpStatus.BAD_REQUEST,"대기열이 만료되었습니다."),
+    POINT_NOT_ENOUGH(HttpStatus.BAD_REQUEST,"충전금액이 부족합니다.");
 
     private final HttpStatus status;
     private final String message;
