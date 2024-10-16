@@ -16,7 +16,9 @@ public enum BusinessExceptionCode implements ErrorCode {
     QUEUE_NOT_FOUND(HttpStatus.NOT_FOUND, "대기열에 등록되지 않았습니다."),
     QUEUE_IS_INACTIVE(HttpStatus.BAD_REQUEST,"대기열이 활성화되지 않았습니다."),
     QUEUE_IS_EXPIRED(HttpStatus.BAD_REQUEST,"대기열이 만료되었습니다."),
-    POINT_NOT_ENOUGH(HttpStatus.BAD_REQUEST,"충전금액이 부족합니다.");
+    POINT_NOT_ENOUGH(HttpStatus.BAD_REQUEST,"충전금액이 부족합니다."),
+    SEAT_IS_EXPIRED(HttpStatus.BAD_REQUEST,"임시좌석이 만료되었습니다."),
+    RESERVATION_NOT_FOUND(HttpStatus.NOT_FOUND,"확인된 예약이 없습니다.");
 
     private final HttpStatus status;
     private final String message;

@@ -16,5 +16,9 @@ public interface ConcertRepository {
 
     Reservation saveReservation(Reservation reservation);
 
+    Reservation getMyReservation(Long reservationId);
 
+    List<Seat> findExpiredSeats(LocalDateTime now);
+
+    Reservation findBySeatId(Long id);
 }

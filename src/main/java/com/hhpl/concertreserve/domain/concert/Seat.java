@@ -1,5 +1,6 @@
 package com.hhpl.concertreserve.domain.concert;
 
+import com.hhpl.concertreserve.domain.error.BusinessException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+import static com.hhpl.concertreserve.domain.concert.SeatStatus.AVAILABLE;
 import static com.hhpl.concertreserve.domain.concert.SeatStatus.UNAVAILABLE;
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.SEAT_IS_EXPIRED;
 
 @Entity
 @Getter
@@ -36,6 +39,20 @@ public class Seat {
     public void makeTempReservationSeat() {
         this.status = UNAVAILABLE;
         this.expiredAt = LocalDateTime.now().plusMinutes(5);
+    }
+
+    public void makeAvailableSeatByExpired(){
+        this.status = AVAILABLE;
+    }
+
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(this.expiredAt);
+    }
+
+    public void checkIfExpired() {
+        if (isExpired()) {
+            throw new BusinessException(SEAT_IS_EXPIRED);
+        }
     }
 
 }

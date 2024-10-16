@@ -1,5 +1,6 @@
 package com.hhpl.concertreserve.domain.concert;
 
+import com.hhpl.concertreserve.domain.error.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,7 +9,9 @@ import java.time.LocalDateTime;
 
 import static com.hhpl.concertreserve.domain.concert.SeatStatus.AVAILABLE;
 import static com.hhpl.concertreserve.domain.concert.SeatStatus.UNAVAILABLE;
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.SEAT_IS_EXPIRED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
@@ -25,7 +28,7 @@ class SeatTest {
 
     @Test
     @DisplayName("예약 시 좌석을 AVAILABLE에서 UNAVILABLE로 변경하고, 좌석 만료시간을 5분 뒤로 설정한다.")
-    void shouldChangeSeatStatusToUnavailableWhenReserved(){
+    void shouldChangeSeatStatusToUnavailableWhenReserved() {
         LocalDateTime reservedTime = LocalDateTime.of(2024, 10, 15, 12, 0);
 
         mockStatic(LocalDateTime.class);
@@ -34,8 +37,29 @@ class SeatTest {
 
         seat.makeTempReservationSeat();
 
-        assertEquals(UNAVAILABLE,seat.getStatus());
+        assertEquals(UNAVAILABLE, seat.getStatus());
         assertEquals(reservedTime.plusMinutes(5), seat.getExpiredAt());
     }
 
+    @Test
+    @DisplayName("좌석이 만료되면 좌석상태는 UNAVAILABLE에서 AVAILABLE로 변경된다")
+    void shouldChangeSeatStatusToAvailableWhenExpired() {
+        LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(10);
+        Seat seat = new Seat(1L, schedule, 80000, SeatStatus.UNAVAILABLE, expiredTime);
+
+        seat.makeAvailableSeatByExpired();
+
+        assertEquals(AVAILABLE, seat.getStatus());
+    }
+
+    @Test
+    @DisplayName("좌석이 만료되면 예외를 던진다")
+    void shouldThrowExceptionWhenSeatIsExpired() {
+        LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(10);
+        Seat seat = new Seat(1L, schedule, 80000, UNAVAILABLE, expiredTime);
+
+        BusinessException exception = assertThrows(BusinessException.class, seat::checkIfExpired);
+
+        assertEquals(SEAT_IS_EXPIRED, exception.getErrorCode());
+    }
 }
