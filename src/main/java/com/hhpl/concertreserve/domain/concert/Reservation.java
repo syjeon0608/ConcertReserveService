@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-import static com.hhpl.concertreserve.domain.concert.ReservationStatus.TEMPORARY;
+import static com.hhpl.concertreserve.domain.concert.ReservationStatus.*;
 
 @Entity
 @Getter
@@ -43,4 +43,13 @@ public class Reservation {
         this.totalAmount = seat.getPrice();
     }
 
+    public void makeStatusCancel() {
+        this.reservationStatus = CANCEL;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void makeStatusComplete(){
+        this.reservationStatus = COMPLETE;
+        this.updatedAt = LocalDateTime.now();
+    }
 }
