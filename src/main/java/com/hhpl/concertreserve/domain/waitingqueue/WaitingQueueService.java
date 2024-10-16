@@ -41,12 +41,18 @@ public class WaitingQueueService {
         waitingQueue.validate();
     }
 
-    public void expireTokens() {
+    public void expireWaitingQueue() {
         List<WaitingQueue> expiredQueues = waitingQueueRepository.findActiveQueuesForExpiration();
 
         expiredQueues.forEach(queue -> {
             queue.updateStatusIfExpired();
             waitingQueueRepository.save(queue);
         });
+    }
+
+    public void makeWaitingQueueExpiredWhenPaymentComplete(String uuid) {
+        WaitingQueue waitingQueue = waitingQueueRepository.getMyActiveQueue(uuid);
+        waitingQueue.makeExpiredWhenCompletePayment();
+        waitingQueueRepository.save(waitingQueue);
     }
 }

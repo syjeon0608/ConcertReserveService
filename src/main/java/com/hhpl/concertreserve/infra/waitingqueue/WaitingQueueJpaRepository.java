@@ -26,4 +26,7 @@ public interface WaitingQueueJpaRepository extends JpaRepository<WaitingQueue, L
 
     @Query("SELECT w FROM WaitingQueue w WHERE w.queueStatus = 'ACTIVE' AND w.expiredAt < CURRENT_TIMESTAMP")
     List<WaitingQueue> findActiveQueuesForExpiration();
+
+    @Query("SELECT w FROM WaitingQueue w WHERE w.uuid = :uuid AND w.queueStatus = 'ACTIVE'")
+    Optional<WaitingQueue> findActiveWaitingQueueByUuid(@Param("uuid") String uuid);
 }

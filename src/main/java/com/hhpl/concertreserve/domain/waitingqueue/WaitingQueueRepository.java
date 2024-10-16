@@ -17,5 +17,5 @@ public interface WaitingQueueRepository {
 
     List<WaitingQueue> findActiveQueuesForExpiration();
 
-
+    WaitingQueue getMyActiveQueue(String uuid);
 }

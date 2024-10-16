@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_IS_EXPIRED;
 import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_IS_INACTIVE;
+import static com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueStatus.EXPIRED;
 import static com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueStatus.INACTIVE;
 
 @Entity
@@ -92,6 +93,11 @@ public class WaitingQueue {
         if (isExpired()) {
             throw new BusinessException(QUEUE_IS_EXPIRED);
         }
+    }
+
+    public void makeExpiredWhenCompletePayment(){
+        this.queueStatus = EXPIRED;
+        this.expiredAt = LocalDateTime.now();
     }
 
 

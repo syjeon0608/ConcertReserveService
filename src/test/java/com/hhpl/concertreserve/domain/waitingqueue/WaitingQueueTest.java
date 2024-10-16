@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_IS_EXPIRED;
 import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_IS_INACTIVE;
+import static com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueStatus.EXPIRED;
 import static com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueStatus.INACTIVE;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -137,4 +138,17 @@ class WaitingQueueTest {
         assertDoesNotThrow(waitingQueue::validate);
     }
 
+    @Test
+    @DisplayName("결제 완료 시 활성 대기열을 만료 상태로 업데이트한다.")
+    void shouldUpdateActiveQueueToExpiredAfterPayment() {
+        String uuid = "user-123";
+        Long concertId = 1L;
+        Long maxQueueNo = 10L;
+        WaitingQueue waitingQueue = WaitingQueue.createWithQueueNo(uuid, concertId, maxQueueNo);
+        waitingQueue.activate();
+
+        waitingQueue.makeExpiredWhenCompletePayment();
+
+        assertEquals(EXPIRED, waitingQueue.getQueueStatus());
+    }
 }
