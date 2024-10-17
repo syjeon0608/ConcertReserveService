@@ -47,7 +47,7 @@ class SeatTest {
         LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(10);
         Seat seat = new Seat(1L, schedule, 80000, SeatStatus.UNAVAILABLE, expiredTime);
 
-        seat.makeAvailableSeatByExpired();
+        seat.makeAvailableAfterExpiration();
 
         assertEquals(AVAILABLE, seat.getStatus());
     }

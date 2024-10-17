@@ -32,7 +32,7 @@ class ReservationTest {
         Seat seat = new Seat(1L, schedule, 80000, SeatStatus.AVAILABLE, LocalDateTime.now());
         Reservation reservation = new Reservation("uuid", seat);
 
-        reservation.makeStatusComplete();
+        reservation.completeReservation();
 
         assertEquals(COMPLETE, reservation.getReservationStatus());
     }
@@ -45,7 +45,7 @@ class ReservationTest {
         Seat seat = new Seat(1L, schedule, 80000, SeatStatus.AVAILABLE, LocalDateTime.now());
         Reservation reservation = new Reservation("uuid", seat);
 
-        reservation.makeStatusCancel();
+        reservation.cancelReservation();
 
         assertEquals(CANCEL, reservation.getReservationStatus());
 
