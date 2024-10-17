@@ -2,12 +2,16 @@ package com.hhpl.concertreserve.domain.payment;
 
 import com.hhpl.concertreserve.domain.concert.Reservation;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Payment {
 
     @Id
@@ -18,7 +22,7 @@ public class Payment {
     private Long userId;
 
     @OneToOne
-    @JoinColumn(name = "reservation_id", nullable = false)
+    @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
     @Column(nullable = false)
@@ -27,7 +31,8 @@ public class Payment {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    public Payment(Reservation reservation, int amount) {
+    public Payment(Long userId, Reservation reservation, int amount) {
+        this.userId = userId;
         this.reservation = reservation;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();

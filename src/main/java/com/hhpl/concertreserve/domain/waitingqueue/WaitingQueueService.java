@@ -23,10 +23,10 @@ public class WaitingQueueService {
     }
 
     @Transactional
-    public void enterWaitingQueue(String uuid, Long concertId) {
+    public WaitingQueue enterWaitingQueue(String uuid, Long concertId) {
         Long maxQueueNo = getMaxWaitingQueueNoByConcert(concertId);
         WaitingQueue waitingQueue = WaitingQueue.createWithQueueNo(uuid, concertId, maxQueueNo);
-        waitingQueueRepository.save(waitingQueue);
+       return waitingQueueRepository.save(waitingQueue);
     }
 
     public Long getLastActivatedQueueNo(Long concertId) {
