@@ -1,6 +1,7 @@
 package com.hhpl.concertreserve.domain.payment;
 
 import com.hhpl.concertreserve.domain.error.BusinessException;
+import com.hhpl.concertreserve.domain.payment.model.Point;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

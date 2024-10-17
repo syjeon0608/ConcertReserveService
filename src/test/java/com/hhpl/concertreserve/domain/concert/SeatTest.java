@@ -1,5 +1,9 @@
 package com.hhpl.concertreserve.domain.concert;
 
+import com.hhpl.concertreserve.domain.concert.model.Concert;
+import com.hhpl.concertreserve.domain.concert.model.Schedule;
+import com.hhpl.concertreserve.domain.concert.model.Seat;
+import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
 import com.hhpl.concertreserve.domain.error.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -7,8 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static com.hhpl.concertreserve.domain.concert.SeatStatus.AVAILABLE;
-import static com.hhpl.concertreserve.domain.concert.SeatStatus.UNAVAILABLE;
+import static com.hhpl.concertreserve.domain.concert.type.SeatStatus.AVAILABLE;
+import static com.hhpl.concertreserve.domain.concert.type.SeatStatus.UNAVAILABLE;
 import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.SEAT_IS_EXPIRED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
