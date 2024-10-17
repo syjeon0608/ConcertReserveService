@@ -1,5 +1,6 @@
-package com.hhpl.concertreserve.domain.concert;
+package com.hhpl.concertreserve.domain.concert.model;
 
+import com.hhpl.concertreserve.domain.concert.model.Concert;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,26 +10,24 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Concert {
+@AllArgsConstructor
+public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String title;
+    @ManyToOne
+    @JoinColumn(name = "concert_id", nullable = false)
+    private Concert concert;
 
     @Column(nullable = false)
-    private String description;
+    private LocalDateTime concertDate;
 
     @Column(nullable = false)
-    private LocalDateTime openDate;
+    private int availableSeats;
 
     @Column(nullable = false)
-    private LocalDateTime startDate;
-
-    @Column(nullable = false)
-    private LocalDateTime endDate;
+    private int totalSeats;
 }

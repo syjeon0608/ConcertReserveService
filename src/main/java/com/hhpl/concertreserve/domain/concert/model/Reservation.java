@@ -1,12 +1,13 @@
-package com.hhpl.concertreserve.domain.concert;
+package com.hhpl.concertreserve.domain.concert.model;
 
+import com.hhpl.concertreserve.domain.concert.type.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-import static com.hhpl.concertreserve.domain.concert.ReservationStatus.*;
+import static com.hhpl.concertreserve.domain.concert.type.ReservationStatus.*;
 
 @Entity
 @Getter

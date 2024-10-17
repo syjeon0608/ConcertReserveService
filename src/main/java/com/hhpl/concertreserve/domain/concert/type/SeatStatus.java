@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.domain.concert;
+package com.hhpl.concertreserve.domain.concert.type;
 
 public enum SeatStatus {
     AVAILABLE, UNAVAILABLE

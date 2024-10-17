@@ -1,6 +1,7 @@
-package com.hhpl.concertreserve.domain.waitingqueue;
+package com.hhpl.concertreserve.domain.waitingqueue.model;
 
 import com.hhpl.concertreserve.domain.error.BusinessException;
+import com.hhpl.concertreserve.domain.waitingqueue.type.WaitingQueueStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,8 @@ import java.time.LocalDateTime;
 
 import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_IS_EXPIRED;
 import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_IS_INACTIVE;
-import static com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueStatus.EXPIRED;
-import static com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueStatus.INACTIVE;
+import static com.hhpl.concertreserve.domain.waitingqueue.type.WaitingQueueStatus.EXPIRED;
+import static com.hhpl.concertreserve.domain.waitingqueue.type.WaitingQueueStatus.INACTIVE;
 
 @Entity
 @Getter

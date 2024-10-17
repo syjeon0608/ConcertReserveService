@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.infra.payment;
 
-import com.hhpl.concertreserve.domain.payment.Point;
+import com.hhpl.concertreserve.domain.payment.model.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

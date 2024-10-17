@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.infra.concert;
 
-import com.hhpl.concertreserve.domain.concert.Schedule;
+import com.hhpl.concertreserve.domain.concert.model.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,5 +1,7 @@
 package com.hhpl.concertreserve.domain.waitingqueue;
 
+import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
+
 import java.util.List;
 import java.util.Optional;
 

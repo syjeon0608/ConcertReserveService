@@ -1,5 +1,7 @@
 package com.hhpl.concertreserve.domain.concert;
 
+import com.hhpl.concertreserve.domain.concert.model.*;
+import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

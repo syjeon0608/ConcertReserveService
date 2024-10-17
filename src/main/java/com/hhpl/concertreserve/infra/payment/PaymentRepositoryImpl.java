@@ -1,9 +1,9 @@
 package com.hhpl.concertreserve.infra.payment;
 
 import com.hhpl.concertreserve.domain.error.BusinessException;
-import com.hhpl.concertreserve.domain.payment.Payment;
+import com.hhpl.concertreserve.domain.payment.model.Payment;
 import com.hhpl.concertreserve.domain.payment.PaymentRepository;
-import com.hhpl.concertreserve.domain.payment.Point;
+import com.hhpl.concertreserve.domain.payment.model.Point;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

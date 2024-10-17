@@ -1,7 +1,7 @@
 package com.hhpl.concertreserve.infra.waitingqueue;
 
 import com.hhpl.concertreserve.domain.error.BusinessException;
-import com.hhpl.concertreserve.domain.waitingqueue.WaitingQueue;
+import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
 import com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

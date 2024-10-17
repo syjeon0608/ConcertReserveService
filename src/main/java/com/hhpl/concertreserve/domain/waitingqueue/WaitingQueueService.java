@@ -1,5 +1,7 @@
 package com.hhpl.concertreserve.domain.waitingqueue;
 
+import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
+import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueueInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

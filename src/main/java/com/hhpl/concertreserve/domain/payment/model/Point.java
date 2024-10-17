@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.domain.payment;
+package com.hhpl.concertreserve.domain.payment.model;
 
 import com.hhpl.concertreserve.domain.error.BusinessException;
 import jakarta.persistence.*;
