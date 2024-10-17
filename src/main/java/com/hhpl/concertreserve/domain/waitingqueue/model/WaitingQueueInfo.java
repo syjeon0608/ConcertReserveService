@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.domain.waitingqueue;
+package com.hhpl.concertreserve.domain.waitingqueue.model;
 
 public record WaitingQueueInfo(
         Long concertId,

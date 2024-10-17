@@ -1,5 +1,8 @@
 package com.hhpl.concertreserve.domain.concert;
 
+import com.hhpl.concertreserve.domain.concert.model.*;
+import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
+
 import java.time.LocalDateTime;
 import java.util.List;
 

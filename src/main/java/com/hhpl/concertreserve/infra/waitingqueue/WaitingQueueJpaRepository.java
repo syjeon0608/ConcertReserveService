@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.infra.waitingqueue;
 
-import com.hhpl.concertreserve.domain.waitingqueue.WaitingQueue;
+import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

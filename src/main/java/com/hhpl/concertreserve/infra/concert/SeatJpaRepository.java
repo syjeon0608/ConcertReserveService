@@ -1,7 +1,7 @@
 package com.hhpl.concertreserve.infra.concert;
 
-import com.hhpl.concertreserve.domain.concert.Seat;
-import com.hhpl.concertreserve.domain.concert.SeatStatus;
+import com.hhpl.concertreserve.domain.concert.model.Seat;
+import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

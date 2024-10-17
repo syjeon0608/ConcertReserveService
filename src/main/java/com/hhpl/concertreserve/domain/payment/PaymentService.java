@@ -1,7 +1,9 @@
 package com.hhpl.concertreserve.domain.payment;
 
 
-import com.hhpl.concertreserve.domain.concert.Reservation;
+import com.hhpl.concertreserve.domain.concert.model.Reservation;
+import com.hhpl.concertreserve.domain.payment.model.Payment;
+import com.hhpl.concertreserve.domain.payment.model.Point;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

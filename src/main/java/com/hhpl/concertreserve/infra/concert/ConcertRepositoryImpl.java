@@ -1,6 +1,8 @@
 package com.hhpl.concertreserve.infra.concert;
 
 import com.hhpl.concertreserve.domain.concert.*;
+import com.hhpl.concertreserve.domain.concert.model.*;
+import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
 import com.hhpl.concertreserve.domain.error.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

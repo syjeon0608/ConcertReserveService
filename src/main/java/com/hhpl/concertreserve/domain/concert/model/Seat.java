@@ -1,5 +1,6 @@
-package com.hhpl.concertreserve.domain.concert;
+package com.hhpl.concertreserve.domain.concert.model;
 
+import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
 import com.hhpl.concertreserve.domain.error.BusinessException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,8 +9,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-import static com.hhpl.concertreserve.domain.concert.SeatStatus.AVAILABLE;
-import static com.hhpl.concertreserve.domain.concert.SeatStatus.UNAVAILABLE;
+import static com.hhpl.concertreserve.domain.concert.type.SeatStatus.AVAILABLE;
+import static com.hhpl.concertreserve.domain.concert.type.SeatStatus.UNAVAILABLE;
 import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.SEAT_IS_EXPIRED;
 
 @Entity

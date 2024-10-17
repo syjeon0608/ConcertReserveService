@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.infra.concert;
 
-import com.hhpl.concertreserve.domain.concert.Concert;
+import com.hhpl.concertreserve.domain.concert.model.Concert;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

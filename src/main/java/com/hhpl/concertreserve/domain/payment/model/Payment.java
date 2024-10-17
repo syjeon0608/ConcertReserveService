@@ -1,6 +1,6 @@
-package com.hhpl.concertreserve.domain.payment;
+package com.hhpl.concertreserve.domain.payment.model;
 
-import com.hhpl.concertreserve.domain.concert.Reservation;
+import com.hhpl.concertreserve.domain.concert.model.Reservation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
