@@ -41,7 +41,7 @@ public class Seat {
         this.expiredAt = LocalDateTime.now().plusMinutes(5);
     }
 
-    public void makeAvailableSeatByExpired(){
+    public void makeAvailableAfterExpiration(){
         this.status = AVAILABLE;
     }
 

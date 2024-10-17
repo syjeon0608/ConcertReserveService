@@ -12,13 +12,15 @@ public interface ConcertRepository {
 
     Seat getAvailableSelectedSeat(Long seatId);
 
-    Seat updateSeatStatus(Seat seat);
+    void save(Seat seat);
 
-    Reservation saveReservation(Reservation reservation);
+    Reservation save(Reservation reservation);
 
     Reservation getMyReservation(Long reservationId);
 
-    List<Seat> findExpiredSeats(LocalDateTime now);
+    List<Seat> findExpiredSeatsToBeAvailable(LocalDateTime now);
 
     Reservation findBySeatId(Long id);
+
+    Seat getSeatById(Long seatId);
 }

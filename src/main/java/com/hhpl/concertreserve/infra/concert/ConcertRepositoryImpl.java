@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.RESERVATION_NOT_FOUND;
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.SEAT_NOT_FOUND;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,12 +41,12 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     }
 
     @Override
-    public Seat updateSeatStatus(Seat seat) {
-        return seatJpaRepository.save(seat);
+    public void save(Seat seat) {
+        seatJpaRepository.save(seat);
     }
 
     @Override
-    public Reservation saveReservation(Reservation reservation) {
+    public Reservation save(Reservation reservation) {
         return reservationJpaRepository.save(reservation);
     }
 
@@ -56,7 +57,7 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     }
 
     @Override
-    public List<Seat> findExpiredSeats(LocalDateTime now) {
+    public List<Seat> findExpiredSeatsToBeAvailable(LocalDateTime now) {
         return seatJpaRepository.findExpiredSeats(now);
     }
 
@@ -65,5 +66,10 @@ public class ConcertRepositoryImpl implements ConcertRepository {
         return reservationJpaRepository.findBySeatId(seatId);
     }
 
+    @Override
+    public Seat getSeatById(Long seatId) {
+        return seatJpaRepository.findSeatById(seatId)
+                .orElseThrow(() -> new BusinessException(SEAT_NOT_FOUND));
+    }
 
 }

@@ -2,6 +2,7 @@ package com.hhpl.concertreserve.domain.concert;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,30 +27,30 @@ public class ConcertService {
         return concertRepository.getAvailableSeats(scheduleId, SeatStatus.AVAILABLE);
     }
 
-    public Seat makeSeatAvailableToUnavailable(Long seatId) {
+    public void reserveSeatTemporarily(Long seatId) {
         Seat selectedSeat = concertRepository.getAvailableSelectedSeat(seatId);
         selectedSeat.makeTempReservationSeat();
-        return concertRepository.updateSeatStatus(selectedSeat);
+        concertRepository.save(selectedSeat);
     }
 
-    public void makeSeatUnAvailableToAvailable(Long seatId) {
-        Seat selectedSeat = concertRepository.getAvailableSelectedSeat(seatId);
-        selectedSeat.makeAvailableSeatByExpired();
-        concertRepository.updateSeatStatus(selectedSeat);
-    }
-
-
-    public Reservation createReservation(String uuid, Seat seat) {
+    public Reservation createReservation(String uuid, Long seatId) {
+        Seat seat = concertRepository.getSeatById(seatId);
         Reservation reservation = new Reservation(uuid, seat);
-        return concertRepository.saveReservation(reservation);
+       return concertRepository.save(reservation);
     }
 
-    public void makeReservationWithTemporarySeat(Long seatId){
-        Seat seat = concertRepository.getAvailableSelectedSeat(seatId);
-        seat.makeTempReservationSeat();
-        concertRepository.updateSeatStatus(seat);
-    }
+    @Transactional
+    public void makeExpiredSeatsAvailable() {
+        List<Seat> expiredSeats = concertRepository.findExpiredSeatsToBeAvailable(LocalDateTime.now());
+        expiredSeats.forEach(seat -> {
+            seat.makeAvailableAfterExpiration();
+            concertRepository.save(seat);
 
+            Reservation reservation = concertRepository.findBySeatId(seat.getId());
+            reservation.cancelReservation();
+            concertRepository.save(reservation);
+        });
+    }
 
     public Reservation getReservationInfo(Long reservationId){
         return concertRepository.getMyReservation(reservationId);
@@ -67,7 +68,9 @@ public class ConcertService {
 
     public void completeReservationByPayment(Long reservationId){
         Reservation reservation = getReservationInfo(reservationId);
-        reservation.makeStatusComplete();
-        concertRepository.saveReservation(reservation);
+        reservation.completeReservation();
+        concertRepository.save(reservation);
     }
+
+
 }

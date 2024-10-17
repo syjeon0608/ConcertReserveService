@@ -43,12 +43,12 @@ public class Reservation {
         this.totalAmount = seat.getPrice();
     }
 
-    public void makeStatusCancel() {
+    public void cancelReservation() {
         this.reservationStatus = CANCEL;
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void makeStatusComplete(){
+    public void completeReservation(){
         this.reservationStatus = COMPLETE;
         this.updatedAt = LocalDateTime.now();
     }
