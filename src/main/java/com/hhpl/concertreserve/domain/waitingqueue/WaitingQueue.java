@@ -59,7 +59,7 @@ public class WaitingQueue {
     }
 
 
-    public WaitingQueueInfo getWaitingQueueInfo(Long lastActivatedQueueNo) {
+    public WaitingQueueInfo getRecentWaitingQueueInfo(Long lastActivatedQueueNo) {
         Long remainingQueueNo = calculateCurrentQueueNo(lastActivatedQueueNo);
         return new WaitingQueueInfo(
                 this.concertId,
@@ -95,7 +95,7 @@ public class WaitingQueue {
         }
     }
 
-    public void makeExpiredWhenCompletePayment(){
+    public void expireOnPaymentCompletion(){
         this.queueStatus = EXPIRED;
         this.expiredAt = LocalDateTime.now();
     }
