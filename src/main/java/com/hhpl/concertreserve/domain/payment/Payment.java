@@ -18,7 +18,7 @@ public class Payment {
     private Long userId;
 
     @OneToOne
-    @Column(nullable = false)
+    @JoinColumn(name = "reservation_id", nullable = false)
     private Reservation reservation;
 
     @Column(nullable = false)
