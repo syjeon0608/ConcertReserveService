@@ -70,7 +70,7 @@ class WaitingQueueTest {
         Long lastActiveQueue = 3L;
         WaitingQueue myWaitingQueue = WaitingQueue.createWithQueueNo(uuid, concertId, maxQueueNo);
 
-        WaitingQueueInfo queueInfo = myWaitingQueue.getWaitingQueueInfo(lastActiveQueue);
+        WaitingQueueInfo queueInfo = myWaitingQueue.getRecentWaitingQueueInfo(lastActiveQueue);
 
         assertEquals(INACTIVE, myWaitingQueue.getQueueStatus());
         assertEquals(8L, queueInfo.renamingQueueNo());
@@ -147,7 +147,7 @@ class WaitingQueueTest {
         WaitingQueue waitingQueue = WaitingQueue.createWithQueueNo(uuid, concertId, maxQueueNo);
         waitingQueue.activate();
 
-        waitingQueue.makeExpiredWhenCompletePayment();
+        waitingQueue.expireOnPaymentCompletion();
 
         assertEquals(EXPIRED, waitingQueue.getQueueStatus());
     }
