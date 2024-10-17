@@ -12,9 +12,9 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
 
-    public void completePayment(Reservation reservation, int amount) {
-        Payment payment = new Payment(reservation, amount);
-        paymentRepository.save(payment);
+    public Payment completePayment(Long userId, Reservation reservation, int amount) {
+        Payment payment = new Payment(userId,reservation, amount);
+        return paymentRepository.save(payment);
     }
 
     public Point getPointInfo(Long userId) {
