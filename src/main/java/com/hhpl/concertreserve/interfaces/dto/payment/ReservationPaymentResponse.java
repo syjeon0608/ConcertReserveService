@@ -3,15 +3,11 @@ package com.hhpl.concertreserve.interfaces.dto.payment;
 import java.time.LocalDateTime;
 
 public record ReservationPaymentResponse(
-        Long tokenId,
         Long reservationId,
+        Long userId,
         Long concertId,
-        Long scheduleId,
-        int seatNumber,
-        String seatStatus,
+        int amount,
         String reservationStatus,
-        LocalDateTime reservedAt,
-        LocalDateTime updatedAt,
-        Long amount
+        LocalDateTime paymentDate
 ) {
 }

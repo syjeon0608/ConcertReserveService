@@ -2,8 +2,9 @@ package com.hhpl.concertreserve.interfaces.dto.payment;
 
 import java.time.LocalDateTime;
 
-public record WalletAmountResponse(
+public record PointAmountResponse (
         Long userId,
-        Long balance,
-        LocalDateTime lastCheckedAt) {
+        int amount,
+        LocalDateTime updatedAt
+){
 }
