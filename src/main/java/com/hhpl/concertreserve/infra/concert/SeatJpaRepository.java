@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface SeatJpaRepository extends JpaRepository<Seat,Long> {
     List<Seat> findByScheduleIdAndStatus(Long scheduleId, SeatStatus status);
@@ -18,4 +19,6 @@ public interface SeatJpaRepository extends JpaRepository<Seat,Long> {
 
     @Query("SELECT s FROM Seat s WHERE s.status = 'UNAVAILABLE' AND s.expiredAt < :currentTime")
     List<Seat> findExpiredSeats(@Param("currentTime") LocalDateTime currentTime);
+
+    Optional<Seat> findSeatById(Long seatId);
 }
