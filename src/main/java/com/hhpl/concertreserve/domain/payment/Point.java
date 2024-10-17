@@ -13,7 +13,7 @@ import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.POINT_N
 @Entity
 @Getter
 @NoArgsConstructor
-public class Wallet {
+public class Point {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,21 +23,18 @@ public class Wallet {
     private Long userId;
 
     @Column(nullable = false)
-    private String uuid;
-
-    @Column(nullable = false)
     private int amount;
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public Wallet(Long userId, int amount) {
+    public Point(Long userId, int amount) {
         this.userId = userId;
         this.amount = amount;
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void charge(int amountToCharge) {
+    public void chargePoints(int amountToCharge) {
         if (amountToCharge <= 0) {
             throw new BusinessException(INVALID_CHARGE_AMOUNT);
         }
@@ -45,13 +42,13 @@ public class Wallet {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void checkCanUse(int useAmount) {
+    public void checkPointsForPayment(int useAmount) {
         if (this.amount < useAmount) {
             throw new BusinessException(POINT_NOT_ENOUGH);
         }
     }
 
-    public void useToPayment(int amountToUse) {
+    public void usePointToPayment(int amountToUse) {
         this.amount = amount - amountToUse;
         this.updatedAt = LocalDateTime.now();
     }
