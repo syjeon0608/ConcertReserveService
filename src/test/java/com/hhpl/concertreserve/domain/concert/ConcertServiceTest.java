@@ -1,5 +1,9 @@
 package com.hhpl.concertreserve.domain.concert;
 
+import com.hhpl.concertreserve.domain.concert.model.Concert;
+import com.hhpl.concertreserve.domain.concert.model.Schedule;
+import com.hhpl.concertreserve.domain.concert.model.Seat;
+import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

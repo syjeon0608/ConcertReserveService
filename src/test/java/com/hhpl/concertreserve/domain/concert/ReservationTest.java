@@ -1,12 +1,15 @@
 package com.hhpl.concertreserve.domain.concert;
 
+import com.hhpl.concertreserve.domain.concert.model.*;
+import com.hhpl.concertreserve.domain.concert.type.ReservationStatus;
+import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static com.hhpl.concertreserve.domain.concert.ReservationStatus.CANCEL;
-import static com.hhpl.concertreserve.domain.concert.ReservationStatus.COMPLETE;
+import static com.hhpl.concertreserve.domain.concert.type.ReservationStatus.CANCEL;
+import static com.hhpl.concertreserve.domain.concert.type.ReservationStatus.COMPLETE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ReservationTest {
