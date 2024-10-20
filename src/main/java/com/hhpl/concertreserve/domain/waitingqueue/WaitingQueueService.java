@@ -1,7 +1,6 @@
 package com.hhpl.concertreserve.domain.waitingqueue;
 
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
-import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueueInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,11 +34,11 @@ public class WaitingQueueService {
         return waitingQueueRepository.getMaxActivatedQueueNoByConcertId(concertId).orElse(0L);
     }
 
-    public WaitingQueueInfo getMyWaitingQueueInfo(String uuid, Long concertId) {
-        WaitingQueue myWaitingQueue = waitingQueueRepository.getMyWaitingQueue(uuid,concertId);
-
+    public WaitingQueue getMyWaitingQueueInfo(String uuid, Long concertId) {
+        WaitingQueue waitingQueue = waitingQueueRepository.getMyWaitingQueue(uuid,concertId);
         Long lastActivatedQueueNo = getLastActivatedQueueNo(concertId);
-        return myWaitingQueue.getRecentWaitingQueueInfo(lastActivatedQueueNo);
+        waitingQueue.calculateRemainingQueueNo(lastActivatedQueueNo);
+        return waitingQueue;
     }
 
     public void validateQueueStatus(String uuid, Long concertId) {
@@ -66,7 +65,7 @@ public class WaitingQueueService {
     public void expireActiveQueuesPastDeadline() {
         List<WaitingQueue> expiredQueues = waitingQueueRepository.findActiveQueuesForExpiration();
         expiredQueues.forEach(queue -> {
-            queue.updateStatusIfExpired();
+            queue.expire();
             waitingQueueRepository.save(queue);
         });
     }

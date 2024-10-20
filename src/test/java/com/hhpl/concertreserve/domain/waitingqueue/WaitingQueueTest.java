@@ -2,7 +2,6 @@ package com.hhpl.concertreserve.domain.waitingqueue;
 
 import com.hhpl.concertreserve.domain.error.BusinessException;
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
-import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueueInfo;
 import com.hhpl.concertreserve.domain.waitingqueue.type.WaitingQueueStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -65,7 +64,7 @@ class WaitingQueueTest {
     }
 
     @Test
-    @DisplayName("내 대기 번호에서 마지막 활성화된 대기열 번호를 뺀 대기열 정보를 반환한다.")
+    @DisplayName("콘서트별로 유저 대기 번호에서 마지막 활성화된 대기열 번호를 뺀 대기열 정보를 반환한다.")
     void shouldReturnWaitingQueueInfoWithRemainingQueueNo() {
         String uuid = "user-123";
         Long concertId = 1L;
@@ -73,10 +72,42 @@ class WaitingQueueTest {
         Long lastActiveQueue = 3L;
         WaitingQueue myWaitingQueue = WaitingQueue.createWithQueueNo(uuid, concertId, maxQueueNo);
 
-        WaitingQueueInfo queueInfo = myWaitingQueue.getRecentWaitingQueueInfo(lastActiveQueue);
+        String uuid2 = "user-456";
+        Long concertId2 = 2L;
+        Long maxQueueNo2 = 30L;
+        Long lastActiveQueue2 = 20L;
+        WaitingQueue myWaitingQueue2 = WaitingQueue.createWithQueueNo(uuid2, concertId2, maxQueueNo2);
+
+        myWaitingQueue.calculateRemainingQueueNo(lastActiveQueue);
+        myWaitingQueue2.calculateRemainingQueueNo(lastActiveQueue2);
 
         assertEquals(INACTIVE, myWaitingQueue.getQueueStatus());
-        assertEquals(8L, queueInfo.renamingQueueNo());
+        assertEquals(INACTIVE, myWaitingQueue2.getQueueStatus());
+        assertEquals(8L, myWaitingQueue.getQueueNo());
+        assertEquals(11L, myWaitingQueue2.getQueueNo());
+    }
+
+    @Test
+    @DisplayName("콘서트별로 내 대기 번호에서 마지막 활성화된 대기열 번호를 뺀 대기열 정보를 반환한다.")
+    void shouldReturnWaitingQueueInfoWithRemainingQueueNoByConcert() {
+        String uuid = "user-123";
+        Long concertId = 1L;
+        Long maxQueueNo = 10L;
+        Long lastActiveQueue = 3L;
+        WaitingQueue myWaitingQueue = WaitingQueue.createWithQueueNo(uuid, concertId, maxQueueNo);
+
+        String uuid2 = "user-456";
+        Long concertId2 = 2L;
+        Long maxQueueNo2 = 30L;
+        Long lastActiveQueue2 = 20L;
+        WaitingQueue myWaitingQueue2 = WaitingQueue.createWithQueueNo(uuid2, concertId2, maxQueueNo2);
+
+        myWaitingQueue.calculateRemainingQueueNo(lastActiveQueue);
+        myWaitingQueue2.calculateRemainingQueueNo(lastActiveQueue2);
+
+        assertEquals(INACTIVE, myWaitingQueue.getQueueStatus());
+        assertEquals(8L, myWaitingQueue.getQueueNo());
+        assertEquals(11L, myWaitingQueue2.getQueueNo());
     }
 
     @Test
@@ -105,7 +136,7 @@ class WaitingQueueTest {
 
         ReflectionTestUtils.setField(waitingQueue, "expiredAt", LocalDateTime.now().minusMinutes(1));
 
-        waitingQueue.updateStatusIfExpired();
+        waitingQueue.expire();
 
         assertEquals(WaitingQueueStatus.EXPIRED, waitingQueue.getQueueStatus());
     }
@@ -126,7 +157,7 @@ class WaitingQueueTest {
         waitingQueue.activate();
         ReflectionTestUtils.setField(waitingQueue, "expiredAt", LocalDateTime.now().minusMinutes(1));
 
-        waitingQueue.updateStatusIfExpired();
+        waitingQueue.expire();
 
         BusinessException exception = assertThrows(BusinessException.class, waitingQueue::validate);
         assertEquals(QUEUE_IS_EXPIRED, exception.getErrorCode());

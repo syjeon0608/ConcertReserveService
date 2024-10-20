@@ -49,24 +49,13 @@ public class WaitingQueue {
         this.createdAt = LocalDateTime.now();
     }
 
-
     public static WaitingQueue createWithQueueNo(String uuid, Long concertId, Long maxQueueNo) {
         Long queueNo = maxQueueNo + 1;
         return new WaitingQueue(uuid, concertId, queueNo);
     }
 
-    public Long calculateCurrentQueueNo(Long lastActivatedQueueNo) {
-        return this.queueNo - lastActivatedQueueNo;
-    }
-
-
-    public WaitingQueueInfo getRecentWaitingQueueInfo(Long lastActivatedQueueNo) {
-        Long remainingQueueNo = calculateCurrentQueueNo(lastActivatedQueueNo);
-        return new WaitingQueueInfo(
-                this.concertId,
-                this.queueStatus.name(),
-                remainingQueueNo
-        );
+    public void calculateRemainingQueueNo(Long lastActivatedQueueNo) {
+        this.queueNo = queueNo - lastActivatedQueueNo;
     }
 
     public void activate() {
@@ -75,12 +64,11 @@ public class WaitingQueue {
         this.expiredAt = this.activatedAt.plusMinutes(5);
     }
 
-
     public boolean isExpired() {
         return expiredAt != null && LocalDateTime.now().isAfter(expiredAt);
     }
 
-    public void updateStatusIfExpired() {
+    public void expire() {
         if (isExpired()) {
             this.queueStatus = WaitingQueueStatus.EXPIRED;
         }
@@ -100,6 +88,5 @@ public class WaitingQueue {
         this.queueStatus = EXPIRED;
         this.expiredAt = LocalDateTime.now();
     }
-
 
 }
