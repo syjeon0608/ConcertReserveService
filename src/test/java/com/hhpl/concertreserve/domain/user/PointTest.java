@@ -1,12 +1,13 @@
-package com.hhpl.concertreserve.domain.payment;
+package com.hhpl.concertreserve.domain.user;
 
 import com.hhpl.concertreserve.domain.error.BusinessException;
-import com.hhpl.concertreserve.domain.payment.model.Point;
+import com.hhpl.concertreserve.domain.user.model.Point;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.INVALID_CHARGE_AMOUNT;
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.POINT_NOT_ENOUGH;
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.*;
+import static com.hhpl.concertreserve.domain.user.model.PointStatus.CHARGE;
+import static com.hhpl.concertreserve.domain.user.model.PointStatus.USE;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PointTest {
@@ -17,7 +18,7 @@ class PointTest {
         Point point = new Point(1L, 10000);
         int chargeToAmount = 50000;
 
-        point.chargePoints(chargeToAmount);
+        point.adjust(chargeToAmount, CHARGE);
 
         assertEquals(60000, point.getAmount());
         assertNotNull(point.getUpdatedAt());
@@ -30,7 +31,7 @@ class PointTest {
         int amountToCharge = 0;
 
         BusinessException exception = assertThrows(BusinessException.class, () -> {
-            point.chargePoints(amountToCharge);
+            point.validate(amountToCharge,CHARGE);
         });
 
         assertEquals(INVALID_CHARGE_AMOUNT, exception.getErrorCode());
@@ -43,21 +44,35 @@ class PointTest {
         int amountToCharge = -1000;
 
         BusinessException exception = assertThrows(BusinessException.class, () -> {
-            point.chargePoints(amountToCharge);
+            point.validate(amountToCharge,CHARGE);
         });
 
         assertEquals(INVALID_CHARGE_AMOUNT, exception.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("포인트 충전 시 잔액이 최대 한도를 초과하면 예외가 발생한다.")
+    void shouldThrowExceptionIfPointExceedsMaximumLimitAfterCharge(){
+        Point point = new Point(1L, 80000000);
+        int amountToCharge = 2000000;
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> {
+            point.validate(amountToCharge,CHARGE);
+        });
+
+        assertEquals(EXCEEDS_MAXIMUM_POINT, exception.getErrorCode());
     }
 
 
     @Test
     @DisplayName("잔액이 부족하면 예외를 발생시킨다.")
     void shouldThrowExceptionWhenBalanceIsInsufficient() {
+
         Point point = new Point(1L, 50000);
         int amountToUse = 60000;
 
         BusinessException exception = assertThrows(BusinessException.class, () -> {
-            point.checkPointsForPayment(amountToUse);
+            point.validate(amountToUse, USE);
         });
 
         assertEquals(POINT_NOT_ENOUGH, exception.getErrorCode());
@@ -69,7 +84,7 @@ class PointTest {
         Point point = new Point(1L, 70000);
         int amountToUse = 20000;
 
-        point.usePointToPayment(amountToUse);
+        point.adjust(amountToUse,USE);
 
         assertEquals(50000, point.getAmount());
     }

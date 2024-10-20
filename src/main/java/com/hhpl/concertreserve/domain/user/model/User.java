@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.domain.user;
+package com.hhpl.concertreserve.domain.user.model;
 
 import jakarta.persistence.*;
 

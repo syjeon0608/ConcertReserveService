@@ -1,5 +1,6 @@
 package com.hhpl.concertreserve.application;
 
+import com.hhpl.concertreserve.application.model.PointInfo;
 import com.hhpl.concertreserve.domain.concert.model.Concert;
 import com.hhpl.concertreserve.domain.concert.model.Reservation;
 import com.hhpl.concertreserve.domain.concert.model.Schedule;
@@ -7,12 +8,12 @@ import com.hhpl.concertreserve.domain.concert.model.Seat;
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
 import com.hhpl.concertreserve.domain.error.BusinessException;
 import com.hhpl.concertreserve.domain.payment.model.Payment;
-import com.hhpl.concertreserve.domain.payment.model.Point;
+import com.hhpl.concertreserve.domain.user.model.Point;
 import com.hhpl.concertreserve.infra.concert.ConcertJpaRepository;
 import com.hhpl.concertreserve.infra.concert.ReservationJpaRepository;
 import com.hhpl.concertreserve.infra.concert.ScheduleJpaRepository;
 import com.hhpl.concertreserve.infra.concert.SeatJpaRepository;
-import com.hhpl.concertreserve.infra.payment.PointJpaRepository;
+import com.hhpl.concertreserve.infra.user.PointJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+import static com.hhpl.concertreserve.domain.user.model.PointStatus.CHARGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -31,6 +33,9 @@ public class PaymentFacadeIntegrationTest {
 
     @Autowired
     private PaymentFacade paymentFacade;
+
+    @Autowired
+    private UserFacade userFacade;
 
     @Autowired
     private PointJpaRepository pointJpaRepository;
@@ -85,23 +90,23 @@ public class PaymentFacadeIntegrationTest {
     @Test
     @DisplayName("성공적으로 포인트 충전")
     void shouldChargePointSuccessfully() {
-        Point updatedPoint = paymentFacade.chargePoint(1L, 500);
+        PointInfo updatedPoint = userFacade.chargePoint(1L, 500,CHARGE);
 
-        assertEquals(1500, updatedPoint.getAmount());
+        assertEquals(1500, updatedPoint.amount());
     }
 
     @Test
     @DisplayName("잘못된 포인트 충전 금액 예외 발생")
     void shouldThrowExceptionForInvalidChargeAmount() {
         assertThrows(BusinessException.class, () -> {
-            paymentFacade.chargePoint(1L, -100);
+            userFacade.chargePoint(1L, -100, CHARGE);
         });
     }
 
     @Test
     @DisplayName("사용자 지갑 정보 조회")
-    void shouldGetUserWalletSuccessfully() {
-        Point point = paymentFacade.getUserWallet(1L);
-        assertEquals(1000, point.getAmount());
+    void shouldGetUserPointSuccessfully() {
+        PointInfo point = userFacade.getUserPoint(1L);
+        assertEquals(1000, point.amount());
     }
 }
