@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.interfaces.api.controller;
 
-import com.hhpl.concertreserve.application.UserFacade;
+import com.hhpl.concertreserve.application.facade.UserFacade;
 import com.hhpl.concertreserve.application.model.PointInfo;
 import com.hhpl.concertreserve.interfaces.api.common.ApiResponse;
 import com.hhpl.concertreserve.interfaces.api.mapper.UserMapperController;

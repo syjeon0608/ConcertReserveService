@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.interfaces.api.controller;
 
-import com.hhpl.concertreserve.application.WaitingQueueFacade;
+import com.hhpl.concertreserve.application.facade.WaitingQueueFacade;
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueueInfo;
 import com.hhpl.concertreserve.interfaces.api.common.ApiResponse;

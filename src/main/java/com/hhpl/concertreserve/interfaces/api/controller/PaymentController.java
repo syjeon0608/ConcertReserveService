@@ -1,7 +1,7 @@
 package com.hhpl.concertreserve.interfaces.api.controller;
 
-import com.hhpl.concertreserve.application.PaymentFacade;
-import com.hhpl.concertreserve.application.WaitingQueueFacade;
+import com.hhpl.concertreserve.application.facade.PaymentFacade;
+import com.hhpl.concertreserve.application.facade.WaitingQueueFacade;
 import com.hhpl.concertreserve.domain.payment.model.Payment;
 import com.hhpl.concertreserve.interfaces.api.common.ApiResponse;
 import com.hhpl.concertreserve.interfaces.api.mapper.PaymentMapper;

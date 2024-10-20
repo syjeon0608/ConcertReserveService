@@ -1,7 +1,7 @@
 package com.hhpl.concertreserve.interfaces.api.controller;
 
-import com.hhpl.concertreserve.application.ConcertFacade;
-import com.hhpl.concertreserve.application.WaitingQueueFacade;
+import com.hhpl.concertreserve.application.facade.ConcertFacade;
+import com.hhpl.concertreserve.application.facade.WaitingQueueFacade;
 import com.hhpl.concertreserve.domain.concert.model.Concert;
 import com.hhpl.concertreserve.domain.concert.model.Reservation;
 import com.hhpl.concertreserve.domain.concert.model.Schedule;

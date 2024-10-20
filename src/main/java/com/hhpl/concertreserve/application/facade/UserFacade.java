@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.application;
+package com.hhpl.concertreserve.application.facade;
 
 import com.hhpl.concertreserve.application.mapper.UserMapperApplication;
 import com.hhpl.concertreserve.application.model.PointInfo;
