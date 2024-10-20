@@ -1,20 +1,28 @@
-package com.hhpl.concertreserve.interfaces.api;
+package com.hhpl.concertreserve.application.mapper;
 
+import com.hhpl.concertreserve.application.model.ConcertInfo;
+import com.hhpl.concertreserve.application.model.ReservationInfo;
+import com.hhpl.concertreserve.application.model.ScheduleInfo;
+import com.hhpl.concertreserve.application.model.SeatInfo;
 import com.hhpl.concertreserve.domain.concert.model.Concert;
 import com.hhpl.concertreserve.domain.concert.model.Reservation;
 import com.hhpl.concertreserve.domain.concert.model.Schedule;
 import com.hhpl.concertreserve.domain.concert.model.Seat;
-import com.hhpl.concertreserve.interfaces.dto.concert.ConcertResponse;
-import com.hhpl.concertreserve.interfaces.dto.concert.ReservationResponse;
-import com.hhpl.concertreserve.interfaces.dto.concert.ScheduleResponse;
-import com.hhpl.concertreserve.interfaces.dto.concert.SeatResponse;
 import org.springframework.stereotype.Component;
 
-@Component
-public class ConcertMapper {
+import java.util.List;
 
-    public ConcertResponse toConcertResponse(Concert concert) {
-        return new ConcertResponse(
+@Component
+public class ConcertMapperApplication {
+
+    public List<ConcertInfo> fromConcerts(List<Concert> concerts) {
+        return concerts.stream()
+                .map(this::toConcertInfo)
+                .toList();
+    }
+
+    public ConcertInfo toConcertInfo(Concert concert) {
+        return new ConcertInfo(
                 concert.getId(),
                 concert.getTitle(),
                 concert.getDescription(),
@@ -24,8 +32,14 @@ public class ConcertMapper {
         );
     }
 
-    public ScheduleResponse toScheduleResponse(Schedule schedule) {
-        return new ScheduleResponse(
+    public List<ScheduleInfo> fromSchedules(List<Schedule> schedules) {
+        return schedules.stream()
+                .map(this::toScheduleInfo)
+                .toList();
+    }
+
+    public ScheduleInfo toScheduleInfo(Schedule schedule) {
+        return new ScheduleInfo(
                 schedule.getId(),
                 schedule.getConcert().getId(),
                 schedule.getConcertDate(),
@@ -34,8 +48,14 @@ public class ConcertMapper {
         );
     }
 
-    public SeatResponse toSeatResponse(Seat seat) {
-        return new SeatResponse(
+    public List<SeatInfo> fromSeats(List<Seat> seats) {
+        return seats.stream()
+                .map(this::toSeatInfo)
+                .toList();
+    }
+
+    public SeatInfo toSeatInfo(Seat seat) {
+        return new SeatInfo(
                 seat.getId(),
                 seat.getSchedule().getId(),
                 seat.getPrice(),
@@ -44,8 +64,9 @@ public class ConcertMapper {
         );
     }
 
-    public ReservationResponse toReservationResponse(Reservation reservation) {
-        return new ReservationResponse(
+
+    public ReservationInfo from(Reservation reservation) {
+        return new ReservationInfo(
                 reservation.getId(),
                 reservation.getUuid(),
                 reservation.getSeat().getId(),

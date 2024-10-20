@@ -39,7 +39,7 @@ class SeatTest {
         when(LocalDateTime.now()).thenReturn(reservedTime);
         Seat seat = new Seat(1L, schedule, 80000, AVAILABLE, reservedTime);
 
-        seat.makeTempReservationSeat();
+        seat.inactive();
 
         assertEquals(UNAVAILABLE, seat.getStatus());
         assertEquals(reservedTime.plusMinutes(5), seat.getExpiredAt());
@@ -51,7 +51,7 @@ class SeatTest {
         LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(10);
         Seat seat = new Seat(1L, schedule, 80000, SeatStatus.UNAVAILABLE, expiredTime);
 
-        seat.makeAvailableAfterExpiration();
+        seat.reactivate();
 
         assertEquals(AVAILABLE, seat.getStatus());
     }
@@ -62,8 +62,7 @@ class SeatTest {
         LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(10);
         Seat seat = new Seat(1L, schedule, 80000, UNAVAILABLE, expiredTime);
 
-        BusinessException exception = assertThrows(BusinessException.class, seat::checkIfExpired);
-
+        BusinessException exception = assertThrows(BusinessException.class, seat::validate);
         assertEquals(SEAT_IS_EXPIRED, exception.getErrorCode());
     }
 }

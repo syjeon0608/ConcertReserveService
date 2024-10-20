@@ -31,7 +31,7 @@ public class ConcertService {
 
     public void reserveSeatTemporarily(Long seatId) {
         Seat selectedSeat = concertRepository.getAvailableSelectedSeat(seatId);
-        selectedSeat.makeTempReservationSeat();
+        selectedSeat.inactive();
         concertRepository.save(selectedSeat);
     }
 
@@ -45,7 +45,7 @@ public class ConcertService {
     public void makeExpiredSeatsAvailable() {
         List<Seat> expiredSeats = concertRepository.findExpiredSeatsToBeAvailable(LocalDateTime.now());
         expiredSeats.forEach(seat -> {
-            seat.makeAvailableAfterExpiration();
+            seat.reactivate();
             concertRepository.save(seat);
 
             Reservation reservation = concertRepository.findBySeatId(seat.getId());
@@ -65,14 +65,14 @@ public class ConcertService {
 
     public void validateSeatStatus(Long reservationId) {
         Seat seat = getReservationSeat(reservationId);
-        seat.checkIfExpired();
+        seat.validate();
     }
 
     public void completeReservationByPayment(Long reservationId){
+        validateSeatStatus(reservationId);
         Reservation reservation = getReservationInfo(reservationId);
         reservation.completeReservation();
         concertRepository.save(reservation);
     }
-
 
 }
