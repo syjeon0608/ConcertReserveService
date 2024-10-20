@@ -9,20 +9,18 @@ import com.hhpl.concertreserve.interfaces.dto.payment.PointChargeRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/users/{userId}/")
 public class UserController {
 
     private final UserFacade userFacade;
     private final UserMapperController userMapperController;
 
     @Operation(summary = "잔액조회 API", description = "사용자가 잔액을 조회한다.")
-    @GetMapping("/users/{userId}/points")
+    @GetMapping("/points")
     public ApiResponse<PointAmountResponse> getBalance(@PathVariable Long userId) {
         PointInfo pointInfo = userFacade.getUserPoint(userId);
         PointAmountResponse response = userMapperController.toResponse(pointInfo);
@@ -30,7 +28,7 @@ public class UserController {
     }
 
     @Operation(summary = "잔액충전 API", description = "사용자가 금액을 충전한다.")
-    @PostMapping("/users/{userId}/points")
+    @PostMapping("/points")
     public ApiResponse<PointAmountResponse> chargeBalance(@PathVariable Long userId, @RequestBody PointChargeRequest request) {
         PointInfo pointInfo = userFacade.chargePoint(userId, request.amount(), request.status());
         PointAmountResponse response = userMapperController.toResponse(pointInfo);
