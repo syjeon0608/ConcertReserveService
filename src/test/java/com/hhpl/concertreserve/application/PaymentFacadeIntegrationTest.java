@@ -1,5 +1,8 @@
 package com.hhpl.concertreserve.application;
 
+import com.hhpl.concertreserve.application.facade.PaymentFacade;
+import com.hhpl.concertreserve.application.facade.UserFacade;
+import com.hhpl.concertreserve.application.model.PaymentInfo;
 import com.hhpl.concertreserve.application.model.PointInfo;
 import com.hhpl.concertreserve.domain.concert.model.Concert;
 import com.hhpl.concertreserve.domain.concert.model.Reservation;
@@ -7,18 +10,21 @@ import com.hhpl.concertreserve.domain.concert.model.Schedule;
 import com.hhpl.concertreserve.domain.concert.model.Seat;
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
 import com.hhpl.concertreserve.domain.error.BusinessException;
-import com.hhpl.concertreserve.domain.payment.model.Payment;
 import com.hhpl.concertreserve.domain.user.model.Point;
+import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
 import com.hhpl.concertreserve.infra.concert.ConcertJpaRepository;
 import com.hhpl.concertreserve.infra.concert.ReservationJpaRepository;
 import com.hhpl.concertreserve.infra.concert.ScheduleJpaRepository;
 import com.hhpl.concertreserve.infra.concert.SeatJpaRepository;
 import com.hhpl.concertreserve.infra.user.PointJpaRepository;
+import com.hhpl.concertreserve.infra.waitingqueue.WaitingQueueJpaRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -52,6 +58,9 @@ public class PaymentFacadeIntegrationTest {
     @Autowired
     private SeatJpaRepository seatJpaRepository;
 
+    @Autowired
+    WaitingQueueJpaRepository waitingQueueJpaRepository;
+
     private Point testPoint;
     private Concert testConcert;
     private Schedule testSchedule;
@@ -68,22 +77,34 @@ public class PaymentFacadeIntegrationTest {
         testSeat = seatJpaRepository.save(new Seat(null, testSchedule, 100, SeatStatus.AVAILABLE, LocalDateTime.now().plusDays(1)));
     }
 
+    @AfterEach
+    void cleanUp() {
+        reservationJpaRepository.deleteAll();
+        seatJpaRepository.deleteAll();
+        scheduleJpaRepository.deleteAll();
+        concertJpaRepository.deleteAll();
+    }
+
     @Test
+    @DirtiesContext
     @DisplayName("성공적으로 결제 처리")
     void shouldProcessPaymentSuccessfully() {
+        WaitingQueue waitingQueue = WaitingQueue.createWithQueueNo("test-uuid2", 1L, 20L);
+        waitingQueueJpaRepository.save(waitingQueue);
+        waitingQueue.activate();
         testReservation = new Reservation("test-uuid2", testSeat);
         reservationJpaRepository.save(testReservation);
-        Payment payment = paymentFacade.processPayment(1L, 1L, 500);
+        PaymentInfo payment = paymentFacade.processPayment(1L, 1L, testReservation.getUuid());
 
-        assertEquals(500, payment.getAmount());
-        assertEquals(500, testPoint.getAmount());
+        assertEquals(100, payment.amount());
+        assertEquals(900,testPoint.getAmount());
     }
 
     @Test
     @DisplayName("포인트 부족 시 예외 발생")
     void shouldThrowExceptionForInsufficientPoints() {
         assertThrows(BusinessException.class, () -> {
-            paymentFacade.processPayment(1L, 1L, 2000);
+            paymentFacade.processPayment(1L, 1L, "test-uuid2");
         });
     }
 
