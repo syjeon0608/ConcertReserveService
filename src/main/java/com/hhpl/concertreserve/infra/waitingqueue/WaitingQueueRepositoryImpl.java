@@ -11,11 +11,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_IS_INACTIVE;
 import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_NOT_FOUND;
 
 @Repository
 @RequiredArgsConstructor
-public class WaitingQueueImpl implements WaitingQueueRepository {
+public class WaitingQueueRepositoryImpl implements WaitingQueueRepository {
     private final WaitingQueueJpaRepository waitingQueueJpaRepository;
 
     @Override
@@ -58,7 +59,7 @@ public class WaitingQueueImpl implements WaitingQueueRepository {
     @Override
     public WaitingQueue getMyActiveQueue(String uuid) {
         return waitingQueueJpaRepository.findActiveWaitingQueueByUuid(uuid)
-                .orElseThrow(() -> new BusinessException(QUEUE_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(QUEUE_IS_INACTIVE));
     }
 
 }
