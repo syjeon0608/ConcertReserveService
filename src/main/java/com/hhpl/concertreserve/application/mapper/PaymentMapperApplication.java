@@ -1,14 +1,14 @@
-package com.hhpl.concertreserve.interfaces.api.mapper;
+package com.hhpl.concertreserve.application.mapper;
 
+import com.hhpl.concertreserve.application.model.PaymentInfo;
 import com.hhpl.concertreserve.domain.payment.model.Payment;
-import com.hhpl.concertreserve.interfaces.dto.payment.ReservationPaymentResponse;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PaymentMapper {
+public class PaymentMapperApplication {
 
-    public ReservationPaymentResponse toPaymentResponse(Payment payment) {
-        return new ReservationPaymentResponse(
+    public PaymentInfo from(Payment payment) {
+        return new PaymentInfo(
                 payment.getReservation().getId(),
                 payment.getUserId(),
                 payment.getReservation().getSeat().getId(),
@@ -17,5 +17,4 @@ public class PaymentMapper {
                 payment.getCreatedAt()
         );
     }
-
 }
