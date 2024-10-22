@@ -40,7 +40,6 @@ public class ConcertFacade {
 
     @Transactional
     public ReservationInfo createTemporarySeatReservation(String uuid, Long seatId) {
-        concertService.reserveSeatTemporarily(seatId);
         Reservation reservation = concertService.createReservation(uuid, seatId);
         return concertMapper.from(reservation);
     }

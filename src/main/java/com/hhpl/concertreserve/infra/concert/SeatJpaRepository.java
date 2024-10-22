@@ -13,12 +13,11 @@ import java.util.Optional;
 public interface SeatJpaRepository extends JpaRepository<Seat,Long> {
     List<Seat> findByScheduleIdAndStatus(Long scheduleId, SeatStatus status);
 
-    @Query("SELECT s FROM Seat s WHERE s.id = :seatId AND s.status = 'AVAILABLE'")
-    Seat getAvailableSelectedSeat(@Param("seatId") Long seatId);
+    @Query("SELECT s FROM Seat s WHERE s.id = :seatId")
+    Optional<Seat> getSelectedSeat(@Param("seatId") Long seatId);
 
 
     @Query("SELECT s FROM Seat s WHERE s.status = 'UNAVAILABLE' AND s.expiredAt < :currentTime")
     List<Seat> findExpiredSeats(@Param("currentTime") LocalDateTime currentTime);
 
-    Optional<Seat> findSeatById(Long seatId);
 }

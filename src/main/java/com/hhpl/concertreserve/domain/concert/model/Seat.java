@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 import static com.hhpl.concertreserve.domain.concert.type.SeatStatus.UNAVAILABLE;
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.SEAT_IS_EXPIRED;
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.SEAT_IS_UNAVAILABLE;
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.*;
 
 @Entity
 @Getter
@@ -34,37 +33,35 @@ public class Seat {
     @Enumerated(EnumType.STRING)
     private SeatStatus status;
 
-    @Column(nullable = false)
     private LocalDateTime expiredAt;
 
     public void inactive() {
+        if (this.status == SeatStatus.UNAVAILABLE) {
+            throw new BusinessException(SEAT_ALREADY_UNAVAILABLE);
+        }
         this.status = UNAVAILABLE;
         this.expiredAt = LocalDateTime.now().plusMinutes(5);
     }
 
-    public boolean isExpired() {
-        return LocalDateTime.now().isAfter(this.expiredAt);
-    }
-
     public void reactivate() {
+        if (this.status == SeatStatus.AVAILABLE) {
+            throw new BusinessException(SEAT_ALREADY_AVAILABLE);
+        }
         if (isExpired()) {
             this.status = SeatStatus.AVAILABLE;
             this.expiredAt = null;
         }
     }
 
-    public void validate(){
+    public void validateForSeatExpired(){
         if(isExpired()) {
             throw new BusinessException(SEAT_IS_EXPIRED);
         }
-
-        if(isUnavailable()){
-            throw new BusinessException(SEAT_IS_UNAVAILABLE);
-        }
     }
 
-    private boolean isUnavailable() {
-        return this.status == SeatStatus.UNAVAILABLE;
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(this.expiredAt);
     }
+
 
 }

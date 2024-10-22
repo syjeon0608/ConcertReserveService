@@ -29,16 +29,11 @@ public class ConcertService {
         return concertRepository.getAvailableSeats(scheduleId, SeatStatus.AVAILABLE);
     }
 
-    public void reserveSeatTemporarily(Long seatId) {
-        Seat selectedSeat = concertRepository.getAvailableSelectedSeat(seatId);
-        selectedSeat.inactive();
-        concertRepository.save(selectedSeat);
-    }
-
     public Reservation createReservation(String uuid, Long seatId) {
-        Seat seat = concertRepository.getSeatById(seatId);
-        Reservation reservation = new Reservation(uuid, seat);
-       return concertRepository.save(reservation);
+        Seat selectedSeat = concertRepository.getSelectedSeat(seatId);
+        selectedSeat.inactive();
+        Reservation reservation = new Reservation(uuid, selectedSeat);
+        return concertRepository.save(reservation);
     }
 
     @Transactional
@@ -63,13 +58,13 @@ public class ConcertService {
         return reservation.getSeat();
     }
 
-    public void validateSeatStatus(Long reservationId) {
+    public void validateSeatStatusForPayment(Long reservationId) {
         Seat seat = getReservationSeat(reservationId);
-        seat.validate();
+        seat.validateForSeatExpired();
     }
 
     public void completeReservationByPayment(Long reservationId){
-        validateSeatStatus(reservationId);
+        validateSeatStatusForPayment(reservationId);
         Reservation reservation = getReservationInfo(reservationId);
         reservation.completeReservation();
         concertRepository.save(reservation);

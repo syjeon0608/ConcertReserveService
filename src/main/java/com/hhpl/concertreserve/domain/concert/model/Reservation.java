@@ -1,6 +1,7 @@
 package com.hhpl.concertreserve.domain.concert.model;
 
 import com.hhpl.concertreserve.domain.concert.type.ReservationStatus;
+import com.hhpl.concertreserve.domain.error.BusinessException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 import static com.hhpl.concertreserve.domain.concert.type.ReservationStatus.*;
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.RESERVATION_ALREADY_CANCELED;
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.RESERVATION_ALREADY_COMPLETED;
 
 @Entity
 @Getter
@@ -45,11 +48,17 @@ public class Reservation {
     }
 
     public void cancelReservation() {
+        if (this.reservationStatus == CANCEL) {
+            throw new BusinessException(RESERVATION_ALREADY_CANCELED);
+        }
         this.reservationStatus = CANCEL;
         this.updatedAt = LocalDateTime.now();
     }
 
     public void completeReservation(){
+        if (this.reservationStatus == COMPLETE) {
+            throw new BusinessException(RESERVATION_ALREADY_COMPLETED);
+        }
         this.reservationStatus = COMPLETE;
         this.updatedAt = LocalDateTime.now();
     }

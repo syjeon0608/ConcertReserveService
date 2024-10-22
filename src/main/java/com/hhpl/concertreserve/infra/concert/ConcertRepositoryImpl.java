@@ -10,8 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.RESERVATION_NOT_FOUND;
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.SEAT_NOT_FOUND;
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -38,8 +37,9 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     }
 
     @Override
-    public Seat getAvailableSelectedSeat(Long seatId) {
-        return seatJpaRepository.getAvailableSelectedSeat(seatId);
+    public Seat getSelectedSeat(Long seatId) {
+        return seatJpaRepository.getSelectedSeat(seatId)
+                .orElseThrow(() -> new BusinessException(SEAT_NOT_FOUND));
     }
 
     @Override
@@ -68,10 +68,5 @@ public class ConcertRepositoryImpl implements ConcertRepository {
         return reservationJpaRepository.findBySeatId(seatId);
     }
 
-    @Override
-    public Seat getSeatById(Long seatId) {
-        return seatJpaRepository.findSeatById(seatId)
-                .orElseThrow(() -> new BusinessException(SEAT_NOT_FOUND));
-    }
 
 }

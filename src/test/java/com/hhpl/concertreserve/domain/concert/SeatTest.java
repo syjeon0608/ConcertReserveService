@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 import static com.hhpl.concertreserve.domain.concert.type.SeatStatus.AVAILABLE;
 import static com.hhpl.concertreserve.domain.concert.type.SeatStatus.UNAVAILABLE;
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.SEAT_IS_EXPIRED;
+import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mockStatic;
@@ -62,7 +62,33 @@ class SeatTest {
         LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(10);
         Seat seat = new Seat(1L, schedule, 80000, UNAVAILABLE, expiredTime);
 
-        BusinessException exception = assertThrows(BusinessException.class, seat::validate);
+        BusinessException exception = assertThrows(BusinessException.class, seat::validateForSeatExpired);
         assertEquals(SEAT_IS_EXPIRED, exception.getErrorCode());
     }
+
+    @Test
+    @DisplayName("예약 불가능한 좌석에 대해 예약을 시도하면 예외를 발생시킨다.")
+    void shouldThrowExceptionWhenReservingUnavailableSeat() {
+        LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(10);
+        Seat seat = new Seat(1L, schedule, 80000, AVAILABLE, expiredTime);
+        seat.inactive();
+        assertEquals(UNAVAILABLE, seat.getStatus());
+
+        BusinessException exception = assertThrows(BusinessException.class, seat::inactive);
+        assertEquals(SEAT_ALREADY_UNAVAILABLE, exception.getErrorCode());
+
+    }
+
+    @Test
+    @DisplayName("이미 예약 가능한 좌석에 대해 재활성화 요청을 하면 예외를 발생시킨다.")
+    void shouldThrowExceptionWhenReactivatingAlreadyAvailableSeat() {
+        LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(10);
+        Seat seat = new Seat(1L, schedule, 80000, UNAVAILABLE, expiredTime);
+        seat.reactivate();
+        assertEquals(AVAILABLE, seat.getStatus());
+
+        BusinessException exception = assertThrows(BusinessException.class, seat::reactivate);
+        assertEquals(SEAT_ALREADY_AVAILABLE, exception.getErrorCode());
+    }
+
 }

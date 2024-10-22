@@ -21,7 +21,11 @@ public enum BusinessExceptionCode implements ErrorCode {
     SEAT_IS_EXPIRED(HttpStatus.BAD_REQUEST,"임시좌석이 만료되었습니다."),
     SEAT_IS_UNAVAILABLE(HttpStatus.BAD_REQUEST,"예약 불가능한 좌석입니다."),
     RESERVATION_NOT_FOUND(HttpStatus.NOT_FOUND,"확인된 예약이 없습니다."),
-    SEAT_NOT_FOUND(HttpStatus.NOT_FOUND,"확인된 좌석이 없습니다.");
+    RESERVATION_ALREADY_CANCELED(HttpStatus.BAD_REQUEST,"이미 취소 된 예약입니다."),
+    RESERVATION_ALREADY_COMPLETED(HttpStatus.BAD_REQUEST,"이미 확정 된 예약입니다."),
+    SEAT_NOT_FOUND(HttpStatus.NOT_FOUND,"확인된 좌석이 없습니다."),
+    SEAT_ALREADY_UNAVAILABLE(HttpStatus.BAD_REQUEST,"이미 선점된 좌석입니다."),
+    SEAT_ALREADY_AVAILABLE(HttpStatus.BAD_REQUEST,"이미 활성화된 좌석입니다.");
 
     private final HttpStatus status;
     private final String message;

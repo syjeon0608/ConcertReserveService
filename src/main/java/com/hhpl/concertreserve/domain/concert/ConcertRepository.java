@@ -13,7 +13,7 @@ public interface ConcertRepository {
 
     List<Seat> getAvailableSeats(Long scheduleId, SeatStatus seatStatus);
 
-    Seat getAvailableSelectedSeat(Long seatId);
+    Seat getSelectedSeat(Long seatId);
 
     void save(Seat seat);
 
@@ -25,5 +25,4 @@ public interface ConcertRepository {
 
     Reservation findBySeatId(Long id);
 
-    Seat getSeatById(Long seatId);
 }
