@@ -2,8 +2,8 @@ package com.hhpl.concertreserve.application;
 
 import com.hhpl.concertreserve.application.facade.PaymentFacade;
 import com.hhpl.concertreserve.application.facade.UserFacade;
-import com.hhpl.concertreserve.application.model.PaymentInfo;
-import com.hhpl.concertreserve.application.model.PointInfo;
+import com.hhpl.concertreserve.application.model.payment.PaymentInfo;
+import com.hhpl.concertreserve.application.model.user.PointInfo;
 import com.hhpl.concertreserve.domain.concert.model.Concert;
 import com.hhpl.concertreserve.domain.concert.model.Reservation;
 import com.hhpl.concertreserve.domain.concert.model.Schedule;

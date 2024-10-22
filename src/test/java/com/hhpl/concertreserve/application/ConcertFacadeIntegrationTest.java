@@ -1,10 +1,10 @@
 package com.hhpl.concertreserve.application;
 
 import com.hhpl.concertreserve.application.facade.ConcertFacade;
-import com.hhpl.concertreserve.application.model.ConcertInfo;
-import com.hhpl.concertreserve.application.model.ReservationInfo;
-import com.hhpl.concertreserve.application.model.ScheduleInfo;
-import com.hhpl.concertreserve.application.model.SeatInfo;
+import com.hhpl.concertreserve.application.model.concert.ConcertInfo;
+import com.hhpl.concertreserve.application.model.concert.ReservationInfo;
+import com.hhpl.concertreserve.application.model.concert.ScheduleInfo;
+import com.hhpl.concertreserve.application.model.concert.SeatInfo;
 import com.hhpl.concertreserve.domain.concert.model.Concert;
 import com.hhpl.concertreserve.domain.concert.model.Schedule;
 import com.hhpl.concertreserve.domain.concert.model.Seat;

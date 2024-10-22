@@ -2,7 +2,7 @@ package com.hhpl.concertreserve.application;
 
 import com.hhpl.concertreserve.ConcertReservationServiceApplication;
 import com.hhpl.concertreserve.application.facade.WaitingQueueFacade;
-import com.hhpl.concertreserve.application.model.WaitingQueueInfo;
+import com.hhpl.concertreserve.application.model.waitingqueue.WaitingQueueInfo;
 import com.hhpl.concertreserve.domain.error.CoreException;
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
 import com.hhpl.concertreserve.infra.waitingqueue.WaitingQueueJpaRepository;

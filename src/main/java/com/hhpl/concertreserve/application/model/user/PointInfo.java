@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.application.model;
+package com.hhpl.concertreserve.application.model.user;
 
 import java.time.LocalDateTime;
 
