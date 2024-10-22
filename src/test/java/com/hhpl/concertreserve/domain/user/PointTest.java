@@ -1,11 +1,11 @@
 package com.hhpl.concertreserve.domain.user;
 
-import com.hhpl.concertreserve.domain.error.BusinessException;
+import com.hhpl.concertreserve.domain.error.CoreException;
 import com.hhpl.concertreserve.domain.user.model.Point;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.*;
+import static com.hhpl.concertreserve.domain.error.ErrorType.*;
 import static com.hhpl.concertreserve.domain.user.model.PointStatus.CHARGE;
 import static com.hhpl.concertreserve.domain.user.model.PointStatus.USE;
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,11 +30,11 @@ class PointTest {
         Point point = new Point(1L, 10000);
         int amountToCharge = 0;
 
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
+        CoreException exception = assertThrows(CoreException.class, () -> {
             point.validate(amountToCharge,CHARGE);
         });
 
-        assertEquals(INVALID_CHARGE_AMOUNT, exception.getErrorCode());
+        assertEquals(INVALID_CHARGE_AMOUNT, exception.getErrorType());
     }
 
     @Test
@@ -43,11 +43,11 @@ class PointTest {
         Point point = new Point(1L, 10000);
         int amountToCharge = -1000;
 
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
+        CoreException exception = assertThrows(CoreException.class, () -> {
             point.validate(amountToCharge,CHARGE);
         });
 
-        assertEquals(INVALID_CHARGE_AMOUNT, exception.getErrorCode());
+        assertEquals(INVALID_CHARGE_AMOUNT, exception.getErrorType());
     }
 
     @Test
@@ -56,11 +56,11 @@ class PointTest {
         Point point = new Point(1L, 80000000);
         int amountToCharge = 2000000;
 
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
+        CoreException exception = assertThrows(CoreException.class, () -> {
             point.validate(amountToCharge,CHARGE);
         });
 
-        assertEquals(EXCEEDS_MAXIMUM_POINT, exception.getErrorCode());
+        assertEquals(EXCEEDS_MAXIMUM_POINT, exception.getErrorType());
     }
 
 
@@ -71,11 +71,11 @@ class PointTest {
         Point point = new Point(1L, 50000);
         int amountToUse = 60000;
 
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
+        CoreException exception = assertThrows(CoreException.class, () -> {
             point.validate(amountToUse, USE);
         });
 
-        assertEquals(POINT_NOT_ENOUGH, exception.getErrorCode());
+        assertEquals(POINT_NOT_ENOUGH, exception.getErrorType());
     }
 
     @Test

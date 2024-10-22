@@ -1,11 +1,11 @@
 package com.hhpl.concertreserve.domain.waitingqueue;
 
-import com.hhpl.concertreserve.domain.error.BusinessException;
+import com.hhpl.concertreserve.domain.error.CoreException;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
 
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.*;
+import static com.hhpl.concertreserve.domain.error.ErrorType.*;
 
 @Component
 public class WaitingQueueValidator {
@@ -15,16 +15,16 @@ public class WaitingQueueValidator {
 
     public void validateUserUuid(String uuid) {
         if (uuid == null || uuid.trim().isEmpty()) {
-            throw new BusinessException(UUID_MISSING);
+            throw new CoreException(UUID_MISSING);
         }
         if (!isValidUUID(uuid)){
-            throw new BusinessException(UUID_VALIDATION_FAILED);
+            throw new CoreException(UUID_VALIDATION_FAILED);
         }
     }
 
     public void validateConcertId(Long concertId) {
         if (concertId == null || concertId <= 0) {
-            throw new BusinessException(CONCERT_ID_VALIDATION_FAILED);
+            throw new CoreException(CONCERT_ID_VALIDATION_FAILED);
         }
     }
 

@@ -1,7 +1,7 @@
 package com.hhpl.concertreserve.domain.concert.model;
 
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
-import com.hhpl.concertreserve.domain.error.BusinessException;
+import com.hhpl.concertreserve.domain.error.CoreException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 import static com.hhpl.concertreserve.domain.concert.type.SeatStatus.UNAVAILABLE;
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.*;
+import static com.hhpl.concertreserve.domain.error.ErrorType.*;
 
 @Entity
 @Getter
@@ -37,7 +37,7 @@ public class Seat {
 
     public void inactive() {
         if (this.status == SeatStatus.UNAVAILABLE) {
-            throw new BusinessException(SEAT_ALREADY_UNAVAILABLE);
+            throw new CoreException(SEAT_ALREADY_UNAVAILABLE);
         }
         this.status = UNAVAILABLE;
         this.expiredAt = LocalDateTime.now().plusMinutes(5);
@@ -45,7 +45,7 @@ public class Seat {
 
     public void reactivate() {
         if (this.status == SeatStatus.AVAILABLE) {
-            throw new BusinessException(SEAT_ALREADY_AVAILABLE);
+            throw new CoreException(SEAT_ALREADY_AVAILABLE);
         }
         if (isExpired()) {
             this.status = SeatStatus.AVAILABLE;
@@ -55,7 +55,7 @@ public class Seat {
 
     public void validateForSeatExpired(){
         if(isExpired()) {
-            throw new BusinessException(SEAT_IS_EXPIRED);
+            throw new CoreException(SEAT_IS_EXPIRED);
         }
     }
 

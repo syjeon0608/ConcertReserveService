@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.domain.waitingqueue;
 
-import com.hhpl.concertreserve.domain.error.BusinessException;
+import com.hhpl.concertreserve.domain.error.CoreException;
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
 import com.hhpl.concertreserve.domain.waitingqueue.type.WaitingQueueStatus;
 import org.junit.jupiter.api.DisplayName;
@@ -9,8 +9,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_IS_EXPIRED;
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_IS_INACTIVE;
+import static com.hhpl.concertreserve.domain.error.ErrorType.QUEUE_IS_EXPIRED;
+import static com.hhpl.concertreserve.domain.error.ErrorType.QUEUE_IS_INACTIVE;
 import static com.hhpl.concertreserve.domain.waitingqueue.type.WaitingQueueStatus.EXPIRED;
 import static com.hhpl.concertreserve.domain.waitingqueue.type.WaitingQueueStatus.INACTIVE;
 import static org.junit.jupiter.api.Assertions.*;
@@ -146,8 +146,8 @@ class WaitingQueueTest {
     void validate_shouldThrowExceptionWhenQueueIsInactive() {
         WaitingQueue waitingQueue =  WaitingQueue.createWithQueueNo("uuid", 1L, 10L);
 
-        BusinessException exception = assertThrows(BusinessException.class, waitingQueue::validate);
-        assertEquals(QUEUE_IS_INACTIVE, exception.getErrorCode());
+        CoreException exception = assertThrows(CoreException.class, waitingQueue::validate);
+        assertEquals(QUEUE_IS_INACTIVE, exception.getErrorType());
     }
 
     @Test
@@ -159,8 +159,8 @@ class WaitingQueueTest {
 
         waitingQueue.expire();
 
-        BusinessException exception = assertThrows(BusinessException.class, waitingQueue::validate);
-        assertEquals(QUEUE_IS_EXPIRED, exception.getErrorCode());
+        CoreException exception = assertThrows(CoreException.class, waitingQueue::validate);
+        assertEquals(QUEUE_IS_EXPIRED, exception.getErrorType());
     }
 
     @Test

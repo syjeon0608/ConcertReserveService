@@ -1,13 +1,13 @@
 package com.hhpl.concertreserve.domain.user.model;
 
-import com.hhpl.concertreserve.domain.error.BusinessException;
+import com.hhpl.concertreserve.domain.error.CoreException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.*;
+import static com.hhpl.concertreserve.domain.error.ErrorType.*;
 
 @Entity
 @Getter
@@ -47,15 +47,15 @@ public class Point {
 
     public void validate(int changeAmount, PointStatus status) {
         if (status == PointStatus.CHARGE && changeAmount < MINIMUM_CHARGE_AMOUNT) {
-            throw new BusinessException(INVALID_CHARGE_AMOUNT);
+            throw new CoreException(INVALID_CHARGE_AMOUNT);
         }
 
         if (status == PointStatus.CHARGE && this.amount + changeAmount > MAXIMUM_POINT_LIMIT){
-            throw new BusinessException(EXCEEDS_MAXIMUM_POINT);
+            throw new CoreException(EXCEEDS_MAXIMUM_POINT);
         }
 
         if (status == PointStatus.USE && this.amount < changeAmount) {
-            throw new BusinessException(POINT_NOT_ENOUGH);
+            throw new CoreException(POINT_NOT_ENOUGH);
         }
     }
 

@@ -9,7 +9,7 @@ import com.hhpl.concertreserve.domain.concert.model.Reservation;
 import com.hhpl.concertreserve.domain.concert.model.Schedule;
 import com.hhpl.concertreserve.domain.concert.model.Seat;
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
-import com.hhpl.concertreserve.domain.error.BusinessException;
+import com.hhpl.concertreserve.domain.error.CoreException;
 import com.hhpl.concertreserve.domain.user.model.Point;
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
 import com.hhpl.concertreserve.infra.concert.ConcertJpaRepository;
@@ -103,7 +103,7 @@ public class PaymentFacadeIntegrationTest {
     @Test
     @DisplayName("포인트 부족 시 예외 발생")
     void shouldThrowExceptionForInsufficientPoints() {
-        assertThrows(BusinessException.class, () -> {
+        assertThrows(CoreException.class, () -> {
             paymentFacade.processPayment(1L, 1L, "test-uuid2");
         });
     }
@@ -119,7 +119,7 @@ public class PaymentFacadeIntegrationTest {
     @Test
     @DisplayName("잘못된 포인트 충전 금액 예외 발생")
     void shouldThrowExceptionForInvalidChargeAmount() {
-        assertThrows(BusinessException.class, () -> {
+        assertThrows(CoreException.class, () -> {
             userFacade.chargePoint(1L, -100, CHARGE);
         });
     }

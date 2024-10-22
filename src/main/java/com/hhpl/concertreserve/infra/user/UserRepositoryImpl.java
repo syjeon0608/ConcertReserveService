@@ -1,12 +1,12 @@
 package com.hhpl.concertreserve.infra.user;
 
-import com.hhpl.concertreserve.domain.error.BusinessException;
+import com.hhpl.concertreserve.domain.error.CoreException;
 import com.hhpl.concertreserve.domain.user.UserRepository;
 import com.hhpl.concertreserve.domain.user.model.Point;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.WALLET_NOT_FOUND_ERROR;
+import static com.hhpl.concertreserve.domain.error.ErrorType.WALLET_NOT_FOUND_ERROR;
 
 @Repository
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Point getPoints(Long userId) {
         return pointJpaRepository.findByUserId(userId)
-                .orElseThrow(()-> new BusinessException(WALLET_NOT_FOUND_ERROR));
+                .orElseThrow(()-> new CoreException(WALLET_NOT_FOUND_ERROR));
     }
 
     @Override

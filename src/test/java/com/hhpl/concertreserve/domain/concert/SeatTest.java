@@ -4,7 +4,7 @@ import com.hhpl.concertreserve.domain.concert.model.Concert;
 import com.hhpl.concertreserve.domain.concert.model.Schedule;
 import com.hhpl.concertreserve.domain.concert.model.Seat;
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
-import com.hhpl.concertreserve.domain.error.BusinessException;
+import com.hhpl.concertreserve.domain.error.CoreException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 import static com.hhpl.concertreserve.domain.concert.type.SeatStatus.AVAILABLE;
 import static com.hhpl.concertreserve.domain.concert.type.SeatStatus.UNAVAILABLE;
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.*;
+import static com.hhpl.concertreserve.domain.error.ErrorType.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mockStatic;
@@ -62,8 +62,8 @@ class SeatTest {
         LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(10);
         Seat seat = new Seat(1L, schedule, 80000, UNAVAILABLE, expiredTime);
 
-        BusinessException exception = assertThrows(BusinessException.class, seat::validateForSeatExpired);
-        assertEquals(SEAT_IS_EXPIRED, exception.getErrorCode());
+        CoreException exception = assertThrows(CoreException.class, seat::validateForSeatExpired);
+        assertEquals(SEAT_IS_EXPIRED, exception.getErrorType());
     }
 
     @Test
@@ -74,8 +74,8 @@ class SeatTest {
         seat.inactive();
         assertEquals(UNAVAILABLE, seat.getStatus());
 
-        BusinessException exception = assertThrows(BusinessException.class, seat::inactive);
-        assertEquals(SEAT_ALREADY_UNAVAILABLE, exception.getErrorCode());
+        CoreException exception = assertThrows(CoreException.class, seat::inactive);
+        assertEquals(SEAT_ALREADY_UNAVAILABLE, exception.getErrorType());
 
     }
 
@@ -87,8 +87,8 @@ class SeatTest {
         seat.reactivate();
         assertEquals(AVAILABLE, seat.getStatus());
 
-        BusinessException exception = assertThrows(BusinessException.class, seat::reactivate);
-        assertEquals(SEAT_ALREADY_AVAILABLE, exception.getErrorCode());
+        CoreException exception = assertThrows(CoreException.class, seat::reactivate);
+        assertEquals(SEAT_ALREADY_AVAILABLE, exception.getErrorType());
     }
 
 }

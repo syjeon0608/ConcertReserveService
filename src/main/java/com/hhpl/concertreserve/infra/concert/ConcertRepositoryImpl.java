@@ -3,14 +3,14 @@ package com.hhpl.concertreserve.infra.concert;
 import com.hhpl.concertreserve.domain.concert.*;
 import com.hhpl.concertreserve.domain.concert.model.*;
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
-import com.hhpl.concertreserve.domain.error.BusinessException;
+import com.hhpl.concertreserve.domain.error.CoreException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.*;
+import static com.hhpl.concertreserve.domain.error.ErrorType.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -39,7 +39,7 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     @Override
     public Seat getSelectedSeat(Long seatId) {
         return seatJpaRepository.getSelectedSeat(seatId)
-                .orElseThrow(() -> new BusinessException(SEAT_NOT_FOUND));
+                .orElseThrow(() -> new CoreException(SEAT_NOT_FOUND));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     @Override
     public Reservation getMyReservation(Long reservationId) {
         return reservationJpaRepository.findById(reservationId)
-                .orElseThrow(() -> new BusinessException(RESERVATION_NOT_FOUND));
+                .orElseThrow(() -> new CoreException(RESERVATION_NOT_FOUND));
     }
 
     @Override

@@ -6,7 +6,7 @@ import com.hhpl.concertreserve.domain.concert.model.Schedule;
 import com.hhpl.concertreserve.domain.concert.model.Seat;
 import com.hhpl.concertreserve.domain.concert.type.ReservationStatus;
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
-import com.hhpl.concertreserve.domain.error.BusinessException;
+import com.hhpl.concertreserve.domain.error.CoreException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 
 import static com.hhpl.concertreserve.domain.concert.type.ReservationStatus.CANCEL;
 import static com.hhpl.concertreserve.domain.concert.type.ReservationStatus.COMPLETE;
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.RESERVATION_ALREADY_CANCELED;
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.RESERVATION_ALREADY_COMPLETED;
+import static com.hhpl.concertreserve.domain.error.ErrorType.RESERVATION_ALREADY_CANCELED;
+import static com.hhpl.concertreserve.domain.error.ErrorType.RESERVATION_ALREADY_COMPLETED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -72,8 +72,8 @@ class ReservationTest {
         reservation.cancelReservation();
         assertEquals(CANCEL,reservation.getReservationStatus());
 
-        BusinessException exception = assertThrows(BusinessException.class, reservation::cancelReservation);
-        assertEquals(RESERVATION_ALREADY_CANCELED,exception.getErrorCode());
+        CoreException exception = assertThrows(CoreException.class, reservation::cancelReservation);
+        assertEquals(RESERVATION_ALREADY_CANCELED,exception.getErrorType());
     }
 
     @Test
@@ -87,8 +87,8 @@ class ReservationTest {
         reservation.completeReservation();
         assertEquals(COMPLETE,reservation.getReservationStatus());
 
-        BusinessException exception = assertThrows(BusinessException.class, reservation::completeReservation);
-        assertEquals(RESERVATION_ALREADY_COMPLETED,exception.getErrorCode());
+        CoreException exception = assertThrows(CoreException.class, reservation::completeReservation);
+        assertEquals(RESERVATION_ALREADY_COMPLETED,exception.getErrorType());
     }
 
 }

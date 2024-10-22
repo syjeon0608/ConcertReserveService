@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.infra.waitingqueue;
 
-import com.hhpl.concertreserve.domain.error.BusinessException;
+import com.hhpl.concertreserve.domain.error.CoreException;
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
 import com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_IS_INACTIVE;
-import static com.hhpl.concertreserve.domain.error.BusinessExceptionCode.QUEUE_NOT_FOUND;
+import static com.hhpl.concertreserve.domain.error.ErrorType.QUEUE_IS_INACTIVE;
+import static com.hhpl.concertreserve.domain.error.ErrorType.QUEUE_NOT_FOUND;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,7 +37,7 @@ public class WaitingQueueRepositoryImpl implements WaitingQueueRepository {
     @Override
     public WaitingQueue getMyWaitingQueue(String uuid, Long concertId) {
         return waitingQueueJpaRepository.findByUuidAndConcertId(uuid, concertId)
-                .orElseThrow(() -> new BusinessException(QUEUE_NOT_FOUND));
+                .orElseThrow(() -> new CoreException(QUEUE_NOT_FOUND));
     }
 
     @Override
@@ -59,7 +59,7 @@ public class WaitingQueueRepositoryImpl implements WaitingQueueRepository {
     @Override
     public WaitingQueue getMyActiveQueue(String uuid) {
         return waitingQueueJpaRepository.findActiveWaitingQueueByUuid(uuid)
-                .orElseThrow(() -> new BusinessException(QUEUE_IS_INACTIVE));
+                .orElseThrow(() -> new CoreException(QUEUE_IS_INACTIVE));
     }
 
 }
