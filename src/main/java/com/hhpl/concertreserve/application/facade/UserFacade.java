@@ -1,7 +1,7 @@
 package com.hhpl.concertreserve.application.facade;
 
-import com.hhpl.concertreserve.application.mapper.UserMapperApplication;
-import com.hhpl.concertreserve.application.model.PointInfo;
+import com.hhpl.concertreserve.application.mapper.ApplicationMapper;
+import com.hhpl.concertreserve.application.model.user.PointInfo;
 import com.hhpl.concertreserve.domain.user.UserService;
 import com.hhpl.concertreserve.domain.user.model.Point;
 import com.hhpl.concertreserve.domain.user.model.PointStatus;
@@ -14,17 +14,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserFacade {
 
     private final UserService userService;
-    private final UserMapperApplication userMapperApplication;
 
     public PointInfo getUserPoint(Long userId) {
         Point point=  userService.getUserPoint(userId);
-        return userMapperApplication.from(point);
+        return ApplicationMapper.UserMapper.from(point);
     }
 
     @Transactional
     public PointInfo chargePoint(Long userId, int amountToCharge, PointStatus status) {
         Point point =  userService.updateUserPoint(userId, amountToCharge, status);
-        return userMapperApplication.from(point);
+        return ApplicationMapper.UserMapper.from(point);
     }
 
 }

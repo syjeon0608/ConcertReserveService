@@ -1,11 +1,11 @@
 package com.hhpl.concertreserve.application.facade;
 
-import com.hhpl.concertreserve.application.mapper.ConcertMapperApplication;
-import com.hhpl.concertreserve.application.model.ConcertInfo;
-import com.hhpl.concertreserve.application.model.ReservationInfo;
-import com.hhpl.concertreserve.application.model.ScheduleInfo;
-import com.hhpl.concertreserve.application.model.SeatInfo;
-import com.hhpl.concertreserve.domain.concert.*;
+import com.hhpl.concertreserve.application.mapper.ApplicationMapper;
+import com.hhpl.concertreserve.application.model.concert.ConcertInfo;
+import com.hhpl.concertreserve.application.model.concert.ReservationInfo;
+import com.hhpl.concertreserve.application.model.concert.ScheduleInfo;
+import com.hhpl.concertreserve.application.model.concert.SeatInfo;
+import com.hhpl.concertreserve.domain.concert.ConcertService;
 import com.hhpl.concertreserve.domain.concert.model.Concert;
 import com.hhpl.concertreserve.domain.concert.model.Reservation;
 import com.hhpl.concertreserve.domain.concert.model.Schedule;
@@ -21,27 +21,26 @@ import java.util.List;
 public class ConcertFacade {
 
     private final ConcertService concertService;
-    private final ConcertMapperApplication concertMapper;
 
     public List<ConcertInfo> getAvailableConcerts() {
         List<Concert> concerts = concertService.getAvailableConcerts();
-        return concertMapper.fromConcerts(concerts);
+        return ApplicationMapper.ConcertMapper.fromConcerts(concerts);
     }
 
     public List<ScheduleInfo> getAvailableSchedules(Long concertId) {
         List<Schedule> schedules = concertService.getAvailableSchedules(concertId);
-        return concertMapper.fromSchedules(schedules);
+        return ApplicationMapper.ConcertMapper.fromSchedules(schedules);
     }
 
     public List<SeatInfo> getAvailableSeats(Long scheduleId) {
         List<Seat> seats = concertService.getAvailableSeats(scheduleId);
-        return concertMapper.fromSeats(seats);
+        return ApplicationMapper.ConcertMapper.fromSeats(seats);
     }
 
     @Transactional
     public ReservationInfo createTemporarySeatReservation(String uuid, Long seatId) {
         Reservation reservation = concertService.createReservation(uuid, seatId);
-        return concertMapper.from(reservation);
+        return ApplicationMapper.ConcertMapper.from(reservation);
     }
 
 }

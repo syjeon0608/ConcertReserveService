@@ -1,7 +1,7 @@
 package com.hhpl.concertreserve.application.facade;
 
-import com.hhpl.concertreserve.application.mapper.PaymentMapperApplication;
-import com.hhpl.concertreserve.application.model.PaymentInfo;
+import com.hhpl.concertreserve.application.mapper.ApplicationMapper;
+import com.hhpl.concertreserve.application.model.payment.PaymentInfo;
 import com.hhpl.concertreserve.domain.concert.ConcertService;
 import com.hhpl.concertreserve.domain.concert.model.Reservation;
 import com.hhpl.concertreserve.domain.payment.PaymentService;
@@ -21,7 +21,6 @@ public class PaymentFacade {
     private final PaymentService paymentService;
     private final UserService userService;
     private final WaitingQueueService waitingQueueService;
-    private final PaymentMapperApplication paymentMapper;
 
     @Transactional
     public PaymentInfo processPayment(Long reservationId, Long userId, String uuid) {
@@ -30,7 +29,7 @@ public class PaymentFacade {
         userService.updateUserPoint(userId, reservation.getTotalAmount(), PointStatus.USE);
         waitingQueueService.expireQueueOnPaymentCompletion(uuid);
         Payment payment = paymentService.completePayment(userId, reservation, reservation.getTotalAmount());
-        return paymentMapper.from(payment);
+        return ApplicationMapper.PaymentMapper.from(payment);
     }
 
 }
