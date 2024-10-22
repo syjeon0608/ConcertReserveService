@@ -1,9 +1,9 @@
 package com.hhpl.concertreserve.domain.error;
 
-import org.springframework.http.HttpStatus;
-
-public interface ErrorCode {
-    String getCode();
-    HttpStatus getStatus();
-    String getMessage();
+public enum ErrorCode {
+    NOT_FOUND,
+    BAD_REQUEST,
+    AUTHORIZATION_ERROR,
+    VALIDATION_EXCEPTION,
+    BUSINESS_EXCEPTION
 }
