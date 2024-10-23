@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.infra.waitingqueue;
+package com.hhpl.concertreserve.infra.database.waitingqueue;
 
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
 import org.springframework.data.domain.Pageable;

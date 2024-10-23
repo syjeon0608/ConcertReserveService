@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.infra.user;
+package com.hhpl.concertreserve.infra.database.user;
 
 import com.hhpl.concertreserve.domain.user.model.Point;
 import org.springframework.data.jpa.repository.JpaRepository;

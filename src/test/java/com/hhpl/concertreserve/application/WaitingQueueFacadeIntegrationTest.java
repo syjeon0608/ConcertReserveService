@@ -5,7 +5,7 @@ import com.hhpl.concertreserve.application.facade.WaitingQueueFacade;
 import com.hhpl.concertreserve.application.model.waitingqueue.WaitingQueueInfo;
 import com.hhpl.concertreserve.domain.error.CoreException;
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
-import com.hhpl.concertreserve.infra.waitingqueue.WaitingQueueJpaRepository;
+import com.hhpl.concertreserve.infra.database.waitingqueue.WaitingQueueJpaRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.infra.concert;
+package com.hhpl.concertreserve.infra.database.concert;
 
 import com.hhpl.concertreserve.domain.concert.model.Seat;
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;

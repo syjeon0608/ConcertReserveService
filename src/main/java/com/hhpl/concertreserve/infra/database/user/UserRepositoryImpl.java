@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.infra.user;
+package com.hhpl.concertreserve.infra.database.user;
 
 import com.hhpl.concertreserve.domain.error.CoreException;
 import com.hhpl.concertreserve.domain.user.UserRepository;
