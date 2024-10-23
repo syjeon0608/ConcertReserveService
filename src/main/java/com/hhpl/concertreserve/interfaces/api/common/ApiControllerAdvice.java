@@ -3,6 +3,7 @@ package com.hhpl.concertreserve.interfaces.api.common;
 import com.hhpl.concertreserve.domain.error.CoreException;
 import com.hhpl.concertreserve.domain.error.ErrorType;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,7 +15,7 @@ import static org.hibernate.query.sqm.tree.SqmNode.log;
 public class ApiControllerAdvice {
 
     @ExceptionHandler(CoreException.class)
-    public ApiErrorResponse handleBusinessException(CoreException e) {
+    public ResponseEntity<ApiErrorResponse> handleBusinessException(CoreException e) {
         ErrorType errorResponse = e.getErrorType();
         HttpStatus status;
 
@@ -33,11 +34,13 @@ public class ApiControllerAdvice {
             default -> status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return ApiErrorResponse.ERROR(
+        ApiErrorResponse apiErrorResponse = ApiErrorResponse.ERROR(
                 status,
                 errorResponse.name(),
                 errorResponse.getMessage()
         );
+
+        return new ResponseEntity<>(apiErrorResponse, status);
     }
 
     @ExceptionHandler(Exception.class)
