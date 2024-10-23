@@ -26,7 +26,7 @@ public class WaitingQueueRepositoryImpl implements WaitingQueueRepository {
 
     @Override
     public WaitingQueue save(WaitingQueue waitingQueue) {
-        return waitingQueueJpaRepository.save(waitingQueue);
+        return waitingQueueJpaRepository.saveAndFlush(waitingQueue);
     }
 
     @Override

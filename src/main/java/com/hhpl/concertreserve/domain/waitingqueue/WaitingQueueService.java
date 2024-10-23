@@ -3,6 +3,7 @@ package com.hhpl.concertreserve.domain.waitingqueue;
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,9 +15,9 @@ public class WaitingQueueService {
     private final WaitingQueueRepository waitingQueueRepository;
     private final WaitingQueueValidator waitingQueueValidate;
 
-    public Long getMaxWaitingQueueNoByConcert(Long concertId){
-        return waitingQueueRepository.findMaxQueueNoByConcertId(concertId).orElse(0L);
-    }
+//    public Long getMaxWaitingQueueNoByConcert(Long concertId){
+//        return waitingQueueRepository.findMaxQueueNoByConcertId(concertId).orElse(0L);
+//    }
 
     public void validateOnlyUuid(String uuid){
         waitingQueueValidate.validateUserUuid(uuid);
@@ -27,12 +28,13 @@ public class WaitingQueueService {
         waitingQueueValidate.validateConcertId(concertId);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public WaitingQueue enterWaitingQueue(String uuid, Long concertId) {
-        Long maxQueueNo = getMaxWaitingQueueNoByConcert(concertId);
+        Long maxQueueNo = waitingQueueRepository.findMaxQueueNoByConcertId(concertId).orElse(0L);
         WaitingQueue waitingQueue = WaitingQueue.createWithQueueNo(uuid, concertId, maxQueueNo);
        return waitingQueueRepository.save(waitingQueue);
     }
+
 
     public Long getLastActivatedQueueNo(Long concertId) {
         return waitingQueueRepository.getMaxActivatedQueueNoByConcertId(concertId).orElse(0L);

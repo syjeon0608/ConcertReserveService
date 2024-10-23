@@ -16,6 +16,10 @@ import static com.hhpl.concertreserve.domain.waitingqueue.type.WaitingQueueStatu
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "waiting_queue", indexes = {
+        @Index(name = "idx_concertId", columnList = "concertId"),
+        @Index(name = "idx_queueNo", columnList = "queueNo")
+})
 public class WaitingQueue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
