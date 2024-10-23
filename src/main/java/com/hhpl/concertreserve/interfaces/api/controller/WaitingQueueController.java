@@ -27,7 +27,7 @@ public class WaitingQueueController {
 
     @Operation(summary = " 대기열 조회 API", description = "유저는 자신의 대기열 상태를 확인한다.")
     @GetMapping("/concerts/{concertId}")
-    public ApiResponse<WaitingQueueResponse> getQueueStatus(@RequestHeader("X-User-UUID") String uuid, @PathVariable Long concertId) {
+    public ApiResponse<WaitingQueueResponse> getQueueStatus(@RequestHeader("X-WAITING-QUEUE-ID") String uuid, @PathVariable Long concertId) {
         WaitingQueueInfo waitingQueueInfo =  waitingQueueFacade.getWaitingQueueInfoForUser(uuid, concertId);
         WaitingQueueResponse response = ControllerMapper.WaitingQueueMapper.toResponse(waitingQueueInfo);
         return ApiResponse.OK(response);

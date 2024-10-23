@@ -20,7 +20,7 @@ public class PaymentController {
     @PostMapping("/reservations/{reservationId}/payments")
     public ApiResponse<ReservationPaymentResponse> payForReservation(@PathVariable Long reservationId,
                                                                      @RequestBody ReservationPaymentRequest request,
-                                                                     @RequestHeader("X-QUEUE-ID") String uuid) {
+                                                                     @RequestHeader("X-WAITING-QUEUE-ID") String uuid) {
         PaymentInfo paymentInfo = paymentFacade.processPayment(reservationId, request.userId(), uuid);
         ReservationPaymentResponse response = ControllerMapper.PaymentMapper.toResponse(paymentInfo);
         return ApiResponse.OK(response);
