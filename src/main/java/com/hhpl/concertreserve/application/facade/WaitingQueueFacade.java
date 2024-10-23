@@ -14,7 +14,7 @@ public class WaitingQueueFacade {
     private final WaitingQueueService waitingQueueService;
 
     public WaitingQueueInfo enterWaitingQueueForConcert(String uuid, Long concertId){
-        waitingQueueService.validateUserBeforeQueueEntry(uuid, concertId);
+        waitingQueueService.validateUuidAndConcertId(uuid, concertId);
         WaitingQueue waitingQueue =  waitingQueueService.enterWaitingQueue(uuid, concertId);
         return ApplicationMapper.WaitingQueueMapper.from(waitingQueue);
     }
@@ -24,8 +24,13 @@ public class WaitingQueueFacade {
         return ApplicationMapper.WaitingQueueMapper.from(waitingQueue);
     }
 
-    public void validateQueueStatusForUser(String uuid, Long concertId){
-        waitingQueueService.validateQueueStatus(uuid,concertId);
+    public boolean validateQueueReadinessForSubsequent(String uuid, Long concertId){
+        waitingQueueService.validateUuidAndConcertId(uuid, concertId);
+       return waitingQueueService.checkWaitingQueueValidity(uuid,concertId);
+    }
+
+    public void validateWaitingQueueUuid(String uuid){
+        waitingQueueService.validateOnlyUuid(uuid);
     }
 
 }

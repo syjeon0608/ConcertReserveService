@@ -74,13 +74,15 @@ public class WaitingQueue {
         }
     }
 
-    public void validate() {
+    public void ensureWaitingQueueIsActive() {
         if ((this.queueStatus != WaitingQueueStatus.ACTIVE) && this.expiredAt == null) {
-            throw new CoreException(QUEUE_IS_INACTIVE);
+            throw new CoreException(QUEUE_IS_INACTIVE, "uuid: "+this.uuid , "concertId: "+ this.concertId);
         }
+    }
 
+    public void ensureWaitingQueueIsNotExpired(){
         if (isExpired()) {
-            throw new CoreException(QUEUE_IS_EXPIRED);
+            throw new CoreException(QUEUE_IS_EXPIRED, "uuid: "+ this.uuid, "concertId: " + this.concertId, "expiredAt: "+ this.expiredAt);
         }
     }
 

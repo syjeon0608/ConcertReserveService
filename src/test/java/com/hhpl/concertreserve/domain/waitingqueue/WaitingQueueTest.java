@@ -146,7 +146,7 @@ class WaitingQueueTest {
     void validate_shouldThrowExceptionWhenQueueIsInactive() {
         WaitingQueue waitingQueue =  WaitingQueue.createWithQueueNo("uuid", 1L, 10L);
 
-        CoreException exception = assertThrows(CoreException.class, waitingQueue::validate);
+        CoreException exception = assertThrows(CoreException.class, waitingQueue::ensureWaitingQueueIsActive);
         assertEquals(QUEUE_IS_INACTIVE, exception.getErrorType());
     }
 
@@ -159,7 +159,7 @@ class WaitingQueueTest {
 
         waitingQueue.expire();
 
-        CoreException exception = assertThrows(CoreException.class, waitingQueue::validate);
+        CoreException exception = assertThrows(CoreException.class, waitingQueue::ensureWaitingQueueIsNotExpired);
         assertEquals(QUEUE_IS_EXPIRED, exception.getErrorType());
     }
 
@@ -169,7 +169,7 @@ class WaitingQueueTest {
         WaitingQueue waitingQueue =  WaitingQueue.createWithQueueNo("uuid", 1L, 10L);
         waitingQueue.activate();
 
-        assertDoesNotThrow(waitingQueue::validate);
+        assertDoesNotThrow(waitingQueue::ensureWaitingQueueIsNotExpired);
     }
 
     @Test

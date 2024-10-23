@@ -66,7 +66,7 @@ public class WaitingQueueFacadeIntegrationTest {
         waitingQueueJpaRepository.save(savedQueue);
 
         assertThrows(CoreException.class, () -> {
-            waitingQueueFacade.validateQueueStatusForUser("550e8400-e29b-41d4-a716-446655440000", 1L);
+            waitingQueueFacade.validateQueueReadinessForSubsequent("550e8400-e29b-41d4-a716-446655440000", 1L);
         });
 
     }
@@ -75,7 +75,7 @@ public class WaitingQueueFacadeIntegrationTest {
     @DisplayName("유효하지 않은 사용자로 대기열 상태 검증 시 예외 발생")
     void shouldThrowExceptionForInvalidUserInQueueStatus() {
         assertThrows(CoreException.class, () -> {
-            waitingQueueFacade.validateQueueStatusForUser("invalid-uuid", 1L);
+            waitingQueueFacade.validateQueueReadinessForSubsequent("invalid-uuid", 1L);
         });
     }
 
@@ -114,7 +114,7 @@ public class WaitingQueueFacadeIntegrationTest {
         waitingQueueJpaRepository.save(savedQueue);
 
         CoreException exception = assertThrows(CoreException.class, () -> {
-            waitingQueueFacade.validateQueueStatusForUser("550e8400-e29b-41d4-a716-446655440000", 1L);
+            waitingQueueFacade.validateQueueReadinessForSubsequent("550e8400-e29b-41d4-a716-446655440000", 1L);
         });
 
         assertEquals(QUEUE_IS_INACTIVE,exception.getErrorType());

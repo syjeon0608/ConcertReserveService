@@ -18,9 +18,13 @@ public class WaitingQueueService {
         return waitingQueueRepository.findMaxQueueNoByConcertId(concertId).orElse(0L);
     }
 
-    public void validateUserBeforeQueueEntry(String uuid, Long concertId){
-        waitingQueueValidate.validateConcertId(concertId);
+    public void validateOnlyUuid(String uuid){
         waitingQueueValidate.validateUserUuid(uuid);
+    }
+
+    public void validateUuidAndConcertId(String uuid, Long concertId){
+        validateOnlyUuid(uuid);
+        waitingQueueValidate.validateConcertId(concertId);
     }
 
     @Transactional
@@ -36,14 +40,17 @@ public class WaitingQueueService {
 
     public WaitingQueue getMyWaitingQueueInfo(String uuid, Long concertId) {
         WaitingQueue waitingQueue = waitingQueueRepository.getMyWaitingQueue(uuid,concertId);
+        waitingQueue.ensureWaitingQueueIsNotExpired();
         Long lastActivatedQueueNo = getLastActivatedQueueNo(concertId);
         waitingQueue.calculateRemainingQueueNo(lastActivatedQueueNo);
         return waitingQueue;
     }
 
-    public void validateQueueStatus(String uuid, Long concertId) {
+    public boolean checkWaitingQueueValidity(String uuid, Long concertId) {
         WaitingQueue waitingQueue = waitingQueueRepository.getMyWaitingQueue(uuid,concertId);
-        waitingQueue.validate();
+        waitingQueue.ensureWaitingQueueIsActive();
+        waitingQueue.ensureWaitingQueueIsNotExpired();
+        return true;
     }
 
     public void activateInactiveQueuesForAllConcerts() {
