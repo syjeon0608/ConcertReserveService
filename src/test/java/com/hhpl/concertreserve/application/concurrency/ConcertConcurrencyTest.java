@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.application;
+package com.hhpl.concertreserve.application.concurrency;
 
 import com.hhpl.concertreserve.domain.concert.ConcertService;
 import com.hhpl.concertreserve.domain.concert.model.Concert;
@@ -8,6 +8,7 @@ import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
 import com.hhpl.concertreserve.infra.database.concert.ConcertJpaRepository;
 import com.hhpl.concertreserve.infra.database.concert.ScheduleJpaRepository;
 import com.hhpl.concertreserve.infra.database.concert.SeatJpaRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,7 +42,8 @@ public class ConcertConcurrencyTest {
 
 
     @Test
-    public void testCreateReservationConcurrentAccess() throws InterruptedException {
+    @DisplayName("하나의 좌석에 대해 5명이 동시에 예약신청을 하면 한명만 성공하고 나머지는 실패한다.")
+    public void testCreateSeatReservationConcurrentAccess() throws InterruptedException {
         Concert  testConcert = concertJpaRepository.save(new Concert(1L, "Test Concert", "Description", LocalDateTime.now(), LocalDateTime.now().plusHours(3), LocalDateTime.now().plusDays(1)));
         Schedule  testSchedule = scheduleJpaRepository.save(new Schedule(1L, testConcert, LocalDateTime.now().plusDays(1), 100, 100));
         Seat testSeat = seatJpaRepository.save(new Seat(1L, testSchedule, 100, SeatStatus.AVAILABLE, LocalDateTime.now().plusDays(1),0L));
