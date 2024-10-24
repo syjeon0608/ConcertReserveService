@@ -14,10 +14,6 @@ public class WaitingQueueService {
     private final WaitingQueueRepository waitingQueueRepository;
     private final WaitingQueueValidator waitingQueueValidate;
 
-    public Long getMaxWaitingQueueNoByConcert(Long concertId){
-        return waitingQueueRepository.findMaxQueueNoByConcertId(concertId).orElse(0L);
-    }
-
     public void validateOnlyUuid(String uuid){
         waitingQueueValidate.validateUserUuid(uuid);
     }
@@ -29,7 +25,11 @@ public class WaitingQueueService {
 
     @Transactional
     public WaitingQueue enterWaitingQueue(String uuid, Long concertId) {
-        Long maxQueueNo = getMaxWaitingQueueNoByConcert(concertId);
+        List<WaitingQueue>  waitingQueues = waitingQueueRepository.findMaxQueueNoByConcertId(concertId);
+        Long maxQueueNo = waitingQueues.stream()
+                .map(WaitingQueue::getQueueNo)
+                .max(Long::compareTo)
+                .orElse(0L);
         WaitingQueue waitingQueue = WaitingQueue.createWithQueueNo(uuid, concertId, maxQueueNo);
        return waitingQueueRepository.save(waitingQueue);
     }
