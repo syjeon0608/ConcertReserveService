@@ -26,7 +26,7 @@ class ReservationTest {
     void shouldSetReservationStatusToTemporary() {
         Concert concert = new Concert(1L, "Concert A", "Description A", LocalDateTime.now(), LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
         Schedule schedule = new Schedule(1L, concert, LocalDateTime.now(), 50, 100);
-        Seat seat = new Seat(1L, schedule, 80000, SeatStatus.AVAILABLE, LocalDateTime.now());
+        Seat seat = new Seat(1L, schedule, 80000, SeatStatus.AVAILABLE, LocalDateTime.now(),0L);
 
         Reservation reservation = new Reservation("uuid", seat);
 
@@ -39,7 +39,7 @@ class ReservationTest {
     void shouldUpdateReservationStatusToComplete() {
         Concert concert = new Concert(1L, "Concert A", "Description A", LocalDateTime.now(), LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
         Schedule schedule = new Schedule(1L, concert, LocalDateTime.now(), 50, 100);
-        Seat seat = new Seat(1L, schedule, 80000, SeatStatus.AVAILABLE, LocalDateTime.now());
+        Seat seat = new Seat(1L, schedule, 80000, SeatStatus.AVAILABLE, LocalDateTime.now(),0L);
         Reservation reservation = new Reservation("uuid", seat);
 
         reservation.completeReservation();
@@ -52,7 +52,7 @@ class ReservationTest {
     void shouldUpdateReservationStatusToCancel() {
         Concert concert = new Concert(1L, "Concert A", "Description A", LocalDateTime.now(), LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
         Schedule schedule = new Schedule(1L, concert, LocalDateTime.now(), 50, 100);
-        Seat seat = new Seat(1L, schedule, 80000, SeatStatus.AVAILABLE, LocalDateTime.now());
+        Seat seat = new Seat(1L, schedule, 80000, SeatStatus.AVAILABLE, LocalDateTime.now(),0L);
         Reservation reservation = new Reservation("uuid", seat);
 
         reservation.cancelReservation();
@@ -66,7 +66,7 @@ class ReservationTest {
     void shouldThrowExceptionWhenCancelAlreadyCancelledReservation() {
         Concert concert = new Concert(1L, "Concert A", "Description A", LocalDateTime.now(), LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
         Schedule schedule = new Schedule(1L, concert, LocalDateTime.now(), 50, 100);
-        Seat seat = new Seat(1L, schedule, 80000, SeatStatus.AVAILABLE, LocalDateTime.now());
+        Seat seat = new Seat(1L, schedule, 80000, SeatStatus.AVAILABLE, LocalDateTime.now(),0L);
 
         Reservation reservation = new Reservation("uuid", seat);
         reservation.cancelReservation();
@@ -81,7 +81,7 @@ class ReservationTest {
     void shouldThrowExceptionWhenCompleteAlreadyCompletedReservation() {
         Concert concert = new Concert(1L, "Concert A", "Description A", LocalDateTime.now(), LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
         Schedule schedule = new Schedule(1L, concert, LocalDateTime.now(), 50, 100);
-        Seat seat = new Seat(1L, schedule, 80000, SeatStatus.AVAILABLE, LocalDateTime.now());
+        Seat seat = new Seat(1L, schedule, 80000, SeatStatus.AVAILABLE, LocalDateTime.now(),0L);
 
         Reservation reservation = new Reservation("uuid", seat);
         reservation.completeReservation();

@@ -35,6 +35,9 @@ public class Seat {
 
     private LocalDateTime expiredAt;
 
+    @Version
+    private Long version;
+
     public void inactive() {
         if (this.status == SeatStatus.UNAVAILABLE) {
             throw new CoreException(SEAT_ALREADY_UNAVAILABLE);

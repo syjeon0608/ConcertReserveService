@@ -37,7 +37,7 @@ class SeatTest {
 
         mockStatic(LocalDateTime.class);
         when(LocalDateTime.now()).thenReturn(reservedTime);
-        Seat seat = new Seat(1L, schedule, 80000, AVAILABLE, reservedTime);
+        Seat seat = new Seat(1L, schedule, 80000, AVAILABLE, reservedTime,0L);
 
         seat.inactive();
 
@@ -49,7 +49,7 @@ class SeatTest {
     @DisplayName("좌석이 만료되면 좌석상태는 UNAVAILABLE에서 AVAILABLE로 변경된다")
     void shouldChangeSeatStatusToAvailableWhenExpired() {
         LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(10);
-        Seat seat = new Seat(1L, schedule, 80000, SeatStatus.UNAVAILABLE, expiredTime);
+        Seat seat = new Seat(1L, schedule, 80000, SeatStatus.UNAVAILABLE, expiredTime,0L);
 
         seat.reactivate();
 
@@ -60,7 +60,7 @@ class SeatTest {
     @DisplayName("좌석이 만료되면 예외를 던진다")
     void shouldThrowExceptionWhenSeatIsExpired() {
         LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(10);
-        Seat seat = new Seat(1L, schedule, 80000, UNAVAILABLE, expiredTime);
+        Seat seat = new Seat(1L, schedule, 80000, UNAVAILABLE, expiredTime,0L);
 
         CoreException exception = assertThrows(CoreException.class, seat::validateForSeatExpired);
         assertEquals(SEAT_IS_EXPIRED, exception.getErrorType());
@@ -70,7 +70,7 @@ class SeatTest {
     @DisplayName("예약 불가능한 좌석에 대해 예약을 시도하면 예외를 발생시킨다.")
     void shouldThrowExceptionWhenReservingUnavailableSeat() {
         LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(10);
-        Seat seat = new Seat(1L, schedule, 80000, AVAILABLE, expiredTime);
+        Seat seat = new Seat(1L, schedule, 80000, AVAILABLE, expiredTime,0L);
         seat.inactive();
         assertEquals(UNAVAILABLE, seat.getStatus());
 
@@ -83,7 +83,7 @@ class SeatTest {
     @DisplayName("이미 예약 가능한 좌석에 대해 재활성화 요청을 하면 예외를 발생시킨다.")
     void shouldThrowExceptionWhenReactivatingAlreadyAvailableSeat() {
         LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(10);
-        Seat seat = new Seat(1L, schedule, 80000, UNAVAILABLE, expiredTime);
+        Seat seat = new Seat(1L, schedule, 80000, UNAVAILABLE, expiredTime,0L);
         seat.reactivate();
         assertEquals(AVAILABLE, seat.getStatus());
 
