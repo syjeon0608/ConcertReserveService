@@ -99,9 +99,9 @@ class ConcertServiceTest {
         Concert mockConcert = new Concert(1L, "Concert A", "Description A", LocalDateTime.now(), LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
         Schedule mockSchedule = new Schedule(scheduleId, mockConcert, LocalDateTime.now(), 50, 100);
         List<Seat> mockSeats = Arrays.asList(
-                new Seat(1L,  mockSchedule, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusHours(1)),
-                new Seat(2L,  mockSchedule, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusHours(1)),
-                new Seat(3L,  mockSchedule, 50000, SeatStatus.UNAVAILABLE, LocalDateTime.now().plusHours(1))
+                new Seat(1L,  mockSchedule, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusHours(1),0L),
+                new Seat(2L,  mockSchedule, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusHours(1),0L),
+                new Seat(3L,  mockSchedule, 50000, SeatStatus.UNAVAILABLE, LocalDateTime.now().plusHours(1),0L)
         );
         when(concertRepository.getAvailableSeats(scheduleId, SeatStatus.AVAILABLE))
                 .thenReturn(mockSeats.stream()

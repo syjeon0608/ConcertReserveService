@@ -12,7 +12,6 @@ import com.hhpl.concertreserve.domain.concert.model.Schedule;
 import com.hhpl.concertreserve.domain.concert.model.Seat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,7 +36,6 @@ public class ConcertFacade {
         return ApplicationMapper.ConcertMapper.fromSeats(seats);
     }
 
-    @Transactional
     public ReservationInfo createTemporarySeatReservation(String uuid, Long seatId) {
         Reservation reservation = concertService.createReservation(uuid, seatId);
         return ApplicationMapper.ConcertMapper.from(reservation);

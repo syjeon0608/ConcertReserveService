@@ -1,7 +1,13 @@
 package com.hhpl.concertreserve.domain.concert;
 
-import com.hhpl.concertreserve.domain.concert.model.*;
+import com.hhpl.concertreserve.domain.concert.model.Concert;
+import com.hhpl.concertreserve.domain.concert.model.Reservation;
+import com.hhpl.concertreserve.domain.concert.model.Schedule;
+import com.hhpl.concertreserve.domain.concert.model.Seat;
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
+import com.hhpl.concertreserve.domain.error.CoreException;
+import com.hhpl.concertreserve.domain.error.ErrorType;
+import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,11 +35,16 @@ public class ConcertService {
         return concertRepository.getAvailableSeats(scheduleId, SeatStatus.AVAILABLE);
     }
 
+    @Transactional
     public Reservation createReservation(String uuid, Long seatId) {
         Seat selectedSeat = concertRepository.getSelectedSeat(seatId);
-        selectedSeat.inactive();
-        Reservation reservation = new Reservation(uuid, selectedSeat);
-        return concertRepository.save(reservation);
+        try {
+            selectedSeat.inactive();
+            Reservation reservation = new Reservation(uuid, selectedSeat);
+            return concertRepository.save(reservation);
+        } catch (OptimisticLockException e) {
+            throw new CoreException(ErrorType.SEAT_ALREADY_UNAVAILABLE);
+        }
     }
 
     @Transactional
