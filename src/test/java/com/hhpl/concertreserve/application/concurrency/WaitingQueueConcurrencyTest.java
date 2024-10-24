@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.application;
+package com.hhpl.concertreserve.application.concurrency;
 
 import com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueService;
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
@@ -24,8 +24,8 @@ public class WaitingQueueConcurrencyTest {
     private WaitingQueueJpaRepository waitingQueueJpaRepository;
 
     @Test
-    @DisplayName("여러명의 사용자가 동시에 대기열 생성을 요청하면 큐 번호를 순차적으로 줘야 한다.")
-    public void shouldHandleConcurrentCreateWaitingQueue() throws InterruptedException {
+    @DisplayName("여러명의 사용자가 동시에 대기열 생성을 요청하면 모두 큐번호를 부여하면서 대기열 생성이 되어야한다.")
+    public void testCreateWaitingQueueConcurrentAccess() throws InterruptedException {
         int numberOfThreads = 50;
         List<Long> queueNumbers = Collections.synchronizedList(new ArrayList<>());
 
@@ -44,11 +44,8 @@ public class WaitingQueueConcurrencyTest {
                     WaitingQueue queue = waitingQueueService.enterWaitingQueue(Thread.currentThread().getName(), 1L);
                     queueNumbers.add(queue.getQueueNo());
                     successfulRegistrations[0]++;
-                    System.out.println(Thread.currentThread().getName() + " assigned queue number: " + queue.getQueueNo());
-
                 } catch (Exception e) {
                     failedRegistrations[0]++;
-                    System.err.println("Error for user " + Thread.currentThread().getName() + ": " + e.getMessage());
                 } finally {
                     latch.countDown();
                 }

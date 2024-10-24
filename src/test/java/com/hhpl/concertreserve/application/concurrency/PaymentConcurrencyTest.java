@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.application;
+package com.hhpl.concertreserve.application.concurrency;
 
 import com.hhpl.concertreserve.domain.concert.model.Concert;
 import com.hhpl.concertreserve.domain.concert.model.Reservation;
@@ -48,7 +48,6 @@ public class PaymentConcurrencyTest {
     @Test
     @DisplayName("사용자가 5번 결제 요청하면 1번만 성공한다.")
     void testConcurrentPaymentSuccessOnReservation() throws InterruptedException {
-
         Concert  concert = concertJpaRepository.save(new Concert(1L, "Test Concert", "Description", LocalDateTime.now(), LocalDateTime.now().plusHours(3), LocalDateTime.now().plusDays(1)));
         Schedule  schedule = scheduleJpaRepository.save(new Schedule(1L, concert, LocalDateTime.now().plusDays(1), 100, 100));
         Seat seat = seatJpaRepository.save(new Seat(1L, schedule, 100, SeatStatus.AVAILABLE, LocalDateTime.now().plusDays(1),0L));
