@@ -16,6 +16,9 @@ import static com.hhpl.concertreserve.domain.waitingqueue.type.WaitingQueueStatu
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "waiting_queue", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"concertId", "queueNo"})
+})
 public class WaitingQueue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

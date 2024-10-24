@@ -20,8 +20,8 @@ public class WaitingQueueRepositoryImpl implements WaitingQueueRepository {
     private final WaitingQueueJpaRepository waitingQueueJpaRepository;
 
     @Override
-    public Optional<Long> findMaxQueueNoByConcertId(Long concertId) {
-        return waitingQueueJpaRepository.findMaxQueueNoByConcertId(concertId);
+    public List<WaitingQueue> findMaxQueueNoByConcertId(Long concertId) {
+        return waitingQueueJpaRepository.findAllByConcertIdWithLock(concertId);
     }
 
     @Override
