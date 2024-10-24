@@ -25,10 +25,10 @@ public class PaymentFacade {
     @Transactional
     public PaymentInfo processPayment(Long reservationId, Long userId, String uuid) {
         Reservation reservation = concertService.getReservationInfo(reservationId);
-        concertService.completeReservationByPayment(reservationId);
+        concertService.validateSeatStatusForPayment(reservationId);
         userService.updateUserPoint(userId, reservation.getTotalAmount(), PointStatus.USE);
-        waitingQueueService.expireQueueOnPaymentCompletion(uuid);
         Payment payment = paymentService.completePayment(userId, reservation, reservation.getTotalAmount());
+        waitingQueueService.expireQueueOnPaymentCompletion(uuid);
         return ApplicationMapper.PaymentMapper.from(payment);
     }
 
