@@ -19,8 +19,7 @@ public class UserFacade {
         Point point=  userService.getUserPoint(userId);
         return ApplicationMapper.UserMapper.from(point);
     }
-
-    @Transactional
+    
     public PointInfo chargePoint(Long userId, int amountToCharge, PointStatus status) {
         Point point =  userService.updateUserPoint(userId, amountToCharge, status);
         return ApplicationMapper.UserMapper.from(point);
