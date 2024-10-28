@@ -24,8 +24,8 @@ public class PaymentFacade {
 
     @Transactional
     public PaymentInfo processPayment(Long reservationId, Long userId, String uuid) {
-        Reservation reservation = concertService.getReservationInfo(reservationId);
         concertService.validateSeatStatusForPayment(reservationId);
+        Reservation reservation = concertService.convertReservationToComplete(reservationId);
         userService.updateUserPoint(userId, reservation.getTotalAmount(), PointStatus.USE);
         Payment payment = paymentService.completePayment(userId, reservation, reservation.getTotalAmount());
         waitingQueueService.expireQueueOnPaymentCompletion(uuid);

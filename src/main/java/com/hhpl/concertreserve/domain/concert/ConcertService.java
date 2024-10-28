@@ -74,4 +74,10 @@ public class ConcertService {
         seat.validateForSeatExpired();
     }
 
+    public Reservation convertReservationToComplete(Long reservationId) {
+        Reservation reservation = concertRepository.getMyReservation(reservationId);
+        reservation.completeReservation();
+        return concertRepository.save(reservation);
+    }
+
 }
