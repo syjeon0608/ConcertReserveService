@@ -85,7 +85,7 @@ public class PaymentConcurrencyTest {
         for (int i = 0; i < numberOfThreads; i++) {
             executorService.submit(() -> {
                 try {
-                    paymentFacade.processPayment(1L,9L,"uuid777" );
+                    paymentFacade.processPayment(reservation.getId(),9L,"uuid777" );
                     successfulRegistrations[0]++;
                 } catch (CoreException e) {
                     failedRegistrations[0]++;
