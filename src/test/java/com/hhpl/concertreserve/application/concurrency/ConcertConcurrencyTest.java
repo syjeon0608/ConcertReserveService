@@ -40,17 +40,17 @@ public class ConcertConcurrencyTest {
     private ConcertService concertService;
 
 
-
     @Test
-    @DisplayName("하나의 좌석에 대해 5명이 동시에 예약신청을 하면 한명만 성공하고 나머지는 실패한다.")
+    @DisplayName("하나의 좌석에 대해 100명이 동시에 예약신청을 하면 한명만 성공하고 나머지는 실패한다.")
     public void testCreateSeatReservationConcurrentAccess() throws InterruptedException {
         Concert  testConcert = concertJpaRepository.save(new Concert(1L, "Test Concert", "Description", LocalDateTime.now(), LocalDateTime.now().plusHours(3), LocalDateTime.now().plusDays(1)));
         Schedule  testSchedule = scheduleJpaRepository.save(new Schedule(1L, testConcert, LocalDateTime.now().plusDays(1), 100, 100));
         Seat testSeat = seatJpaRepository.save(new Seat(1L, testSchedule, 100, SeatStatus.AVAILABLE, LocalDateTime.now().plusDays(1),0L));
         seatJpaRepository.save(testSeat);
 
+        int numberOfThreads = 100;
         CountDownLatch latch = new CountDownLatch(1);
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
         List<Exception> exceptions = Collections.synchronizedList(new ArrayList<>());
 
         Runnable task = () -> {
@@ -60,13 +60,11 @@ public class ConcertConcurrencyTest {
                 concertService.createReservation(uniqueUuid, testSeat.getId());
             } catch (Exception e) {
                 exceptions.add(e);
-                String uniqueUuid = "uuid-" + Thread.currentThread().getName();
-                System.err.println("Thread Exception: " + e.getMessage());
-                System.err.println("UUID: " + uniqueUuid);
+                System.err.println(e.getMessage());
             }
         };
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < numberOfThreads; i++) {
             executorService.execute(task);
         }
 
@@ -75,7 +73,7 @@ public class ConcertConcurrencyTest {
         executorService.shutdown();
         executorService.awaitTermination(1, TimeUnit.MINUTES);
 
-        assertEquals(4, exceptions.size());
+        assertEquals(99, exceptions.size());
     }
 
 }

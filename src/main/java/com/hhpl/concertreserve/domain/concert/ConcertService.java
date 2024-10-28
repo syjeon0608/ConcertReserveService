@@ -42,7 +42,7 @@ public class ConcertService {
             selectedSeat.inactive();
             Reservation reservation = new Reservation(uuid, selectedSeat);
             return concertRepository.save(reservation);
-        } catch (OptimisticLockException e) {
+        } catch (Exception e) {
             throw new CoreException(ErrorType.SEAT_ALREADY_UNAVAILABLE);
         }
     }
