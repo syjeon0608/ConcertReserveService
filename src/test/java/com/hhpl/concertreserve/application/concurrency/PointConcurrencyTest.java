@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-public class ChargeConcurrencyTest {
+public class PointConcurrencyTest {
 
     @Autowired
     private UserRepository userRepository;
@@ -41,7 +41,7 @@ public class ChargeConcurrencyTest {
         for (int i = 0; i < numberOfThreads; i++) {
             executorService.submit(() -> {
                 try {
-                    userService.updateUserPoint(1L, 10000, PointStatus.CHARGE);
+                    userService.updateUserPoint(point.getUserId(), 10000, PointStatus.CHARGE);
                     successfulRegistrations[0]++;
                 } catch (CoreException e) {
                     failedRegistrations[0]++;
@@ -55,10 +55,48 @@ public class ChargeConcurrencyTest {
         latch.await();
         executorService.shutdown();
 
-        Point updatedPoint = userService.getUserPoint(1L);
+        Point updatedPoint = userService.getUserPoint(point.getUserId());
 
         assertEquals(3, successfulRegistrations[0]);
         assertEquals(50000,updatedPoint.getAmount());
+
+    }
+
+
+    @Test
+    @DisplayName("유저가 동시에 5번의 포인트 사용 요청을 보내면 5번 다 반영된다.")
+    public void testUserPointUpdateConcurrentRequests2() throws InterruptedException {
+        Point point = new Point(2L,200000);
+        userRepository.updatePoint(point);
+
+        int numberOfThreads = 5;
+        int[] successfulRegistrations = {0};
+        int[] failedRegistrations = {0};
+
+        ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
+        CountDownLatch latch = new CountDownLatch(numberOfThreads);
+
+        for (int i = 0; i < numberOfThreads; i++) {
+            executorService.submit(() -> {
+                try {
+                    userService.updateUserPoint(point.getUserId(), 10000, PointStatus.USE);
+                    successfulRegistrations[0]++;
+                } catch (CoreException e) {
+                    failedRegistrations[0]++;
+                    System.err.println("Error for user " + Thread.currentThread().getName() + ": " + e.getMessage());
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+
+        latch.await();
+        executorService.shutdown();
+
+        Point updatedPoint = userService.getUserPoint(point.getUserId());
+
+        assertEquals(5, successfulRegistrations[0]);
+        assertEquals(150000,updatedPoint.getAmount());
 
     }
 }

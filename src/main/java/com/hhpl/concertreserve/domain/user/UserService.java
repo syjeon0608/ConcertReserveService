@@ -17,10 +17,10 @@ public class UserService {
     }
 
     @Transactional
-    public Point updateUserPoint(Long userId, int amountToCharge, PointStatus status) {
+    public Point updateUserPoint(Long userId, int amount, PointStatus status) {
         Point point = userRepository.getPoints(userId);
-        point.validate(amountToCharge, status);
-        point.adjust(amountToCharge,status);
+        point.validate(amount, status);
+        point.adjust(amount,status);
         return userRepository.updatePoint(point);
     }
 
