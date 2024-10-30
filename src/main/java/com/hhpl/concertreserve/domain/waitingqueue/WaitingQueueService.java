@@ -2,6 +2,9 @@ package com.hhpl.concertreserve.domain.waitingqueue;
 
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
 import lombok.RequiredArgsConstructor;
+import org.redisson.api.RAtomicLong;
+import org.redisson.api.RTopic;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +16,7 @@ public class WaitingQueueService {
 
     private final WaitingQueueRepository waitingQueueRepository;
     private final WaitingQueueValidator waitingQueueValidate;
+    private final RedissonClient redissonClient;
 
     public void validateOnlyUuid(String uuid){
         waitingQueueValidate.validateUserUuid(uuid);
@@ -25,14 +29,18 @@ public class WaitingQueueService {
 
     @Transactional
     public WaitingQueue enterWaitingQueue(String uuid, Long concertId) {
-        List<WaitingQueue>  waitingQueues = waitingQueueRepository.findMaxQueueNoByConcertId(concertId);
-        Long maxQueueNo = waitingQueues.stream()
-                .map(WaitingQueue::getQueueNo)
-                .max(Long::compareTo)
-                .orElse(0L);
+        RAtomicLong queueNoCounter = redissonClient.getAtomicLong("concert:queueNo:" + concertId);
+        Long maxQueueNo = queueNoCounter.incrementAndGet();
+
         WaitingQueue waitingQueue = WaitingQueue.createWithQueueNo(uuid, concertId, maxQueueNo);
-       return waitingQueueRepository.save(waitingQueue);
+        WaitingQueue savedQueue = waitingQueueRepository.save(waitingQueue);
+
+        RTopic topic = redissonClient.getTopic("waitingQueueTopic");
+        topic.publish(savedQueue.getQueueNo());
+
+        return savedQueue;
     }
+
 
     public Long getLastActivatedQueueNo(Long concertId) {
         return waitingQueueRepository.getMaxActivatedQueueNoByConcertId(concertId).orElse(0L);

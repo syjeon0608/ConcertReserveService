@@ -13,7 +13,6 @@ import java.util.Optional;
 
 public interface WaitingQueueJpaRepository extends JpaRepository<WaitingQueue, Long> {
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT t FROM WaitingQueue t WHERE t.concertId = :concertId AND t.queueStatus = 'INACTIVE'")
     List<WaitingQueue> findAllByConcertIdWithLock(@Param("concertId") Long concertId);
 
