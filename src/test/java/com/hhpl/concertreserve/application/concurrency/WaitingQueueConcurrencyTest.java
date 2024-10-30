@@ -20,17 +20,12 @@ public class WaitingQueueConcurrencyTest {
 
     @Autowired
     private WaitingQueueService waitingQueueService;
-    @Autowired
-    private WaitingQueueJpaRepository waitingQueueJpaRepository;
 
     @Test
-    @DisplayName("여러명의 사용자가 동시에 대기열 생성을 요청하면 모두 큐번호를 부여하면서 대기열 생성이 되어야한다.")
+    @DisplayName("100명의 사용자가 동시에 대기열 생성을 요청하면 모두 큐번호를 부여하면서 대기열 생성이 되어야한다.")
     public void testCreateWaitingQueueConcurrentAccess() throws InterruptedException {
-        int numberOfThreads = 50;
+        int numberOfThreads = 100;
         List<Long> queueNumbers = Collections.synchronizedList(new ArrayList<>());
-
-        WaitingQueue waitingQueue = WaitingQueue.createWithQueueNo("uuid1", 1L, 0L);
-        waitingQueueJpaRepository.save(waitingQueue);
 
         int[] successfulRegistrations = {0};
         int[] failedRegistrations = {0};
@@ -55,7 +50,7 @@ public class WaitingQueueConcurrencyTest {
         latch.await();
         executorService.shutdown();
 
-        assertEquals(50, successfulRegistrations[0], "모든 사용자가 성공적으로 등록되어야 한다.");
+        assertEquals(100, successfulRegistrations[0], "모든 사용자가 성공적으로 등록되어야 한다.");
         assertEquals(0, failedRegistrations[0], "실패한 등록이 없어야 한다.");
 
         Set<Long> uniqueQueueNumbers = new HashSet<>(queueNumbers);
