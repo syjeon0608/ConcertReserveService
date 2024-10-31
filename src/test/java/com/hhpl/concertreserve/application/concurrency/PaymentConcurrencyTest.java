@@ -69,16 +69,16 @@ public class PaymentConcurrencyTest {
     @Test
     @DisplayName("사용자가 5번 결제 요청하면 1번만 성공한다.")
     void testConcurrentPaymentSuccessOnReservation() throws InterruptedException {
-        WaitingQueue waitingQueue = WaitingQueue.createWithQueueNo("uuid777", 5L, 777L);
+        WaitingQueue waitingQueue = WaitingQueue.createWithQueueNo("uuid01", 2L, 777L);
         waitingQueue.activate();
         waitingQueueJpaRepository.save(waitingQueue);
         Point point = new Point(9L,30000);
         userRepository.updatePoint(point);
         Concert  concert = concertJpaRepository.save(new Concert(5L, "Test Concert", "Description", LocalDateTime.now(), LocalDateTime.now().plusHours(3), LocalDateTime.now().plusDays(1)));
-        Schedule  schedule = scheduleJpaRepository.save(new Schedule(2L, concert, LocalDateTime.now().plusDays(1), 100, 100));
-        Seat seat = seatJpaRepository.save(new Seat(2L, schedule, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusDays(1),10L));
+        Schedule  schedule = scheduleJpaRepository.save(new Schedule(5L, concert, LocalDateTime.now().plusDays(1), 100, 100));
+        Seat seat = seatJpaRepository.save(new Seat(5L, schedule, 10000, SeatStatus.AVAILABLE, LocalDateTime.now().plusDays(1),10L));
         seatJpaRepository.save(seat);
-        Reservation reservation = new Reservation("uuid777", seat);
+        Reservation reservation = new Reservation(waitingQueue.getUuid(), seat);
         reservationJpaRepository.save(reservation);
 
         int numberOfThreads = 5;
@@ -91,7 +91,7 @@ public class PaymentConcurrencyTest {
         for (int i = 0; i < numberOfThreads; i++) {
             executorService.submit(() -> {
                 try {
-                    paymentFacade.processPayment(reservation.getId(),point.getUserId(),"uuid777" );
+                    paymentFacade.processPayment(reservation.getId(),point.getUserId(),reservation.getUuid() );
                     successfulRegistrations[0]++;
                 } catch (CoreException e) {
                     failedRegistrations[0]++;
@@ -105,6 +105,9 @@ public class PaymentConcurrencyTest {
         latch.await();
         executorService.shutdown();
 
+        Point updatedPoint = userService.getUserPoint(point.getUserId());
+
+        assertEquals(20000,updatedPoint.getAmount());
         assertEquals(1, successfulRegistrations[0], "한번만 결제에 성공해야한다");
         assertEquals(4, failedRegistrations[0], "나머지 결제는 다 실패");
 
