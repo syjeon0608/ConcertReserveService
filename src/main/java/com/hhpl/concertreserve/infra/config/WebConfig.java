@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(waitingQueueInterceptor)
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/v1/waiting-queues/*")
+                .excludePathPatterns("/api/v1/waiting-queues")
                 .excludePathPatterns("/api/v1/users/{userId}/points");
     }
 }
