@@ -1,6 +1,6 @@
-package com.hhpl.concertreserve.infra.config;
+package com.hhpl.concertreserve.interfaces.middleware.config;
 
-import com.hhpl.concertreserve.infra.interceptor.WaitingQueueInterceptor;
+import com.hhpl.concertreserve.interfaces.middleware.WaitingQueueInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.infra.filter;
+package com.hhpl.concertreserve.interfaces.middleware;
 
 import com.hhpl.concertreserve.application.facade.WaitingQueueFacade;
 import com.hhpl.concertreserve.domain.error.CoreException;

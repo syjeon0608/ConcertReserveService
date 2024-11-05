@@ -1,7 +1,7 @@
-package com.hhpl.concertreserve.infra.interceptor;
+package com.hhpl.concertreserve.interfaces.middleware;
 
 import com.hhpl.concertreserve.application.facade.WaitingQueueFacade;
-import com.hhpl.concertreserve.infra.util.ConcertIdExtractor;
+import com.hhpl.concertreserve.interfaces.middleware.util.ConcertIdExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

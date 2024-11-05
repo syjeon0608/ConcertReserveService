@@ -1,6 +1,6 @@
-package com.hhpl.concertreserve.infra.config;
+package com.hhpl.concertreserve.interfaces.middleware.config;
 
-import com.hhpl.concertreserve.infra.filter.WaitingQueueFilter;
+import com.hhpl.concertreserve.interfaces.middleware.WaitingQueueFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
