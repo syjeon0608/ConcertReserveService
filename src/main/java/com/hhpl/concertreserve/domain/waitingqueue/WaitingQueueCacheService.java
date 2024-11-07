@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.domain.waitingqueue;
 
-import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueuePojo;
+import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +24,9 @@ public class WaitingQueueCacheService {
         queueRepository.addToWaitingQueue(token);
     }
 
-    public WaitingQueuePojo getQueuePosition(String token) {
+    public WaitingQueue getQueuePosition(String token) {
         Integer queuePosition = queueRepository.getQueuePosition(token);
-        return new WaitingQueuePojo(token, queuePosition);
+        return new WaitingQueue(token, queuePosition);
     }
 
     public void activateTokens(int count, int expireTime) {
