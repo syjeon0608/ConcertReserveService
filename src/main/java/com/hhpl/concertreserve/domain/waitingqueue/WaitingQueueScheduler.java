@@ -8,18 +8,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class WaitingQueueScheduler {
 
-    private final WaitingQueueService waitingQueueService;
+    private final WaitingQueueCacheService waitingQueueCacheService;
 
+    private final int TOKEN_ACTIVATION_LIMIT = 10 ;
+    private final int EXPIRE_TIME = 1200000;
 
-    @Scheduled(fixedRate = 30000)
-    public void activateWaitingQueuesForAllConcerts() {
-        waitingQueueService.activateInactiveQueuesForAllConcerts();
+    @Scheduled(fixedRate = 2000)
+    public void activateWaitingQueues() {
+        waitingQueueCacheService.activateTokens(TOKEN_ACTIVATION_LIMIT,EXPIRE_TIME);
     }
-
-    @Scheduled(fixedRate = 60000)
-    public void checkAndExpireWaitingQueue() {
-        waitingQueueService.expireActiveQueuesPastDeadline();
-    }
-
 
 }
