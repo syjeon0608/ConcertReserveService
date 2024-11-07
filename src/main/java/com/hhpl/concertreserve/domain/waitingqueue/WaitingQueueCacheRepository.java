@@ -5,4 +5,5 @@ public interface WaitingQueueCacheRepository {
     Integer getQueuePosition(String token);
     void expireTokenForPayment(String token);
     void activateTokens(int count, long ttlMillis);
+    boolean isValid(String token);
 }

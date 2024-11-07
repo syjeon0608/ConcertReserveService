@@ -22,13 +22,6 @@ public class WaitingQueueValidator {
         }
     }
 
-    public void validateConcertId(Long concertId) {
-        if (concertId == null || concertId <= 0) {
-            throw new CoreException(CONCERT_ID_VALIDATION_FAILED);
-        }
-    }
-
-
     private  boolean isValidUUID(String uuid) {
         if (uuid == null || uuid.isEmpty()) {
             return false;

@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static com.hhpl.concertreserve.domain.error.ErrorType.QUEUE_IS_INACTIVE;
 import static com.hhpl.concertreserve.domain.error.ErrorType.QUEUE_NOT_FOUND;
 
 @Component
@@ -55,6 +56,15 @@ public class WaitingQueueCacheRepositoryImpl implements WaitingQueueCacheReposit
     public void expireTokenForPayment(String token) {
         RBucket<String> tokenBucket = redissonClient.getBucket(ACTIVE_TOKEN_PREFIX + token);
         tokenBucket.delete();
+    }
+
+    @Override
+    public boolean isValid(String token) {
+        RBucket<String> tokenBucket = redissonClient.getBucket(ACTIVE_TOKEN_PREFIX + token);
+        if(!tokenBucket.isExists()){
+            throw new CoreException(QUEUE_IS_INACTIVE);
+        }
+        return tokenBucket.isExists();
     }
 
 }

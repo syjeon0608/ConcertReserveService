@@ -10,6 +10,15 @@ import org.springframework.stereotype.Service;
 public class WaitingQueueCacheService {
 
     private final WaitingQueueCacheRepository queueRepository;
+    private final WaitingQueueValidator waitingQueueValidate;
+
+    public void validateUuid(String uuid){
+        waitingQueueValidate.validateUserUuid(uuid);
+    }
+
+    public boolean checkActiveTokenValidity(String uuid) {
+        return queueRepository.isValid(uuid);
+    }
 
     public void enterWaitingQueue(String token) {
         queueRepository.addToWaitingQueue(token);
