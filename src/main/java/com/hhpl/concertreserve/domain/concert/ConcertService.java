@@ -7,7 +7,6 @@ import com.hhpl.concertreserve.domain.concert.model.Seat;
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
 import com.hhpl.concertreserve.domain.error.CoreException;
 import com.hhpl.concertreserve.domain.error.ErrorType;
-import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +19,11 @@ import java.util.List;
 public class ConcertService {
 
     private final ConcertRepository concertRepository;
+    private final ConcertCachingRepository concertCachingRepository;
 
     public List<Concert> getAvailableConcerts() {
         LocalDateTime now = LocalDateTime.now();
-        return concertRepository.getAvailableConcerts(now);
+        return concertCachingRepository.getAvailableConcerts(now);
     }
 
     public List<Schedule> getAvailableSchedules(Long concertId) {
