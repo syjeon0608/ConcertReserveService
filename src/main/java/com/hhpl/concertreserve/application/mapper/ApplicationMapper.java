@@ -13,7 +13,7 @@ import com.hhpl.concertreserve.domain.concert.model.Schedule;
 import com.hhpl.concertreserve.domain.concert.model.Seat;
 import com.hhpl.concertreserve.domain.payment.model.Payment;
 import com.hhpl.concertreserve.domain.user.model.Point;
-import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
+import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueuePojo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,12 +22,10 @@ import java.util.List;
 public class ApplicationMapper {
 
     public static class WaitingQueueMapper {
-        public static WaitingQueueInfo from(WaitingQueue waitingQueue) {
+        public static WaitingQueueInfo from(WaitingQueuePojo waitingQueue) {
             return new WaitingQueueInfo(
-                    waitingQueue.getUuid(),
-                    waitingQueue.getConcertId(),
-                    waitingQueue.getQueueStatus(),
-                    waitingQueue.getQueueNo()
+                    waitingQueue.uuid(),
+                    waitingQueue.queuePosition()
             );
         }
     }

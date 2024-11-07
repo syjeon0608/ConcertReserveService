@@ -107,11 +107,10 @@ public class ControllerMapper {
     }
 
     public static class WaitingQueueMapper {
-        public static WaitingQueueResponse toResponse(WaitingQueueInfo waitingQueueinfo) {
+        public static WaitingQueueResponse toResponse(WaitingQueueInfo waitingQueueInfo) {
             return new WaitingQueueResponse(
-                    waitingQueueinfo.concertId(),
-                    waitingQueueinfo.queueStatus().name(),
-                    waitingQueueinfo.renamingQueueNo()
+                    waitingQueueInfo.uuid(),
+                    waitingQueueInfo.queuePosition()
             );
         }
     }

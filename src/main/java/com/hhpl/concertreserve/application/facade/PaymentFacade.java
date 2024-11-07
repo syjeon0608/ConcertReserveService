@@ -8,7 +8,7 @@ import com.hhpl.concertreserve.domain.payment.PaymentService;
 import com.hhpl.concertreserve.domain.payment.model.Payment;
 import com.hhpl.concertreserve.domain.user.UserService;
 import com.hhpl.concertreserve.domain.user.model.PointStatus;
-import com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueService;
+import com.hhpl.concertreserve.domain.waitingqueue.WaitingQueueCacheService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ public class PaymentFacade {
     private final ConcertService concertService;
     private final PaymentService paymentService;
     private final UserService userService;
-    private final WaitingQueueService waitingQueueService;
+    private final WaitingQueueCacheService waitingQueueCacheService;
 
     @Transactional
     public PaymentInfo processPayment(Long reservationId, Long userId, String uuid) {
@@ -28,7 +28,7 @@ public class PaymentFacade {
         Reservation reservation = concertService.convertReservationToComplete(reservationId);
         userService.updateUserPoint(userId, reservation.getTotalAmount(), PointStatus.USE);
         Payment payment = paymentService.completePayment(userId, reservation, reservation.getTotalAmount());
-        waitingQueueService.expireQueueOnPaymentCompletion(uuid);
+        waitingQueueCacheService.expireTokenAfterPayment(uuid);
         return ApplicationMapper.PaymentMapper.from(payment);
     }
 
