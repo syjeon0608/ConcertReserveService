@@ -17,7 +17,6 @@ import com.hhpl.concertreserve.infra.database.concert.ReservationJpaRepository;
 import com.hhpl.concertreserve.infra.database.concert.ScheduleJpaRepository;
 import com.hhpl.concertreserve.infra.database.concert.SeatJpaRepository;
 import com.hhpl.concertreserve.infra.database.user.PointJpaRepository;
-import com.hhpl.concertreserve.infra.database.waitingqueue.WaitingQueueJpaRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -58,8 +57,6 @@ public class PaymentFacadeIntegrationTest {
     @Autowired
     private SeatJpaRepository seatJpaRepository;
 
-    @Autowired
-    WaitingQueueJpaRepository waitingQueueJpaRepository;
 
     private Point testPoint;
     private Concert testConcert;
@@ -89,9 +86,6 @@ public class PaymentFacadeIntegrationTest {
     @DirtiesContext
     @DisplayName("성공적으로 결제 처리")
     void shouldProcessPaymentSuccessfully() {
-        WaitingQueue waitingQueue = WaitingQueue.createWithQueueNo("test-uuid2", 1L, 20L);
-        waitingQueueJpaRepository.save(waitingQueue);
-        waitingQueue.activate();
         testReservation = new Reservation("test-uuid2", testSeat);
         reservationJpaRepository.save(testReservation);
         PaymentInfo payment = paymentFacade.processPayment(1L, 1L, testReservation.getUuid());
