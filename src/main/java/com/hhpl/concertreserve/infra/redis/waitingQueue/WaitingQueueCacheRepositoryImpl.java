@@ -47,8 +47,7 @@ public class WaitingQueueCacheRepositoryImpl implements WaitingQueueCacheReposit
 
         tokens.forEach(token -> {
             RBucket<String> tokenBucket = redissonClient.getBucket(ACTIVE_TOKEN_PREFIX + token);
-            tokenBucket.set(token);
-            tokenBucket.expire(ttlMillis, TimeUnit.MILLISECONDS);
+            tokenBucket.set("", ttlMillis, TimeUnit.MILLISECONDS);
         });
     }
 
