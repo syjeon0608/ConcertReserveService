@@ -24,7 +24,8 @@ class ConcertServiceTest {
 
     @Mock
     private ConcertRepository concertRepository;
-
+    @Mock
+    private ConcertCachingRepository concertCachingRepository;
     @InjectMocks
     private ConcertService concertService;
 
@@ -54,7 +55,7 @@ class ConcertServiceTest {
                 LocalDateTime.of(2024, 10, 2, 12, 0, 0),    // startDate
                 LocalDateTime.of(2024, 10, 4, 12, 0, 0)));  // endDate
 
-        when(concertRepository.getAvailableConcerts(any(LocalDateTime.class))).thenAnswer(invocation -> {
+        when(concertCachingRepository.getAvailableConcerts(any(LocalDateTime.class))).thenAnswer(invocation -> {
             return mockConcerts.stream()
                     .filter(concert -> concert.getOpenDate().isBefore(fixedNow) || concert.getOpenDate().isEqual(fixedNow))
                     .filter(concert -> concert.getEndDate().isAfter(fixedNow) || concert.getEndDate().isEqual(fixedNow))

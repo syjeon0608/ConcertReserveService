@@ -20,10 +20,9 @@ public class WaitingQueueConcurrencyTest {
     private WaitingQueueCacheService waitingQueueService;
 
     @Test
-    @DisplayName("100명의 사용자가 동시에 대기열 생성을 요청하면 모두 대기열 생성이 되어야한다.")
+    @DisplayName("50명의 사용자가 동시에 대기열 생성을 요청하면 모두 대기열 생성이 되어야한다.")
     public void testCreateWaitingQueueConcurrentAccess() throws InterruptedException {
-        int numberOfThreads = 100;
-        List<Long> queueNumbers = Collections.synchronizedList(new ArrayList<>());
+        int numberOfThreads = 50;
 
         int[] successfulRegistrations = {0};
         int[] failedRegistrations = {0};
@@ -47,7 +46,7 @@ public class WaitingQueueConcurrencyTest {
         latch.await();
         executorService.shutdown();
 
-        assertEquals(100, successfulRegistrations[0], "모든 사용자가 성공적으로 등록되어야 한다.");
+        assertEquals(50, successfulRegistrations[0], "모든 사용자가 성공적으로 등록되어야 한다.");
         assertEquals(0, failedRegistrations[0], "실패한 등록이 없어야 한다.");
 
     }

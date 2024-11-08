@@ -68,7 +68,7 @@ public class ConcertFacadeIntegrationTest {
     void shouldGetAvailableConcerts() {
         List<ConcertInfo> availableConcerts = concertFacade.getAvailableConcerts();
 
-        assertEquals(1, availableConcerts.size());
+        assertEquals(3, availableConcerts.size());
         assertEquals("Test Concert", availableConcerts.get(0).title());
     }
 
