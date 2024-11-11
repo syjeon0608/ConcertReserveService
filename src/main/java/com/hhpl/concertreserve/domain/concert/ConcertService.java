@@ -30,8 +30,7 @@ public class ConcertService {
     }
 
     public List<Schedule> getAvailableSchedules(Long concertId) {
-        int soldOutLimit = 0;
-        return concertRepository.getSchedulesWithAvailableSeats(concertId, soldOutLimit);
+        return concertRepository.getSchedulesWithAvailableSeatCount(concertId);
     }
 
     public List<Seat> getAvailableSeats(Long scheduleId) {
@@ -42,8 +41,10 @@ public class ConcertService {
     public Reservation createReservation(String uuid, Long seatId) {
         User user = userRepository.findUserIdByUuid(uuid);
         Seat selectedSeat = concertRepository.getSelectedSeat(seatId);
+        Schedule schedule = selectedSeat.getSchedule();
         try {
             selectedSeat.inactive();
+            schedule.decreaseAvailableSeats();
             Reservation reservation = new Reservation(user, selectedSeat);
             return concertRepository.save(reservation);
         } catch (Exception e) {

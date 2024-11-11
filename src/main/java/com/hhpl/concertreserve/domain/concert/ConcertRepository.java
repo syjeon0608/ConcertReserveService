@@ -9,7 +9,7 @@ import java.util.List;
 public interface ConcertRepository {
     List<Concert> getAvailableConcerts(LocalDateTime now);
 
-    List<Schedule> getSchedulesWithAvailableSeats(Long concertId, int availableSeats);
+    List<Schedule> getSchedulesWithAvailableSeatCount(Long concertId);
 
     List<Seat> getAvailableSeats(Long scheduleId, SeatStatus seatStatus);
 

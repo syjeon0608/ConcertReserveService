@@ -1,6 +1,7 @@
 package com.hhpl.concertreserve.domain.concert.model;
 
-import com.hhpl.concertreserve.domain.concert.model.Concert;
+import com.hhpl.concertreserve.domain.error.CoreException;
+import com.hhpl.concertreserve.domain.error.ErrorType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,4 +31,12 @@ public class Schedule {
 
     @Column(nullable = false)
     private int totalSeats;
+
+    public void decreaseAvailableSeats() {
+        if (this.availableSeats > 0) {
+            this.availableSeats--;
+        } else {
+            throw new CoreException(ErrorType.SEAT_NOT_FOUND);
+        }
+    }
 }
