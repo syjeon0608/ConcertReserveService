@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorType {
-
+    USER_NOT_FOUND(ErrorCode.NOT_FOUND, "사용자를 찾을 수 없습니다.", LogLevel.INFO),
     WALLET_NOT_FOUND_ERROR(ErrorCode.NOT_FOUND, "사용자ID에 해당하는 WALLET을 찾을 수 없습니다.", LogLevel.INFO),
     INVALID_CHARGE_AMOUNT(ErrorCode.BUSINESS_EXCEPTION,"충전요금은 0원 이하일 수 없습니다.", LogLevel.INFO),
     EXCEEDS_MAXIMUM_POINT(ErrorCode.BUSINESS_EXCEPTION,"충전 후 잔액이 10,000,000원이 넘습니다.", LogLevel.INFO),

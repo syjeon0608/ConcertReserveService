@@ -5,9 +5,11 @@ import com.hhpl.concertreserve.domain.concert.model.Concert;
 import com.hhpl.concertreserve.domain.concert.model.Schedule;
 import com.hhpl.concertreserve.domain.concert.model.Seat;
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
+import com.hhpl.concertreserve.domain.user.model.User;
 import com.hhpl.concertreserve.infra.database.concert.ConcertJpaRepository;
 import com.hhpl.concertreserve.infra.database.concert.ScheduleJpaRepository;
 import com.hhpl.concertreserve.infra.database.concert.SeatJpaRepository;
+import com.hhpl.concertreserve.infra.database.user.UserJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class ConcertConcurrencyTest {
+    @Autowired
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
     private SeatJpaRepository seatJpaRepository;
@@ -57,6 +61,7 @@ public class ConcertConcurrencyTest {
             try {
                 latch.await();
                 String uniqueUuid = "uuid-" + Thread.currentThread().getName();
+                userJpaRepository.save(new User(null,uniqueUuid));
                 concertService.createReservation(uniqueUuid, testSeat.getId());
             } catch (Exception e) {
                 exceptions.add(e);

@@ -5,6 +5,8 @@ import com.hhpl.concertreserve.domain.user.UserRepository;
 import com.hhpl.concertreserve.domain.user.UserService;
 import com.hhpl.concertreserve.domain.user.model.Point;
 import com.hhpl.concertreserve.domain.user.model.PointStatus;
+import com.hhpl.concertreserve.domain.user.model.User;
+import com.hhpl.concertreserve.infra.database.user.UserJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,18 @@ public class PointConcurrencyTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired private UserService userService;
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserJpaRepository userJpaRepository;
 
     @Test
     @DisplayName("유저가 충전을 3번 요청하면 3번 다 반영된다.")
     public void testUserPointUpdateConcurrentRequests() throws InterruptedException {
-
-        Point point = new Point(1L,20000);
+        User user = new User(null,"uuid1");
+        userJpaRepository.save(user);
+        Point point = new Point(user.getId(),20000);
         userRepository.updatePoint(point);
 
         int numberOfThreads = 3;
@@ -66,7 +73,9 @@ public class PointConcurrencyTest {
     @Test
     @DisplayName("유저가 동시에 5번의 포인트 사용 요청을 보내면 5번 다 반영된다.")
     public void testUserPointUpdateConcurrentRequests2() throws InterruptedException {
-        Point point = new Point(2L,200000);
+        User user = new User(null,"uuid1");
+        userJpaRepository.save(user);
+        Point point = new Point(user.getId(),200000);
         userRepository.updatePoint(point);
 
         int numberOfThreads = 5;

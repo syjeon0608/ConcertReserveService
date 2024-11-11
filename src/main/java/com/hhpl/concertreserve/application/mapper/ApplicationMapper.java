@@ -83,7 +83,7 @@ public class ApplicationMapper {
         public static ReservationInfo from(Reservation reservation) {
             return new ReservationInfo(
                     reservation.getId(),
-                    reservation.getUuid(),
+                    reservation.getUser(),
                     reservation.getSeat().getId(),
                     reservation.getReservationStatus(),
                     reservation.getCreatedAt(),

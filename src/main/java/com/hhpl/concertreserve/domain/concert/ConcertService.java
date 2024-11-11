@@ -7,6 +7,8 @@ import com.hhpl.concertreserve.domain.concert.model.Seat;
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
 import com.hhpl.concertreserve.domain.error.CoreException;
 import com.hhpl.concertreserve.domain.error.ErrorType;
+import com.hhpl.concertreserve.domain.user.UserRepository;
+import com.hhpl.concertreserve.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ public class ConcertService {
 
     private final ConcertRepository concertRepository;
     private final ConcertCachingRepository concertCachingRepository;
+    private final UserRepository userRepository;
 
     public List<Concert> getAvailableConcerts() {
         LocalDateTime now = LocalDateTime.now();
@@ -37,10 +40,11 @@ public class ConcertService {
 
     @Transactional
     public Reservation createReservation(String uuid, Long seatId) {
+        User user = userRepository.findUserIdByUuid(uuid);
         Seat selectedSeat = concertRepository.getSelectedSeat(seatId);
         try {
             selectedSeat.inactive();
-            Reservation reservation = new Reservation(uuid, selectedSeat);
+            Reservation reservation = new Reservation(user, selectedSeat);
             return concertRepository.save(reservation);
         } catch (Exception e) {
             throw new CoreException(ErrorType.SEAT_ALREADY_UNAVAILABLE);

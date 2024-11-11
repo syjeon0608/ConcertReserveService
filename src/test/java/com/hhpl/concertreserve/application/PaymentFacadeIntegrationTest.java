@@ -11,12 +11,14 @@ import com.hhpl.concertreserve.domain.concert.model.Seat;
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
 import com.hhpl.concertreserve.domain.error.CoreException;
 import com.hhpl.concertreserve.domain.user.model.Point;
+import com.hhpl.concertreserve.domain.user.model.User;
 import com.hhpl.concertreserve.domain.waitingqueue.model.WaitingQueue;
 import com.hhpl.concertreserve.infra.database.concert.ConcertJpaRepository;
 import com.hhpl.concertreserve.infra.database.concert.ReservationJpaRepository;
 import com.hhpl.concertreserve.infra.database.concert.ScheduleJpaRepository;
 import com.hhpl.concertreserve.infra.database.concert.SeatJpaRepository;
 import com.hhpl.concertreserve.infra.database.user.PointJpaRepository;
+import com.hhpl.concertreserve.infra.database.user.UserJpaRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -57,12 +59,15 @@ public class PaymentFacadeIntegrationTest {
     @Autowired
     private SeatJpaRepository seatJpaRepository;
 
+    @Autowired
+    private UserJpaRepository userJpaRepository;
 
     private Point testPoint;
     private Concert testConcert;
     private Schedule testSchedule;
     private Seat testSeat;
     private Reservation testReservation;
+    private User testUser;
 
     @BeforeEach
     void setUp() {
@@ -72,23 +77,18 @@ public class PaymentFacadeIntegrationTest {
         testConcert = concertJpaRepository.save(new Concert(null, "Test Concert", "Description", LocalDateTime.now(), LocalDateTime.now().plusHours(3), LocalDateTime.now().plusDays(1)));
         testSchedule = scheduleJpaRepository.save(new Schedule(null, testConcert, LocalDateTime.now().plusDays(1), 100, 100));
         testSeat = seatJpaRepository.save(new Seat(null, testSchedule, 100, SeatStatus.AVAILABLE, LocalDateTime.now().plusDays(1),0L));
+        testUser = userJpaRepository.save(new User(null,"uuid1"));
     }
 
-    @AfterEach
-    void cleanUp() {
-        reservationJpaRepository.deleteAll();
-        seatJpaRepository.deleteAll();
-        scheduleJpaRepository.deleteAll();
-        concertJpaRepository.deleteAll();
-    }
+
 
     @Test
     @DirtiesContext
     @DisplayName("성공적으로 결제 처리")
     void shouldProcessPaymentSuccessfully() {
-        testReservation = new Reservation("test-uuid2", testSeat);
+        testReservation = new Reservation(testUser, testSeat);
         reservationJpaRepository.save(testReservation);
-        PaymentInfo payment = paymentFacade.processPayment(1L, 1L, testReservation.getUuid());
+        PaymentInfo payment = paymentFacade.processPayment(1L, 1L, "uuid1");
 
         assertEquals(100, payment.amount());
         assertEquals(900,testPoint.getAmount());

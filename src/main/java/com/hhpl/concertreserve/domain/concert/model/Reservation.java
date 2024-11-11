@@ -2,6 +2,7 @@ package com.hhpl.concertreserve.domain.concert.model;
 
 import com.hhpl.concertreserve.domain.concert.type.ReservationStatus;
 import com.hhpl.concertreserve.domain.error.CoreException;
+import com.hhpl.concertreserve.domain.user.model.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,9 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String uuid;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @OneToOne
     @JoinColumn(name = "seat_id", nullable = false)
@@ -39,8 +41,8 @@ public class Reservation {
 
     private int totalAmount;
 
-    public Reservation(String uuid, Seat seat) {
-        this.uuid = uuid;
+    public Reservation(User user, Seat seat) {
+        this.user = user;
         this.seat = seat;
         this.reservationStatus = TEMPORARY;
         this.createdAt = LocalDateTime.now();

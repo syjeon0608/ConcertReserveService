@@ -10,9 +10,11 @@ import com.hhpl.concertreserve.domain.concert.model.Schedule;
 import com.hhpl.concertreserve.domain.concert.model.Seat;
 import com.hhpl.concertreserve.domain.concert.type.ReservationStatus;
 import com.hhpl.concertreserve.domain.concert.type.SeatStatus;
+import com.hhpl.concertreserve.domain.user.model.User;
 import com.hhpl.concertreserve.infra.database.concert.ConcertJpaRepository;
 import com.hhpl.concertreserve.infra.database.concert.ScheduleJpaRepository;
 import com.hhpl.concertreserve.infra.database.concert.SeatJpaRepository;
+import com.hhpl.concertreserve.infra.database.user.UserJpaRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,9 +46,13 @@ public class ConcertFacadeIntegrationTest {
     @Autowired
     private ScheduleJpaRepository scheduleJpaRepository;
 
+    @Autowired
+    private UserJpaRepository userJpaRepository;
+
     private Concert testConcert;
     private Schedule testSchedule;
     private Seat testSeat;
+    private User testUser;
 
     @BeforeEach
     void setUp() {
@@ -68,7 +74,7 @@ public class ConcertFacadeIntegrationTest {
     void shouldGetAvailableConcerts() {
         List<ConcertInfo> availableConcerts = concertFacade.getAvailableConcerts();
 
-        assertEquals(3, availableConcerts.size());
+        assertEquals(1, availableConcerts.size());
         assertEquals("Test Concert", availableConcerts.get(0).title());
     }
 
@@ -94,7 +100,8 @@ public class ConcertFacadeIntegrationTest {
     @DirtiesContext
     @DisplayName("성공적으로 임시 예약 생성")
     void shouldCreateTemporarySeatReservation() {
-        ReservationInfo reservation = concertFacade.createTemporarySeatReservation("550e8400-e29b-41d4-a716-446655440000", testSeat.getId());
+        testUser = userJpaRepository.save(new User(null,"uuid-1"));
+        ReservationInfo reservation = concertFacade.createTemporarySeatReservation(testUser.getUuid(), testSeat.getId());
 
         assertEquals(testSeat.getId(), reservation.seatId());
         assertEquals(UNAVAILABLE, testSeat.getStatus());
