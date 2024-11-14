@@ -48,7 +48,8 @@ public class ConcertService {
             selectedSeat.inactive();
             schedule.decreaseAvailableSeats();
             Reservation reservation = new Reservation(user, selectedSeat);
-            return concertRepository.save(reservation);
+            reservation = concertRepository.save(reservation);
+            return reservation;
         } catch (Exception e) {
             throw new CoreException(ErrorType.SEAT_ALREADY_UNAVAILABLE);
         }
