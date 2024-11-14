@@ -6,6 +6,8 @@ import com.hhpl.concertreserve.app.waitingqueue.domain.repository.WaitingQueueCa
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static org.hibernate.query.sqm.tree.SqmNode.log;
+
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +39,7 @@ public class WaitingQueueCacheService {
 
     public void expireTokenAfterPayment(String token){
         queueRepository.expireTokenForPayment(token);
+        log.info("TOKEN EXPIRED: " + token);
     }
 
 }
