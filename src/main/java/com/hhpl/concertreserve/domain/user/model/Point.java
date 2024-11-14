@@ -12,6 +12,9 @@ import static com.hhpl.concertreserve.domain.error.ErrorType.*;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(
+        indexes = @Index(name = "idx_user_id", columnList = "userId")
+)
 public class Point {
 
     private static final int MAXIMUM_POINT_LIMIT = 1000000;

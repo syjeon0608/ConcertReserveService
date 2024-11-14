@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(
+        indexes = @Index(name = "idx_concert_dates", columnList = "endDate, openDate")
+)
 public class Concert {
 
     @Id
