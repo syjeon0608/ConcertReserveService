@@ -16,6 +16,9 @@ import static com.hhpl.concertreserve.domain.error.ErrorType.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(
+        indexes = @Index(name = "idx_seat_status_expiredAt", columnList = "status, expiredAt")
+)
 public class Seat {
 
     @Id
