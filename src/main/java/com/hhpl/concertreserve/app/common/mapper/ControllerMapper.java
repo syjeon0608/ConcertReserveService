@@ -74,7 +74,7 @@ public class ControllerMapper {
         public static ReservationResponse toReservationResponse(ReservationInfo reservation) {
             return new ReservationResponse(
                     reservation.id(),
-                    reservation.user(),
+                    reservation.userId(),
                     reservation.seatId(),
                     reservation.status(),
                     reservation.createdAt(),
