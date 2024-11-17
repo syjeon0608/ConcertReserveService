@@ -20,10 +20,6 @@ public class WaitingQueueFacade {
         return  waitingQueueCacheService.getQueuePosition(uuid);
     }
 
-    public void validateWaitingQueueUuid(String uuid){
-        waitingQueueCacheService.validateUuid(uuid);
-    }
-
     public boolean validateTokenActivationForNextStep(String uuid){
         return waitingQueueCacheService.checkActiveTokenValidity(uuid);
     }

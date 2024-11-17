@@ -1,23 +1,21 @@
 package com.hhpl.concertreserve.config.web;
 
-import com.hhpl.concertreserve.app.common.error.CoreException;
-import com.hhpl.concertreserve.app.waitingqueue.application.WaitingQueueFacade;
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
-import static org.hibernate.query.sqm.tree.SqmNode.log;
 
 @Component
 @RequiredArgsConstructor
 public class WaitingQueueFilter implements Filter {
-
-    private final WaitingQueueFacade waitingQueueFacade;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -25,26 +23,24 @@ public class WaitingQueueFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String uuid = httpRequest.getHeader("X-WAITING-QUEUE-ID");
 
-        if (httpRequest.getRequestURI().matches("/api/v1/users/\\d+/points")) {
+        if (httpRequest.getRequestURI().startsWith("/api/v1/users") && httpRequest.getRequestURI().contains("/points")) {
             chain.doFilter(request, response);
             return;
         }
 
-        try{
-            waitingQueueFacade.validateWaitingQueueUuid(uuid);
-            chain.doFilter(request, response);
-        } catch (CoreException e) {
-            httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            httpResponse.setContentType("application/json; charset=UTF-8");
-            httpResponse.setCharacterEncoding("UTF-8");
-
-            String jsonResponse = String.format("{\"error\": \"%s\", \"message\": \"%s\"}", e.getErrorType().name(), e.getErrorType().getMessage());
+        try {
+            UUID.fromString(uuid);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            httpResponse.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            String jsonResponse = "{\"error\": \"INVALID_UUID\", \"message\": \"UUID header is invalid format\"}";
             httpResponse.getWriter().write(jsonResponse);
 
-            log.info("Error occurred: " + e.getErrorType().name() + " - " +  e.getErrorType().getMessage(), e);
-
+            return;
         }
 
+        chain.doFilter(request, response);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.hhpl.concertreserve.app.waitingqueue.domain.service;
 
 import com.hhpl.concertreserve.app.waitingqueue.domain.WaitingQueue;
-import com.hhpl.concertreserve.app.waitingqueue.domain.WaitingQueueValidator;
 import com.hhpl.concertreserve.app.waitingqueue.domain.repository.WaitingQueueCacheRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,11 +13,6 @@ import static org.hibernate.query.sqm.tree.SqmNode.log;
 public class WaitingQueueCacheService {
 
     private final WaitingQueueCacheRepository queueRepository;
-    private final WaitingQueueValidator waitingQueueValidate;
-
-    public void validateUuid(String uuid){
-        waitingQueueValidate.validateUserUuid(uuid);
-    }
 
     public boolean checkActiveTokenValidity(String uuid) {
         return queueRepository.isValid(uuid);
