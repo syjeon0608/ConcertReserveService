@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.web.application.concurrency;
 
-import com.hhpl.concertreserve.app.ConcertReservationServiceApplication;
+import com.hhpl.concertreserve.ConcertReservationServiceApplication;
 import com.hhpl.concertreserve.app.waitingqueue.domain.service.WaitingQueueCacheService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

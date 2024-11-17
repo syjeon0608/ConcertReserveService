@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.web.application;
 
-import com.hhpl.concertreserve.app.ConcertReservationServiceApplication;
+import com.hhpl.concertreserve.ConcertReservationServiceApplication;
 import com.hhpl.concertreserve.app.concert.application.ConcertFacade;
 import com.hhpl.concertreserve.app.concert.domain.*;
 import com.hhpl.concertreserve.app.concert.domain.entity.Concert;

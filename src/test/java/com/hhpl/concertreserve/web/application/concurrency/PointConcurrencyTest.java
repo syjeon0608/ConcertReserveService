@@ -1,6 +1,6 @@
 package com.hhpl.concertreserve.web.application.concurrency;
 
-import com.hhpl.concertreserve.app.ConcertReservationServiceApplication;
+import com.hhpl.concertreserve.ConcertReservationServiceApplication;
 import com.hhpl.concertreserve.app.common.error.CoreException;
 import com.hhpl.concertreserve.app.user.domain.PointStatus;
 import com.hhpl.concertreserve.app.user.domain.entity.Point;
