@@ -1,14 +1,12 @@
 package com.hhpl.concertreserve.config.database;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.hhpl.concertreserve.app.concert.domain.entity.Concert;
 import lombok.RequiredArgsConstructor;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.client.codec.StringCodec;
 import org.redisson.codec.TypedJsonJacksonCodec;
 import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,14 +31,14 @@ public class RedisConfig {
     @Bean
     public RedissonClient redissonClient() {
         Config config = new Config();
-
-        TypeReference<List<Concert>> typeReference = new TypeReference<>() {};
-        TypedJsonJacksonCodec codec = new TypedJsonJacksonCodec(typeReference, objectMapper);
-
-        config.setCodec(codec);
+        config.setCodec(StringCodec.INSTANCE);
         config.useSingleServer().setAddress(protocol + "://" + host + ":" + port);
-
         return Redisson.create(config);
     }
 
+    @Bean
+    public TypedJsonJacksonCodec concertListCodec() {
+        TypeReference<List<Concert>> typeReference = new TypeReference<>() {};
+        return new TypedJsonJacksonCodec(typeReference, objectMapper);
+    }
 }
