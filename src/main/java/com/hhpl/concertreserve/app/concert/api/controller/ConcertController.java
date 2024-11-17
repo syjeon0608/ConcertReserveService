@@ -22,7 +22,7 @@ public class ConcertController {
     private final ConcertFacade concertFacade;
 
     @Operation(summary = "콘서트 조회 API", description = "예매 가능한 콘서트 목록을 조회한다.")
-    @GetMapping("/")
+    @GetMapping("")
     public ApiResponse<List<ConcertResponse>> getAvailableConcerts() {
         List<ConcertInfo> concerts = concertFacade.getAvailableConcerts();
         List<ConcertResponse> response = ControllerMapper.ConcertMapper.toConcertResponseList(concerts);
