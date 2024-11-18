@@ -1,8 +1,8 @@
-package com.hhpl.concertreserve.app.waitingqueue.api.controller;
+package com.hhpl.concertreserve.app.waitingqueue.interfaces.controller;
 
 import com.hhpl.concertreserve.app.common.api.ApiResponse;
 import com.hhpl.concertreserve.app.common.mapper.ControllerMapper;
-import com.hhpl.concertreserve.app.waitingqueue.api.dto.WaitingQueueResponse;
+import com.hhpl.concertreserve.app.waitingqueue.interfaces.dto.WaitingQueueResponse;
 import com.hhpl.concertreserve.app.waitingqueue.application.WaitingQueueFacade;
 import com.hhpl.concertreserve.app.waitingqueue.domain.WaitingQueue;
 import io.swagger.v3.oas.annotations.Operation;

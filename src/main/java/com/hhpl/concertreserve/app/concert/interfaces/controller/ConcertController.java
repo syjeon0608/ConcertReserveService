@@ -1,8 +1,8 @@
-package com.hhpl.concertreserve.app.concert.api.controller;
+package com.hhpl.concertreserve.app.concert.interfaces.controller;
 
 import com.hhpl.concertreserve.app.common.api.ApiResponse;
 import com.hhpl.concertreserve.app.common.mapper.ControllerMapper;
-import com.hhpl.concertreserve.app.concert.api.dto.*;
+import com.hhpl.concertreserve.app.concert.interfaces.dto.*;
 import com.hhpl.concertreserve.app.concert.application.ConcertFacade;
 import com.hhpl.concertreserve.app.concert.domain.ConcertInfo;
 import com.hhpl.concertreserve.app.concert.domain.ReservationInfo;

@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.app.concert.api.dto;
+package com.hhpl.concertreserve.app.concert.interfaces.dto;
 
 import com.hhpl.concertreserve.app.concert.domain.SeatStatus;
 

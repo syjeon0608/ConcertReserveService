@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.app.user.api.dto;
+package com.hhpl.concertreserve.app.user.interfaces.dto;
 
 import com.hhpl.concertreserve.app.user.domain.PointStatus;
 

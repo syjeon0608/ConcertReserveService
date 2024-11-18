@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.app.waitingqueue.api.dto;
+package com.hhpl.concertreserve.app.waitingqueue.interfaces.dto;
 
 public record WaitingQueueResponse(String uuid, Integer queuePosition) {
 }

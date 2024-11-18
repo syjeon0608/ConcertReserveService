@@ -1,9 +1,9 @@
-package com.hhpl.concertreserve.app.payment.api.controller;
+package com.hhpl.concertreserve.app.payment.interfaces.controller;
 
 import com.hhpl.concertreserve.app.common.api.ApiResponse;
 import com.hhpl.concertreserve.app.common.mapper.ControllerMapper;
-import com.hhpl.concertreserve.app.payment.api.dto.ReservationPaymentRequest;
-import com.hhpl.concertreserve.app.payment.api.dto.ReservationPaymentResponse;
+import com.hhpl.concertreserve.app.payment.interfaces.dto.ReservationPaymentRequest;
+import com.hhpl.concertreserve.app.payment.interfaces.dto.ReservationPaymentResponse;
 import com.hhpl.concertreserve.app.payment.application.PaymentFacade;
 import com.hhpl.concertreserve.app.payment.domain.PaymentInfo;
 import io.swagger.v3.oas.annotations.Operation;

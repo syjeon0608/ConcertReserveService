@@ -1,18 +1,18 @@
 package com.hhpl.concertreserve.app.common.mapper;
 
-import com.hhpl.concertreserve.app.concert.api.dto.ConcertResponse;
-import com.hhpl.concertreserve.app.concert.api.dto.ReservationResponse;
-import com.hhpl.concertreserve.app.concert.api.dto.ScheduleResponse;
-import com.hhpl.concertreserve.app.concert.api.dto.SeatResponse;
+import com.hhpl.concertreserve.app.concert.interfaces.dto.ConcertResponse;
+import com.hhpl.concertreserve.app.concert.interfaces.dto.ReservationResponse;
+import com.hhpl.concertreserve.app.concert.interfaces.dto.ScheduleResponse;
+import com.hhpl.concertreserve.app.concert.interfaces.dto.SeatResponse;
 import com.hhpl.concertreserve.app.concert.domain.ConcertInfo;
 import com.hhpl.concertreserve.app.concert.domain.ReservationInfo;
 import com.hhpl.concertreserve.app.concert.domain.ScheduleInfo;
 import com.hhpl.concertreserve.app.concert.domain.SeatInfo;
-import com.hhpl.concertreserve.app.payment.api.dto.ReservationPaymentResponse;
+import com.hhpl.concertreserve.app.payment.interfaces.dto.ReservationPaymentResponse;
 import com.hhpl.concertreserve.app.payment.domain.PaymentInfo;
-import com.hhpl.concertreserve.app.user.api.dto.PointAmountResponse;
+import com.hhpl.concertreserve.app.user.interfaces.dto.PointAmountResponse;
 import com.hhpl.concertreserve.app.user.domain.PointInfo;
-import com.hhpl.concertreserve.app.waitingqueue.api.dto.WaitingQueueResponse;
+import com.hhpl.concertreserve.app.waitingqueue.interfaces.dto.WaitingQueueResponse;
 import com.hhpl.concertreserve.app.waitingqueue.domain.WaitingQueue;
 import org.springframework.stereotype.Component;
 

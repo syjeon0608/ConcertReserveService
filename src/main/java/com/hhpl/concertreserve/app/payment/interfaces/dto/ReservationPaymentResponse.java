@@ -1,4 +1,4 @@
-package com.hhpl.concertreserve.app.payment.api.dto;
+package com.hhpl.concertreserve.app.payment.interfaces.dto;
 
 import java.time.LocalDateTime;
 

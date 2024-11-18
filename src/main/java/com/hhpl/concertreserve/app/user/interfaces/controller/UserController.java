@@ -1,9 +1,9 @@
-package com.hhpl.concertreserve.app.user.api.controller;
+package com.hhpl.concertreserve.app.user.interfaces.controller;
 
 import com.hhpl.concertreserve.app.common.api.ApiResponse;
 import com.hhpl.concertreserve.app.common.mapper.ControllerMapper;
-import com.hhpl.concertreserve.app.user.api.dto.PointAmountResponse;
-import com.hhpl.concertreserve.app.user.api.dto.PointChargeRequest;
+import com.hhpl.concertreserve.app.user.interfaces.dto.PointAmountResponse;
+import com.hhpl.concertreserve.app.user.interfaces.dto.PointChargeRequest;
 import com.hhpl.concertreserve.app.user.application.UserFacade;
 import com.hhpl.concertreserve.app.user.domain.PointInfo;
 import io.swagger.v3.oas.annotations.Operation;
