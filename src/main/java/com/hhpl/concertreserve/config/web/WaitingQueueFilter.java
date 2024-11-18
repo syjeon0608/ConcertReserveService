@@ -23,7 +23,7 @@ public class WaitingQueueFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String uuid = httpRequest.getHeader("X-WAITING-QUEUE-ID");
 
-        if (httpRequest.getRequestURI().startsWith("/api/v1/users") && httpRequest.getRequestURI().contains("/points")) {
+        if (httpRequest.getRequestURI().startsWith("/api/v1/users")) {
             chain.doFilter(request, response);
             return;
         }
