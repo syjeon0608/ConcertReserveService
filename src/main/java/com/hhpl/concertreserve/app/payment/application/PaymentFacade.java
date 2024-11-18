@@ -1,11 +1,11 @@
 package com.hhpl.concertreserve.app.payment.application;
 
 import com.hhpl.concertreserve.app.common.mapper.ApplicationMapper;
-import com.hhpl.concertreserve.app.concert.domain.ReservationInfo;
 import com.hhpl.concertreserve.app.concert.domain.entity.Reservation;
 import com.hhpl.concertreserve.app.concert.domain.service.ConcertService;
 import com.hhpl.concertreserve.app.payment.domain.PaymentInfo;
 import com.hhpl.concertreserve.app.payment.domain.entity.Payment;
+import com.hhpl.concertreserve.app.payment.domain.event.PaymentSuccessEventPublisher;
 import com.hhpl.concertreserve.app.payment.domain.service.PaymentService;
 import com.hhpl.concertreserve.app.user.domain.PointStatus;
 import com.hhpl.concertreserve.app.user.domain.service.UserService;
@@ -26,11 +26,10 @@ public class PaymentFacade {
     public PaymentInfo processPayment(Long reservationId, Long userId, String token) {
         concertService.validateSeatStatusForPayment(reservationId);
         Reservation reservation = concertService.convertReservationToComplete(reservationId);
-        ReservationInfo reservationInfo = ApplicationMapper.ConcertMapper.from(reservation);
         userService.updateUserPoint(userId, reservation.getTotalAmount(), PointStatus.USE);
         Payment payment = paymentService.completePayment(userId, reservation, reservation.getTotalAmount());
 
-        paymentEventPublisher.success(reservationInfo, token);
+        paymentEventPublisher.success(reservationId, payment.getId(), token);
         return ApplicationMapper.PaymentMapper.from(payment);
     }
 
