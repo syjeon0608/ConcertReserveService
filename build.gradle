@@ -36,6 +36,7 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'mysql:mysql-connector-java:8.0.33'
 	implementation 'org.redisson:redisson-spring-boot-starter:3.17.1'
+	implementation 'org.springframework.kafka:spring-kafka'
 }
 
 tasks.named('test') {
